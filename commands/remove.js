@@ -11,7 +11,7 @@ module.exports = {
     description: 'Allows you to remove a player to the WCL Roster',
     args: true,
     length: 2,
-    cooldown: 100, //50 previous
+    cooldown: 60, //50 previous
     category: 'representative',
     missing: ['`clan_abb`, ', '`player_tag`'],
     usage: 'clan_abb player_tag',
