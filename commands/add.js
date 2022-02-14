@@ -17,7 +17,7 @@ module.exports = {
     usage: 'clan_abb player_tag discord_id(optional)',
     explanation: 'Ex: wcl add INQ #XYZ DISCORD_ID\n\nwhere\nINQ is clan abb\n#XYZ is ClashOfClans PlayerTag and\nDISCORD_ID is long number ID of the player',
     execute: async (message, args) => {
-        if (message.channel.id === '941944701358047292' || message.channel.id === '941943218721923072' || message.channel.id === '847483626400907325' || message.channel.id === '766307563393515551') {
+        if (message.channel.id === '941944848771080192' || message.channel.id === '941943402482782218' || message.channel.id === '847483626400907325' || message.channel.id === '766307563393515551') {
             const options = {
                 'json': true,
                 'Accept': 'application/json',

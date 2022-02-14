@@ -102,11 +102,17 @@ module.exports = {
 
                 var finish = new Promise((resolve, reject) => {
                     let raw_sort = [];
+                    let int = 0;
+                    checkroster_data.values.forEach(data => {
+                        if (data.length > 0 ) {
+                            int++;
+                        }
+                    })
                     checkroster_data.values.forEach(async (data) => {
-                        if (!(data[0] === undefined)) {
+                        if (!(data[0] === undefined && data.length === 0)) {
                             let info = await getInfo(data[0]);
                             raw_sort.push([data[0], info.name, info.townHallLevel]);
-                            if (raw_sort.length === checkroster_data.values.length) {
+                            if (raw_sort.length === int) {
                                 resolve(raw_sort);
                             }
                         }
@@ -114,17 +120,19 @@ module.exports = {
                 });
 
                 finish.then(async (raw_sort) => {
-                    const rinfo = {
-                        spreadsheetId: '1B269adx2hZNKzsFFZY8FUYdM5DJ3dLYlgqO3BMua6l0',
-                        range: args[0].toUpperCase() + '!K2:K7'
-                    };
-                    let rinfo_data = await gsapi.spreadsheets.values.get(rinfo);
-                    let rinfo_array = rinfo_data.data.values;
+                    // const rinfo = {
+                    //     spreadsheetId: '1B269adx2hZNKzsFFZY8FUYdM5DJ3dLYlgqO3BMua6l0',
+                    //     range: args[0].toUpperCase() + '!K2:K7'
+                    // };
+                    // let rinfo_data = await gsapi.spreadsheets.values.get(rinfo);
+                    // let rinfo_array = rinfo_data.data.values;
+                    const rinfo = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/1B269adx2hZNKzsFFZY8FUYdM5DJ3dLYlgqO3BMua6l0/values/${args[0].toUpperCase()}!K2:K7?majorDimension=ROWS&key=AIzaSyDUq4w3z35sS28BKWLdXSh32hlwUDDaD1Y`, options);
+                    const rinfo_data = await rinfo.json();
+                    let rinfo_array = rinfo_data.values;
                     let rs = '';
                     let th14 = 0;
 
                     let sort = sort_function(raw_sort);
-                    // console.log(raw_sort);
 
                     raw_sort.forEach(data => {
                         if (!(data[0] === undefined)) {
