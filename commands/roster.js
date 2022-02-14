@@ -145,8 +145,8 @@ module.exports = {
 
                     const embeds = [];
                     const embed = new Discord.MessageEmbed()
-                        .setColor('#f53704')
-                        .setThumbnail('https://media.discordapp.net/attachments/766306826542514178/841324537169969172/Summer_Kickoff.png')
+                        .setColor('#1980de')
+                        .setThumbnail('https://media.discordapp.net/attachments/914077029912170577/914442650957008906/WCL_new.png?width=532&height=612')
                         .setAuthor('By WCL Technical')
                         .setTitle(`Roster for ${args[0].toUpperCase()}!`)
                         .setDescription("```" + `Player Tag   TH Player Name` + `\n\n` + rs.slice(0, 1984) + "```")
@@ -154,8 +154,8 @@ module.exports = {
                     embeds.push(embed);
                     if (rs.length > 1984) {
                         const embedagain = new Discord.MessageEmbed()
-                            .setColor('#f53704')
-                            .setThumbnail('https://media.discordapp.net/attachments/766306826542514178/841324537169969172/Summer_Kickoff.png')
+                            .setColor('#1980de')
+                            .setThumbnail('https://media.discordapp.net/attachments/914077029912170577/914442650957008906/WCL_new.png?width=532&height=612')
                             .setAuthor('By WCL Technical')
                             .setTitle(`Roster for ${args[0].toUpperCase()}!`)
                             .setDescription("```" + `Player Tag   TH Player Name` + `\n\n` + rs.slice(1984, rs.length) + "```")
