@@ -72,36 +72,41 @@ module.exports = {
                     return data;
                 }
 
-                const checkabb = {
-                    spreadsheetId: '1B269adx2hZNKzsFFZY8FUYdM5DJ3dLYlgqO3BMua6l0',
-                    range: 'CLANS!F4:F380'
-                };
-                let check_data = await gsapi.spreadsheets.values.get(checkabb);
-                let check_array = check_data.data.values;
+                // const checkabb = {
+                //     spreadsheetId: '1B269adx2hZNKzsFFZY8FUYdM5DJ3dLYlgqO3BMua6l0',
+                //     range: 'CLANS!F4:F380'
+                // };
+                // let check_data = await gsapi.spreadsheets.values.get(checkabb);
+                // let check_array = check_data.data.values;
+                const checkabbfetch = await fetch('https://sheets.googleapis.com/v4/spreadsheets/1B269adx2hZNKzsFFZY8FUYdM5DJ3dLYlgqO3BMua6l0/values/CLANS!F4:F380?majorDimension=ROWS&key=AIzaSyDUq4w3z35sS28BKWLdXSh32hlwUDDaD1Y', options);
+                const checkabb_data = await checkabbfetch.json();
                 let blank = 0;
-                check_array.forEach(data => {
+                checkabb_data.values.forEach(data => {
                     if (data[0] === args[0].toUpperCase()) {
                         blank = 1;
                     }
                 });
+
                 if (blank === 0) {
                     message.reply(`${args[0].toUpperCase()} is invalid clan abb!`);
                 }
 
-                const roster = {
-                    spreadsheetId: '1B269adx2hZNKzsFFZY8FUYdM5DJ3dLYlgqO3BMua6l0',
-                    range: args[0].toUpperCase() + '!E10:G89'
-                };
-                let roster_data = await gsapi.spreadsheets.values.get(roster);
-                let roster_array = roster_data.data.values;
+                // const roster = {
+                //     spreadsheetId: '1B269adx2hZNKzsFFZY8FUYdM5DJ3dLYlgqO3BMua6l0',
+                //     range: args[0].toUpperCase() + '!E10:G89'
+                // };
+                // let roster_data = await gsapi.spreadsheets.values.get(roster);
+                // let roster_array = roster_data.data.values;
+                const checkroster = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/1B269adx2hZNKzsFFZY8FUYdM5DJ3dLYlgqO3BMua6l0/values/${args[0].toUpperCase()}!E10:G89?majorDimension=ROWS&key=AIzaSyDUq4w3z35sS28BKWLdXSh32hlwUDDaD1Y`, options);
+                const checkroster_data = await checkroster.json();
 
                 var finish = new Promise((resolve, reject) => {
                     let raw_sort = [];
-                    roster_array.forEach(async (data) => {
+                    checkroster_data.values.forEach(async (data) => {
                         if (!(data[0] === undefined)) {
                             let info = await getInfo(data[0]);
                             raw_sort.push([data[0], info.name, info.townHallLevel]);
-                            if (raw_sort.length === roster_array.length) {
+                            if (raw_sort.length === checkroster_data.values.length) {
                                 resolve(raw_sort);
                             }
                         }
@@ -120,6 +125,7 @@ module.exports = {
 
                     let sort = sort_function(raw_sort);
                     // console.log(raw_sort);
+
                     raw_sort.forEach(data => {
                         if (!(data[0] === undefined)) {
                             rs += `${data[0].padEnd(12, ' ')} ${(data[2].toString()).padEnd(2, ' ')} ${data[1].padEnd(15, ' ')}\n`;
