@@ -44,27 +44,27 @@ module.exports = {
             async function gsrun(cl) {
                 const gsapi = google.sheets({ version: 'v4', auth: cl });
 
-                function sort_function(list) {
-                    let sort = [];
-                    let cd = [['14'], ['13'], ['12'], ['11'], ['NOT SCANNED'], ['INVALID TAG']];
-                    var finish = new Promise((resolve, reject) => {
-                        cd.forEach(con => {
-                            list.forEach(data => {
-                                if (!(data[0] === undefined)) {
-                                    if (con[0] === data[2]) {
-                                        sort.push([data[0], data[1], data[2]]);
-                                    }
-                                }
-                            });
-                            if (sort.length === list.length) {
-                                resolve(sort);
-                            }
-                        });
-                    });
-                    finish.then(async (sort) => {
-                        return sort;
-                    });
-                }
+                // function sort_function(list) {
+                //     let sort = [];
+                //     let cd = [['14'], ['13'], ['12'], ['11'], ['NOT SCANNED'], ['INVALID TAG']];
+                //     var finish = new Promise((resolve, reject) => {
+                //         cd.forEach(con => {
+                //             list.forEach(data => {
+                //                 if (!(data[0] === undefined)) {
+                //                     if (con[0] === data[2]) {
+                //                         sort.push([data[0], data[1], data[2]]);
+                //                     }
+                //                 }
+                //             });
+                //             if (sort.length === list.length) {
+                //                 resolve(sort);
+                //             }
+                //         });
+                //     });
+                //     finish.then(async (sort) => {
+                //         return sort;
+                //     });
+                // }
 
                 async function getInfo(tag) {
                     const response = await fetch('https://api.clashofstats.com/players/' + decodeURIComponent(tag.slice(1)).replace(/[^\x00-\x7F]/g, ""), options);
@@ -104,7 +104,7 @@ module.exports = {
                     let raw_sort = [];
                     let int = 0;
                     checkroster_data.values.forEach(data => {
-                        if (data.length > 0 ) {
+                        if (data.length > 0) {
                             int++;
                         }
                     })
@@ -132,66 +132,84 @@ module.exports = {
                     let rs = '';
                     let th14 = 0;
 
-                    let sort = sort_function(raw_sort);
-
-                    raw_sort.forEach(data => {
-                        if (!(data[0] === undefined)) {
-                            rs += `${data[0].padEnd(12, ' ')} ${(data[2].toString()).padEnd(2, ' ')} ${data[1].padEnd(15, ' ')}\n`;
-                            if (data[2] === '14') {
-                                th14 += 1;
+                    // let sort = sort_function(raw_sort);
+                    let sort = [];
+                    let cd = [['14'], ['13'], ['12'], ['11'], ['NOT SCANNED'], ['INVALID TAG']];
+                    var ending = new Promise((resolve, reject) => {
+                        cd.forEach(con => {
+                            raw_sort.forEach(data => {
+                                if (!(data[0] === undefined)) {
+                                    if (con[0] === (data[2]).toString()) {
+                                        sort.push([data[0], data[1], data[2]]);
+                                    }
+                                }
+                            });
+                            if (sort.length === raw_sort.length) {
+                                resolve(sort);
                             }
-                        }
+                        });
                     });
+                    ending.then(async (sort) => {
+                        console.log(sort);
+                        sort.forEach(data => {
+                            if (!(data[0] === undefined)) {
+                                rs += `${data[0].padEnd(12, ' ')} ${(data[2].toString()).padEnd(2, ' ')} ${data[1].padEnd(15, ' ')}\n`;
+                                if (data[2] === '14') {
+                                    th14 += 1;
+                                }
+                            }
+                        });
 
-                    const embeds = [];
-                    const embed = new Discord.MessageEmbed()
-                        .setColor('#1980de')
-                        .setThumbnail('https://media.discordapp.net/attachments/914077029912170577/914442650957008906/WCL_new.png?width=532&height=612')
-                        .setAuthor('By WCL Technical')
-                        .setTitle(`Roster for ${args[0].toUpperCase()}!`)
-                        .setDescription("```" + `Player Tag   TH Player Name` + `\n\n` + rs.slice(0, 1984) + "```")
-                        .setTimestamp()
-                    embeds.push(embed);
-                    if (rs.length > 1984) {
-                        const embedagain = new Discord.MessageEmbed()
+                        const embeds = [];
+                        const embed = new Discord.MessageEmbed()
                             .setColor('#1980de')
                             .setThumbnail('https://media.discordapp.net/attachments/914077029912170577/914442650957008906/WCL_new.png?width=532&height=612')
                             .setAuthor('By WCL Technical')
                             .setTitle(`Roster for ${args[0].toUpperCase()}!`)
-                            .setDescription("```" + `Player Tag   TH Player Name` + `\n\n` + rs.slice(1984, rs.length) + "```")
+                            .setDescription("```" + `Player Tag   TH Player Name` + `\n\n` + rs.slice(0, 1984) + "```")
                             .setTimestamp()
-                        embeds.push(embedagain);
-                    }
+                        embeds.push(embed);
+                        if (rs.length > 1984) {
+                            const embedagain = new Discord.MessageEmbed()
+                                .setColor('#1980de')
+                                .setThumbnail('https://media.discordapp.net/attachments/914077029912170577/914442650957008906/WCL_new.png?width=532&height=612')
+                                .setAuthor('By WCL Technical')
+                                .setTitle(`Roster for ${args[0].toUpperCase()}!`)
+                                .setDescription("```" + `Player Tag   TH Player Name` + `\n\n` + rs.slice(1984, rs.length) + "```")
+                                .setTimestamp()
+                            embeds.push(embedagain);
+                        }
 
-                    if (embeds.length === 1) {
-                        message.channel.send(embeds[0].addField(`**Roster Information**`, `<:townhall14:842730161718820885> | **${th14}**\n<:townhall13:766289069486506004> | **${rinfo_array[0][0]}**\n<:townhall12:766289153766850562> | **${rinfo_array[1][0]}**\n<:townhall11:766289216661356564> | **${rinfo_array[2][0]}**\n**Less than** <:townhall11:766289216661356564> | **${rinfo_array[3][0]}**\n**Total Accounts** | **${rinfo_array[4][0]}**\n**Addition Left** | **${rinfo_array[5][0]}**`).setFooter(`Page 1/1`));
-                    }
-                    else {
-                        let m1 = 0;
-                        embeds.map(function (r) { m1++; return r.addField(`**Roster Information**`, `<:townhall14:842730161718820885> | **${th14}**\n<:townhall13:766289069486506004> | **${rinfo_array[0][0]}**\n<:townhall12:766289153766850562> | **${rinfo_array[1][0]}**\n<:townhall11:766289216661356564> | **${rinfo_array[2][0]}**\n**Less than** <:townhall11:766289216661356564> | **${rinfo_array[3][0]}**\n**Total Accounts** | **${rinfo_array[4][0]}**\n**Addition Left** | **${rinfo_array[5][0]}**`).setFooter(`Page ${m1}/2`) })
-                        const Embeds = new PaginationEmbed.Embeds()
-                            .setArray(embeds)
-                            .setTimeout(300000)
-                            .setChannel(message.channel)
-                            // Sets the client's assets to utilise. Available options:
-                            //  - message: the client's Message object (edits the message instead of sending new one for this instance)
-                            //  - prompt: custom content for the message sent when prompted to jump to a page
-                            //      {{user}} is the placeholder for the user mention
-                            //.setClientAssets({ prompt: 'Enter the page number between 1-6, you want to jump on {{user}}' })
-                            .setDeleteOnTimeout(false)
-                            .setDisabledNavigationEmojis(['all'])
-                            .setDisabledNavigationEmojis(['back', 'forward', 'jump'])
-                            .setFunctionEmojis({
-                                '◀️': (_, instance) => {
-                                    instance.setPage('back');
-                                },
-                                '▶️': (_, instance) => {
-                                    instance.setPage('forward');
-                                },
-                            })
+                        if (embeds.length === 1) {
+                            message.channel.send(embeds[0].addField(`**Roster Information**`, `<:townhall14:842730161718820885> | **${th14}**\n<:townhall13:766289069486506004> | **${rinfo_array[0][0]}**\n<:townhall12:766289153766850562> | **${rinfo_array[1][0]}**\n<:townhall11:766289216661356564> | **${rinfo_array[2][0]}**\n**Less than** <:townhall11:766289216661356564> | **${rinfo_array[3][0]}**\n**Total Accounts** | **${rinfo_array[4][0]}**\n**Addition Left** | **${rinfo_array[5][0]}**`).setFooter(`Page 1/1`));
+                        }
+                        else {
+                            let m1 = 0;
+                            embeds.map(function (r) { m1++; return r.addField(`**Roster Information**`, `<:townhall14:842730161718820885> | **${th14}**\n<:townhall13:766289069486506004> | **${rinfo_array[0][0]}**\n<:townhall12:766289153766850562> | **${rinfo_array[1][0]}**\n<:townhall11:766289216661356564> | **${rinfo_array[2][0]}**\n**Less than** <:townhall11:766289216661356564> | **${rinfo_array[3][0]}**\n**Total Accounts** | **${rinfo_array[4][0]}**\n**Addition Left** | **${rinfo_array[5][0]}**`).setFooter(`Page ${m1}/2`) })
+                            const Embeds = new PaginationEmbed.Embeds()
+                                .setArray(embeds)
+                                .setTimeout(300000)
+                                .setChannel(message.channel)
+                                // Sets the client's assets to utilise. Available options:
+                                //  - message: the client's Message object (edits the message instead of sending new one for this instance)
+                                //  - prompt: custom content for the message sent when prompted to jump to a page
+                                //      {{user}} is the placeholder for the user mention
+                                //.setClientAssets({ prompt: 'Enter the page number between 1-6, you want to jump on {{user}}' })
+                                .setDeleteOnTimeout(false)
+                                .setDisabledNavigationEmojis(['all'])
+                                .setDisabledNavigationEmojis(['back', 'forward', 'jump'])
+                                .setFunctionEmojis({
+                                    '◀️': (_, instance) => {
+                                        instance.setPage('back');
+                                    },
+                                    '▶️': (_, instance) => {
+                                        instance.setPage('forward');
+                                    },
+                                })
 
-                        await Embeds.build();
-                    }
+                            await Embeds.build();
+                        }
+                    });
                 });
                 // for (var i = 0; i < roster_array.length; i++) {
                 //     if (!roster_array[i][0] === undefined) {

@@ -93,6 +93,19 @@ module.exports = {
                 let details = find_data.data.values;
                 let col = '';
 
+                details.sort(function(a,b){
+                    var nameA = a[1].toUpperCase();
+                    var nameB = b[1].toUpperCase();
+                    if(nameA < nameB) {
+                        return -1;
+                    }
+                    else if(nameA > nameB) {
+                        return 1;
+                    }
+
+                    return 0;
+                });
+                
                 details.forEach(data => {
                     if (args[0].toUpperCase() === 'C') {
                         if (!(data[0] === undefined)) {
