@@ -67,9 +67,14 @@ module.exports = {
                 // }
 
                 async function getInfo(tag) {
-                    const response = await fetch('https://api.clashofstats.com/players/' + decodeURIComponent(tag.slice(1)).replace(/[^\x00-\x7F]/g, ""), options);
-                    const data = await response.json()
-                    return data;
+                    const getData = await fetch(`https://api.clashofstats.com/players/${tag.slice(1)}`, options)
+                    if (getData.status === 404) {
+                        return { name: 'N/A', townHallLevel: -1 };
+                    }
+                    else if (getData.status === 200) {
+                        const freshData = await getData.json();
+                        return freshData;
+                    }
                 }
 
                 // const checkabb = {
@@ -100,6 +105,14 @@ module.exports = {
                 const checkroster = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/1B269adx2hZNKzsFFZY8FUYdM5DJ3dLYlgqO3BMua6l0/values/${args[0].toUpperCase()}!E10:G89?majorDimension=ROWS&key=AIzaSyDUq4w3z35sS28BKWLdXSh32hlwUDDaD1Y`, options);
                 const checkroster_data = await checkroster.json();
 
+                var townHalls = {
+                    'th14': 0,
+                    'th13': 0,
+                    'th12': 0,
+                    'th11': 0,
+                    'less than 11': 0,
+                }
+
                 var finish = new Promise((resolve, reject) => {
                     let raw_sort = [];
                     let int = 0;
@@ -112,6 +125,16 @@ module.exports = {
                         if (!(data[0] === undefined && data.length === 0)) {
                             let info = await getInfo(data[0]);
                             raw_sort.push([data[0], info.name, info.townHallLevel]);
+                            if (info.townHallLevel === 14)
+                                townHalls['th14']++;
+                            else if (info.townHallLevel === 13)
+                                townHalls['th13']++;
+                            else if (info.townHallLevel === 12)
+                                townHalls['th12']++;
+                            else if (info.townHallLevel === 11)
+                                townHalls['th11']++;
+                            else if (info.townHallLevel < 11)
+                                townHalls['less than 11']++;
                             if (raw_sort.length === int) {
                                 resolve(raw_sort);
                             }
@@ -119,7 +142,7 @@ module.exports = {
                     });
                 });
 
-                finish.then(async (raw_sort) => {
+                finish.then(async (newData) => {
                     // const rinfo = {
                     //     spreadsheetId: '1B269adx2hZNKzsFFZY8FUYdM5DJ3dLYlgqO3BMua6l0',
                     //     range: args[0].toUpperCase() + '!K2:K7'
@@ -130,86 +153,86 @@ module.exports = {
                     const rinfo_data = await rinfo.json();
                     let rinfo_array = rinfo_data.values;
                     let rs = '';
-                    let th14 = 0;
 
                     // let sort = sort_function(raw_sort);
-                    let sort = [];
-                    let cd = [['14'], ['13'], ['12'], ['11'], ['10'], ['9'], ['8'], ['7'], ['6'], ['5'], ['4'], ['3'], ['2'], ['1'], ['NOT SCANNED'], ['INVALID TAG']];
-                    var ending = new Promise((resolve, reject) => {
-                        cd.forEach(con => {
-                            raw_sort.forEach(data => {
-                                if (!(data[0] === undefined)) {
-                                    if (con[0] === (data[2]).toString()) {
-                                        sort.push([data[0], data[1], data[2]]);
-                                    }
-                                }
-                            });
-                            if (sort.length === raw_sort.length) {
-                                resolve(sort);
-                            }
-                        });
-                    });
-                    ending.then(async (sort) => {
-                        console.log(sort);
-                        sort.forEach(data => {
-                            if (!(data[0] === undefined)) {
-                                rs += `${data[0].padEnd(12, ' ')} ${(data[2].toString()).padEnd(2, ' ')} ${data[1].padEnd(15, ' ')}\n`;
-                                if (data[2] === '14') {
-                                    th14 += 1;
-                                }
-                            }
-                        });
+                    // let sort = [];
+                    // let cd = [['14'], ['13'], ['12'], ['11'], ['10'], ['9'], ['8'], ['7'], ['6'], ['5'], ['4'], ['3'], ['2'], ['1'], ['NOT SCANNED'], ['INVALID TAG']];
+                    // var ending = new Promise((resolve, reject) => {
+                    //     cd.forEach(con => {
+                    //         raw_sort.forEach(data => {
+                    //             if (!(data[0] === undefined)) {
+                    //                 if (con[0] === (data[2]).toString()) {
+                    //                     sort.push([data[0], data[1], data[2]]);
+                    //                 }
+                    //             }
+                    //         });
+                    //         if (sort.length === raw_sort.length) {
+                    //             resolve(sort);
+                    //         }
+                    //     });
+                    // });
+                    newData.sort(function (a, b) {
+                        return b[2] - a[2];
+                    })
 
-                        const embeds = [];
-                        const embed = new Discord.MessageEmbed()
+                    newData.forEach(data => {
+                        if (!(data[0] === undefined)) {
+                            rs += `${data[0].padEnd(12, ' ')} ${(data[2].toString()).padEnd(2, ' ')} ${data[1].padEnd(15, ' ')}\n`;
+                            // if (data[2] === '14') {
+                            //     th14 += 1;
+                            // }
+                        }
+                    });
+
+                    const embeds = [];
+                    const embed = new Discord.MessageEmbed()
+                        .setColor('#1980de')
+                        .setThumbnail('https://media.discordapp.net/attachments/914077029912170577/914442650957008906/WCL_new.png?width=532&height=612')
+                        .setAuthor('By WCL Technical')
+                        .setTitle(`Roster for ${args[0].toUpperCase()}!`)
+                        .setDescription("```" + `Player Tag   TH Player Name` + `\n\n` + rs.slice(0, 1984) + "```")
+                        .setTimestamp()
+                    embeds.push(embed);
+                    if (rs.length > 1984) {
+                        const embedagain = new Discord.MessageEmbed()
                             .setColor('#1980de')
                             .setThumbnail('https://media.discordapp.net/attachments/914077029912170577/914442650957008906/WCL_new.png?width=532&height=612')
                             .setAuthor('By WCL Technical')
                             .setTitle(`Roster for ${args[0].toUpperCase()}!`)
-                            .setDescription("```" + `Player Tag   TH Player Name` + `\n\n` + rs.slice(0, 1984) + "```")
+                            .setDescription("```" + `Player Tag   TH Player Name` + `\n\n` + rs.slice(1984, rs.length) + "```")
                             .setTimestamp()
-                        embeds.push(embed);
-                        if (rs.length > 1984) {
-                            const embedagain = new Discord.MessageEmbed()
-                                .setColor('#1980de')
-                                .setThumbnail('https://media.discordapp.net/attachments/914077029912170577/914442650957008906/WCL_new.png?width=532&height=612')
-                                .setAuthor('By WCL Technical')
-                                .setTitle(`Roster for ${args[0].toUpperCase()}!`)
-                                .setDescription("```" + `Player Tag   TH Player Name` + `\n\n` + rs.slice(1984, rs.length) + "```")
-                                .setTimestamp()
-                            embeds.push(embedagain);
-                        }
+                        embeds.push(embedagain);
+                    }
 
-                        if (embeds.length === 1) {
-                            message.channel.send(embeds[0].addField(`**Roster Information**`, `<:townhall14:842730161718820885> | **${th14}**\n<:townhall13:766289069486506004> | **${rinfo_array[0][0]}**\n<:townhall12:766289153766850562> | **${rinfo_array[1][0]}**\n<:townhall11:766289216661356564> | **${rinfo_array[2][0]}**\n**Less than** <:townhall11:766289216661356564> | **${rinfo_array[3][0]}**\n**Total Accounts** | **${rinfo_array[4][0]}**\n**Addition Left** | **${rinfo_array[5][0]}**`).setFooter(`Page 1/1`));
-                        }
-                        else {
-                            let m1 = 0;
-                            embeds.map(function (r) { m1++; return r.addField(`**Roster Information**`, `<:townhall14:842730161718820885> | **${th14}**\n<:townhall13:766289069486506004> | **${rinfo_array[0][0]}**\n<:townhall12:766289153766850562> | **${rinfo_array[1][0]}**\n<:townhall11:766289216661356564> | **${rinfo_array[2][0]}**\n**Less than** <:townhall11:766289216661356564> | **${rinfo_array[3][0]}**\n**Total Accounts** | **${rinfo_array[4][0]}**\n**Addition Left** | **${rinfo_array[5][0]}**`).setFooter(`Page ${m1}/2`) })
-                            const Embeds = new PaginationEmbed.Embeds()
-                                .setArray(embeds)
-                                .setTimeout(300000)
-                                .setChannel(message.channel)
-                                // Sets the client's assets to utilise. Available options:
-                                //  - message: the client's Message object (edits the message instead of sending new one for this instance)
-                                //  - prompt: custom content for the message sent when prompted to jump to a page
-                                //      {{user}} is the placeholder for the user mention
-                                //.setClientAssets({ prompt: 'Enter the page number between 1-6, you want to jump on {{user}}' })
-                                .setDeleteOnTimeout(false)
-                                .setDisabledNavigationEmojis(['all'])
-                                .setDisabledNavigationEmojis(['back', 'forward', 'jump'])
-                                .setFunctionEmojis({
-                                    '◀️': (_, instance) => {
-                                        instance.setPage('back');
-                                    },
-                                    '▶️': (_, instance) => {
-                                        instance.setPage('forward');
-                                    },
-                                })
+                    if (embeds.length === 1) {
+                        message.channel.send(embeds[0].addField(`**Roster Information**`, `<:townhall14:842730161718820885> | **${townHalls['th14']}**\n<:townhall13:766289069486506004> | **${townHalls['th13']}**\n<:townhall12:766289153766850562> | **${townHalls['th12']}**\n<:townhall11:766289216661356564> | **${townHalls['th11']}**\n**Less than** <:townhall11:766289216661356564> | **${townHalls['less than 11']}**\n**Total Accounts** | **${rinfo_array[4][0]}**\n**Addition Left** | **${rinfo_array[5][0]}**`).setFooter(`Page 1/1`));
+                    }
+                    else {
+                        let m1 = 0;
+                        embeds.map(function (r) { m1++; return r.addField(`**Roster Information**`, `<:townhall14:842730161718820885> | **${townHalls['th14']}**\n<:townhall13:766289069486506004> | **${townHalls['th13']}**\n<:townhall12:766289153766850562> | **${townHalls['th12']}**\n<:townhall11:766289216661356564> | **${townHalls['th11']}**\n**Less than** <:townhall11:766289216661356564> | **${townHalls['less than 11']}**\n**Total Accounts** | **${rinfo_array[4][0]}**\n**Addition Left** | **${rinfo_array[5][0]}**`).setFooter(`Page ${m1}/2`) })
+                        const Embeds = new PaginationEmbed.Embeds()
+                            .setArray(embeds)
+                            .setTimeout(300000)
+                            .setChannel(message.channel)
+                            // Sets the client's assets to utilise. Available options:
+                            //  - message: the client's Message object (edits the message instead of sending new one for this instance)
+                            //  - prompt: custom content for the message sent when prompted to jump to a page
+                            //      {{user}} is the placeholder for the user mention
+                            //.setClientAssets({ prompt: 'Enter the page number between 1-6, you want to jump on {{user}}' })
+                            .setDeleteOnTimeout(false)
+                            .setDisabledNavigationEmojis(['all'])
+                            .setDisabledNavigationEmojis(['back', 'forward', 'jump'])
+                            .setFunctionEmojis({
+                                '◀️': (_, instance) => {
+                                    instance.setPage('back');
+                                },
+                                '▶️': (_, instance) => {
+                                    instance.setPage('forward');
+                                },
+                            })
 
-                            await Embeds.build();
-                        }
-                    });
+                        await Embeds.build();
+                    }
                 });
                 // for (var i = 0; i < roster_array.length; i++) {
                 //     if (!roster_array[i][0] === undefined) {
