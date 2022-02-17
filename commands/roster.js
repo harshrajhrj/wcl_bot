@@ -134,7 +134,7 @@ module.exports = {
 
                     // let sort = sort_function(raw_sort);
                     let sort = [];
-                    let cd = [['14'], ['13'], ['12'], ['11'], ['NOT SCANNED'], ['INVALID TAG']];
+                    let cd = [['14'], ['13'], ['12'], ['11'], ['10'], ['9'], ['8'], ['7'], ['6'], ['5'], ['4'], ['3'], ['2'], ['1'], ['NOT SCANNED'], ['INVALID TAG']];
                     var ending = new Promise((resolve, reject) => {
                         cd.forEach(con => {
                             raw_sort.forEach(data => {
