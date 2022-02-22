@@ -26,7 +26,7 @@ module.exports = {
             'BLOCKAGE': 'https://media.discordapp.net/attachments/914077029912170577/914442652315963402/WCL_Blockage_.png?width=435&height=613',
             'CHAMPIONS': 'https://media.discordapp.net/attachments/914077029912170577/914442651238039572/WCL_Champions.png?width=548&height=612',
         }
-        if (message.author.id === '531548281793150987') {
+        if (!(message.channel.id === '941944701358047292' || message.channel.id === '941944848771080192' || message.channel.id === '941944931382075422' || message.channel.id === '941944985211772978' || message.channel.id === '941943218721923072' || message.channel.id === '941943402482782218' || message.channel.id === '941943477258842122')) {
             var repSchema = require('./repsSchema/repsSchema');
             var ABBSobject = fs.readFileSync('./commands/abbs.json');
             var abbObject = JSON.parse(ABBSobject);
@@ -97,9 +97,9 @@ module.exports = {
                     .setTitle(repList[2])
                     .setDescription(`Rep1 - ${repList[4]}\nRep2 - ${rep2[0]}`)
                 message.channel.send(embed).then((msg) => {
-                    setTimeout(function() {
+                    setTimeout(function () {
                         msg.edit(`${repList[2]}\nRep1 - <@${repList[5]}>\nRep2 - <@${rep2[1]}>`)
-                    },1000)
+                    }, 1000)
                 });
             }
         }

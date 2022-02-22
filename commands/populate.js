@@ -23,7 +23,7 @@ module.exports = {
                 }
             }, { collection: 'all_abbs' }));
         }
-        if (message.author.id === '531548281793150987') {
+        if (message.guild.id === '765523244332875776' || message.guild.id === '615297658860601403' || message.member.hasPermission('MANAGE_ROLES')) {
             var data = fs.readFileSync('./commands/abbs.json');
             var myObject = JSON.parse(data);
             const allAbbs = await allabbs();

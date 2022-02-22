@@ -35,7 +35,7 @@ module.exports = {
             'B': 'https://media.discordapp.net/attachments/914077029912170577/914442652315963402/WCL_Blockage_.png?width=435&height=613',
             'C': 'https://media.discordapp.net/attachments/914077029912170577/914442651238039572/WCL_Champions.png?width=548&height=612',
         };
-        if (message.author.id === '531548281793150987') {
+        if (!(message.channel.id === '941944701358047292' || message.channel.id === '941944848771080192' || message.channel.id === '941944931382075422' || message.channel.id === '941944985211772978' || message.channel.id === '941943218721923072' || message.channel.id === '941943402482782218' || message.channel.id === '941943477258842122')) {
 
             if (!options[args[0].toUpperCase()])
                 return message.reply(`Incorrect division ${args[0].toUpperCase()}!`);

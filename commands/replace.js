@@ -170,7 +170,7 @@ module.exports = {
             }
         }
 
-        if (message.author.id === '531548281793150987') {
+        if (message.guild.id === '765523244332875776' || message.guild.id === '615297658860601403' || message.member.hasPermission('MANAGE_ROLES')) {
             if (args[0].toUpperCase() === 'ABB') {//abb change
                 let division = await abbCheck(args[1].toUpperCase());
                 if (division === '') {
