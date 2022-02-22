@@ -1,9 +1,8 @@
 const fetch = require('node-fetch');
-const { google, GoogleApis } = require('googleapis');
-const keys = require('./keys.json');
 const Discord = require('discord.js');
 const moment = require('moment-timezone');
 const PaginationEmbed = require('discord-paginationembed');
+const fs = require('fs');
 
 module.exports = {
     name: 'rosterremove',
@@ -11,11 +10,11 @@ module.exports = {
     description: 'Allows you to remove a player to the WCL Roster',
     args: true,
     length: 2,
-    cooldown: 60, //50 previous
+    cooldown: 20, //50 previous
     category: 'representative',
-    missing: ['`clan_abb`, ', '`player_tag`'],
-    usage: 'clan_abb player_tag',
-    explanation: 'Ex: wcl remove INQ #XYZ\n\nwhere\nINQ is clan abb\n#XYZ is ClashOfClans PlayerTag',
+    missing: ['`clan_abb`, ', '`player_tag`, ', '`discord_id(optional)`'],
+    usage: 'clan_abb player_tag discord_id(optional)',
+    explanation: 'Ex: wcl add INQ #XYZ DISCORD_ID\n\nwhere\nINQ is clan abb\n#XYZ is ClashOfClans PlayerTag and\nDISCORD_ID is long number ID of the player',
     execute: async (message, args) => {
         if (message.channel.id === '941944848771080192' || message.channel.id === '941943402482782218' || message.channel.id === '847483626400907325' || message.channel.id === '766307563393515551') {
             const options = {
@@ -24,24 +23,6 @@ module.exports = {
                 'method': 'get',
                 'muteHttpExceptions': true
             };
-            const client = new google.auth.JWT(
-                keys.client_email,
-                null,
-                keys.private_key,
-                ['https://www.googleapis.com/auth/spreadsheets']
-            );
-
-            client.authorize(function (err, tokens) {
-
-                if (err) {
-                    console.log(err);
-                    return;
-                }
-                else {
-                    console.log('Connected!');
-                    gsrun(client);
-                }
-            });
             const few = new Date();
             let msg = moment(few, 'EST').format();
             let m = msg.split('T');
@@ -71,7 +52,7 @@ module.exports = {
             else {
                 comb2 = ct2 + tz2;
             }
-            let ds = m[0] + " | " + comb1 + ":" + comb2 + ":" + ct3;
+            let dateNtime = m[0] + " | " + comb1 + ":" + comb2 + ":" + ct3;
             let dcid = ''
             if (args[2] === undefined) {
                 dcid += '';
@@ -80,210 +61,188 @@ module.exports = {
                 dcid += args[2].toUpperCase();
             }
             message.channel.send(`Processing....Please wait, this may take a while ${message.author.username}.`)
-            async function gsrun(cl) {
-                const gsapi = google.sheets({ version: 'v4', auth: cl });
 
-                const checkabb = {
-                    spreadsheetId: '1B269adx2hZNKzsFFZY8FUYdM5DJ3dLYlgqO3BMua6l0',
-                    range: 'CLANS!F4:F380'
-                };
-                let check_data = await gsapi.spreadsheets.values.get(checkabb);
-                let check_array = check_data.data.values;
-                let blank = 0;
-                check_array.forEach(data => {
-                    if (data[0] === args[0].toUpperCase()) {
-                        blank = 1;
-                    }
-                });
-                if (blank === 0) {
-                    message.reply(`${args[0].toUpperCase()} is invalid clan abb!`);
+            //abb checking
+            var rawABBS = fs.readFileSync('./commands/abbs.json')
+            var check_array = JSON.parse(rawABBS);
+            let division = '';
+            check_array.values.forEach(data => {
+                if (data[2] === args[0].toUpperCase()) {
+                    division = data[3];
                 }
-                const checks = {
-                    spreadsheetId: '1B269adx2hZNKzsFFZY8FUYdM5DJ3dLYlgqO3BMua6l0',
-                    range: args[0].toUpperCase() + '!D5:D7'
-                };
-                let id = await gsapi.spreadsheets.values.get(checks);
-                let id_data = id.data.values;
+            });
+            if (division === '') {
+                message.reply(`${args[0].toUpperCase()} is invalid clan abb!`);
+                return;
+            }
+            //abb checking ended
 
-                let perm = id_data[0][0];
-                let t = id_data[1][0];
-                let r = id_data[2][0];
+            var rosterData = await sendBack(division, args[0].toUpperCase(), []);
 
-                const p = await fetch('https://api.clashofstats.com/players/' + args[1].toUpperCase().slice(1), options); //http://wclapi.tk/player/
-                let final = '';
-                if (p.status === 503) {
-                    final += 'Removal paused due to Maintenance Break!'
-                    message.reply(final);
-                }
-                let getbans = await ban_check(args[1].toUpperCase());
-                let dupecheck = await dupe(args[1].toUpperCase());
-                if (getbans === '') {
-                    if (!(dupecheck === '')) {
-                        if (p.status === 500 || p.status === 404) {
-                            final += 'Invalid Tag'
-                            message.channel.send(`${args[1].toUpperCase()} is ${final}!`);
-                        }
-                        const data = await p.json();
-                        let th = '';
-                        if (p.status === 200) {
-                            final += data.name;
-                            // th += data.TH;
-                            th += data.townHallLevel;
-                            if (perm === message.author.id || message.author.id === '531548281793150987' || message.author.id === '602935588018061453') {
-                                update(ds, args[1].toUpperCase(), final, message.author.id, th, dcid);
-                            }
-                            else {
-                                message.reply(`You're not authorized roster rep for ${args[0].toUpperCase()}!`);
-                            }
-                        }
+            let perm = [];
+            if (rosterData.rosterReps[0].length === 1) {
+                perm.push(rosterData.rosterReps[0][0])
+            }
+            else {
+                perm.push(rosterData.rosterReps[0][0], rosterData.rosterReps[0][1])
+            }
+
+            const p = await fetch('https://api.clashofstats.com/players/' + args[1].toUpperCase().slice(1), options); //http://wclapi.tk/player/
+            let final = '';
+            if (p.status === 503) {
+                final += 'Addition paused due to Maintenance Break!'
+                message.reply(final);
+                return;
+            }
+            if (p.status === 404) {
+                message.reply(`${args[1].toUpperCase()} is invalid tag!`);
+                return;
+            }
+            let available = await isAvailable(args[1].toUpperCase(), rosterData.players);
+
+            if (available === 'Found') {
+                const data = await p.json();
+                let th = '';
+                if (p.status === 200) {
+                    final += data.name;
+                    th += data.townHallLevel;
+                    if (perm.includes(message.author.id) || message.author.id === '531548281793150987' || message.author.id === '602935588018061453') {
+                        update(dateNtime, args[1].toUpperCase(), final, message.author.id, th, dcid);
                     }
                     else {
-                        message.reply(`${args[1].toUpperCase()} doesn't exist in ${args[0].toUpperCase()}!`);
+                        message.reply(`You're not authorized roster rep for ${args[0].toUpperCase()}!`);
+                        return;
                     }
                 }
-                else {
-                    message.reply(`${args[1].toUpperCase()} is banned!`);
-                }
-
-                async function ban_check(tag) {
-                    const ban = {
-                        spreadsheetId: '1qckELKFEYecbyGeDqRqItjSKm02ADpKfhkK1FiRbQ-c',
-                        range: 'Banned Players!C6:C'
-                    };
-                    let data = await gsapi.spreadsheets.values.get(ban);
-                    let data_array = data.data.values;
-                    let found = '';
-                    data_array.forEach(data => {
-                        if (data[0] === tag) {
-                            found += 'Found a ban!';
-                        }
-                    });
-                    return found;
-                }
-
-                async function dupe(tag) {
-                    const find = {
-                        spreadsheetId: '1B269adx2hZNKzsFFZY8FUYdM5DJ3dLYlgqO3BMua6l0',
-                        range: args[0].toUpperCase() + '!E10:E89'
-                    };
-                    let data = await gsapi.spreadsheets.values.get(find);
-                    let data_array = data.data.values;
-                    let found = '';
-                    data_array.forEach(data => {
-                        if (data[0] === tag.toUpperCase()) {
-                            found += 'Found a dupe!';
-                        }
-                    });
-                    return found;
-                }
-                async function update(date, tag, name, auth_id, th, dc_id) {
-                    const embed = [];
-                    const embedremove = new Discord.MessageEmbed()
-                        .setColor('#128682')
-                        .setAuthor('By WCL Technical')
-                        .setTitle(`Removal Preview of ${args[0].toUpperCase()}`)
-                        .setDescription(`React with ✅ or ❎ to approve/disapprove the removal!\n✅ - Removal Accepted\n❎ - Removal Rejected`)
-                        .addField('Player Name', name, true)
-                        .addField('Player Tag', tag, true)
-                        .setThumbnail(`https://coc.guide/static/imgs/other/town-hall-${th}.png`)
-                        .setFooter(`Requested by ${auth_id} | React within 60s`)
-                        .setTimestamp()
-                    embed.push(embedremove);
-
-                    const Embeds = new PaginationEmbed.Embeds()
-                        .setArray(embed)
-                        .setAuthorizedUsers([message.author.id])
-                        .setChannel(message.channel)
-                        .setTimeout(60000)
-                        .setDisabledNavigationEmojis(['all'])
-                        .setFunctionEmojis({
-                            '✅': (_, instance) => {
-                                put(date, tag, name, auth_id, dc_id);
-                                instance.addField(`Removed By`, `<@${message.author.id}>`);
-                                instance.setColor('#630000');
-                                instance.resetEmojis();
-                            },
-                            '❎': (_, instance) => {
-                                instance.addField(`Rejected By`, `<@${message.author.id}>`);
-                                instance.setColor('#ff0000');
-                                instance.resetEmojis();
-                            }
-                        });
-                    await Embeds.build();
-                    /*let collect = await message.channel.send(embed);
-                    await collect.react('✅');
-                    await collect.react('❎');
-                    const filter = (reaction, user) => {
-                       return ['✅', '❎'].includes(reaction.emoji.name) && user.id === message.author.id;
-                   };
-                   collector = await collect.createReactionCollector(filter, {
-                       max : 1,
-                       time : 60000,
-                       errors : ['time']
-                   });
-                   if(!(collector))
-                   await collect.delete();
-                   collector.on('collect', async (reaction, user) => {
-                       if(reaction.emoji.name === '✅') {
-                           put(date,tag,name,auth_id,dc_id);
-                       }
-                       else {
-                           message.channel.send(`Rejected by ${message.author}!`);
-                       }
-                   });*/
-                }
-
-                async function put(date, tag, name, auth_id, dc_id) {
-                    const pull = {
-                        spreadsheetId: '1B269adx2hZNKzsFFZY8FUYdM5DJ3dLYlgqO3BMua6l0',
-                        range: args[0].toUpperCase() + '!R51:R89'
-                    };
-                    let pull_data = await gsapi.spreadsheets.values.get(pull);
-                    let array = pull_data.data.values;
-                    const pull2 = {
-                        spreadsheetId: '1B269adx2hZNKzsFFZY8FUYdM5DJ3dLYlgqO3BMua6l0',
-                        range: args[0].toUpperCase() + '!X10:X89'
-                    };
-                    const gets = {
-                        spreadsheetId: '1B269adx2hZNKzsFFZY8FUYdM5DJ3dLYlgqO3BMua6l0',
-                        range: args[0].toUpperCase() + '!D10:E89',
-                    };
-                    let gets_data = await gsapi.spreadsheets.values.get(gets);
-                    let gets_array = gets_data.data.values;
-                    let m1 = 0;
-                    let m2 = 0;
-                    let add = 0;
-                    let remove = 0;
-                    array.forEach(data => {
-                        m1 += 1;
-                        if (data[0] === 'Yes' && add === 0) {
-                            const write = {
-                                spreadsheetId: '1B269adx2hZNKzsFFZY8FUYdM5DJ3dLYlgqO3BMua6l0',
-                                range: args[0].toUpperCase() + "!T" + (50 + m1) + ":W" + (50 + m1),
-                                valueInputOption: 'USER_ENTERED',
-                                resource: { values: [[date, tag, name, auth_id]] }
-                            };
-                            gsapi.spreadsheets.values.update(write);
-                            gets_array.forEach(data => {
-                                m2 += 1;
-                                if (data[1] === tag && remove === 0) {
-                                    const write2 = {
-                                        spreadsheetId: '1B269adx2hZNKzsFFZY8FUYdM5DJ3dLYlgqO3BMua6l0',
-                                        range: args[0].toUpperCase() + '!D' + (9 + m2) + ':E' + (9 + m2)
-                                    };
-                                    gsapi.spreadsheets.values.clear(write2);
-                                    //message.channel.send(`Removed **${tag}** from **${args[0].toUpperCase()}**!`)
-                                    remove++;
-                                }
-                            });
-                            add++;
-                        }
-                    });
-                }
             }
+            else {
+                message.reply(`${args[1].toUpperCase()} don't exist in ${args[0].toUpperCase()}!`);
+                return;
+            }
+
+            async function isAvailable(tag, values) {
+                let found = '';
+                values.forEach(data => {
+                    if (data[0] === tag.toUpperCase()) {
+                        found += 'Found';
+                    }
+                });
+                return found;
+            }
+
+            async function update(date, tag, name, auth_id, th, dc_id) {
+                const embed = [];
+                const embedadd = new Discord.MessageEmbed()
+                    .setColor('#128682')
+                    .setAuthor('By WCL TECHNICAL')
+                    .setTitle(`Removal Preview of ${args[0].toUpperCase()}`)
+                    .setDescription(`React with ✅ or ❎ to approve/disapprove the removal!\n✅ - Removal Accepted\n❎ - Removal Rejected`)
+                    .addField('Player Name', name, true)
+                    .addField('Player Tag', tag, true)
+                    .setThumbnail(`https://coc.guide/static/imgs/other/town-hall-${th}.png`) //townhall emoji fetch
+                    .setFooter(`Requested by ${auth_id} | React within 60s`)
+                    .setTimestamp()
+                embed.push(embedadd);
+
+                const Embeds = new PaginationEmbed.Embeds()
+                    .setArray(embed)
+                    .setAuthorizedUsers([message.author.id])
+                    .setChannel(message.channel)
+                    .setTimeout(60000)
+                    .setDisabledNavigationEmojis(['all'])
+                    .setFunctionEmojis({
+                        '✅': (_, instance) => {
+                            sendBack(division, args[0].toUpperCase(), [date, tag, name, auth_id, dc_id]);
+                            instance.addField(`Added By`, `<@${message.author.id}>`);
+                            instance.setColor('#0d9e12');
+                            instance.resetEmojis();
+                        },
+                        '❎': (_, instance) => {
+                            instance.addField(`Rejected By`, `<@${message.author.id}>`);
+                            instance.setColor('#ff0000');
+                            instance.resetEmojis();
+                        }
+                    });
+                await Embeds.build();
+            }
+
         }
         else {
             message.reply(`Not authorised for the command to be used in this channel!`);
+        }
+
+        async function sendBack(div, abb, dataArray) {
+            var options = {
+                'HEAVY WEIGHT': ['heavy', 'rosterSchemaHeavy'],
+                'FLIGHT': ['flight', 'rosterSchemaFlight'],
+                'ELITE': ['elite', 'rosterSchemaElite'],
+                'BLOCKAGE': ['blockage', 'rosterSchemaBlockage'],
+                'CHAMPIONS': ['champions', 'rosterSchemaChampions']
+            };
+
+            var rSize = {
+                'HEAVY WEIGHT': [80, 40],
+                'FLIGHT': [60, 30],
+                'ELITE': [50, 25],
+                'BLOCKAGE': [40, 20],
+                'CHAMPIONS': [8, 6]
+            };
+
+            var rosterSchema = require('./rosterSchemas/' + options[div][1])
+
+            var getData = await rosterSchema.find({ abb: abb });
+
+            if (dataArray.length === 0) {
+                return getData[0];
+            }
+            else {
+                var rosterSize = getData[0].rosterSize - 1;
+                var additionSpot = getData[0].additionSpot;
+
+                if (rosterSize < rSize[div][0]) {
+                    additionSpot = 'Yes'
+                }
+
+                getData[0].rosterSize = rosterSize;
+                getData[0].additionSpot = additionSpot;
+
+                if (getData[0].removalRecord[0][0] === 'N/A') {
+                    const deleteRecordNA = await rosterSchema.findOneAndUpdate(
+                        { abb: abb },
+                        {
+                            $pull: {
+                                'removalRecord': ['N/A', 'N/A', 'N/A', 'N/A']
+                            }
+                        }
+                    );
+                }
+                getData[0].removalRecord.push([dataArray[0], dataArray[1], dataArray[2], dataArray[3]]);
+
+                var removal;
+                var flag = 0;
+                getData[0].players.forEach(data => {
+                    if (data[0] === dataArray[1] && flag == 0) {
+                        removal = [data[0], data[1]];
+                        flag = 1;
+                    }
+                })
+                const updateTag = await rosterSchema.findOneAndUpdate(
+                    { abb: abb },
+                    {
+                        $pull: {
+                            'players': removal
+                        }
+                    }
+                );
+
+                await getData[0].save()
+                    .then((data) => console.log(data))
+                    .catch((err) => console.log(err.message));
+
+                if (rosterSize <= rSize[div][1]) {
+                    message.reply(`You've total of ${rosterSize} accounts in your roster.\n> Suggestion - Keep some ideal amount of players for your backups!`);
+                }
+            }
         }
     }
 }

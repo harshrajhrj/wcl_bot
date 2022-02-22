@@ -1,188 +1,259 @@
-const { google, GoogleApis } = require('googleapis');
-const keys = require('./keys.json');
-const Discord = require('discord.js');
-
+//@params
+//1 - clan abb
+//2 - rep identifier
+//3 - rep mention
+const fs = require('fs');
 module.exports = {
-    name: 'seasonreps',
-    aliases: ["sreps"],
+    name: 'changerep',
+    aliases: ['creps', 'cr'],
     description: 'Stores the information of clan representative!',
     args: true,
     length: 2,
     category: "moderator",
-    usage: 'rep_prefix clan_abb rep_mention/clear',
-    missing: ['`rep_prefix`, ', '`clan_abb`, ', '`rep_mention/clear`'],
-    explanation: `Ex: wcl sreps r1 INQ @RAJ\nwhere Rep1 - RAJ\nOR\nwcl sreps all INQ @RAJ @Candy\nwhere Rep1 - RAJ and Rep2 - Candy\n\nwcl sreps all clan.abb clear\nThis command clears the data of both representatives. Individuals can be cleared by r1/r2/rr accordingly.\n\n
-Rep Prefix\nr1 - Representative 1\nr2 - Representative 2\nrr - Roster Rep\nall - Both representatives`,
+    usage: 'clanAbb repPrefix repMention/clear',
+    missing: ['`clanAbb`, ', '`repPrefix`, ', '`repMention/clear`'],
+    explanation: `Ex: wcl creps INQ R1 @RAJ\nwhere Rep1 or R1 - RAJ\nOR\nwcl creps INQ all @RAJ @Candy\nwhere Rep1 - RAJ and Rep2 - Candy\n\nwcl creps clanAbb clear\nThis command clears the data of both representatives. Individuals can be cleared by r1/r2 accordingly.\n\n
+Rep Prefix\nr1 - Representative 1\nr2 - Representative 2\nall - Both representatives`,
     accessableby: ['League Admins', 'Moderator'],
     execute: async (message, args) => {
-        // if(message.member.hasPermission("MANAGE_ROLES")){
-        if (message.author.id === '531548281793150987') {
-            const client = new google.auth.JWT(
-                keys.client_email,
-                null,
-                keys.private_key,
-                ['https://www.googleapis.com/auth/spreadsheets']
-            );
-
-            client.authorize(function (err, tokens) {
-
-                if (err) {
-                    console.log(err);
-                    return;
-                }
-                else {
-                    console.log('Connected!');
-                    gsrun(client);
+        async function checkAbb(abb) {
+            var abbDataObject = fs.readFileSync('./commands/abbs.json');
+            var abbData = JSON.parse(abbDataObject);
+            var division = '';
+            var control = 0
+            abbData.values.forEach(data => {
+                if (data[2] === abb && control === 0) {
+                    division = data[3];
+                    control++;
                 }
             });
-
-            const search = {
-                'R1': 'H',
-                'R2': 'J',
-                'RR': 'L',
-                'ALL': 'H',
-            };
-            const search2 = {
-                'R1': ':I',
-                'R2': ':K',
-                'RR': ':M',
-                'ALL': ':K',
-            };
-            const identifier = {
-                'R1': 'Representative 1',
-                'R2': 'Representative 2',
-                'RR': 'Roster Rep'
-            };
-            const clear_range1 = {
-                'ALL': 'H',
-                'R1': 'H',
-                'R2': 'J',
-                'RR': 'L'
-            };
-            const clear_range2 = {
-                'ALL': ':M',
-                'R1': ':I',
-                'R2': ':K',
-                'RR': ':M'
-            };
-
-            async function gsrun(cl) {
-                const gsapi = google.sheets({ version: 'v4', auth: cl });
-                const opt1 = {
-                    spreadsheetId: '1sQ6GpLUl9SP447bO2CoyivFNHA4uEJ32yt6c1J2hixM',
-                    range: 'ALL DETAILS!A2:M'
-                };
-                let opt1_array = await gsapi.spreadsheets.values.get(opt1);
-                let opt1_data_array = opt1_array.data.values;
-
-                let rep_name = '';
-                let rep_id = '';
-                let rep_tag = '';
-                let number = 1;
-
-                for (var i = 0; i < opt1_data_array.length; i++) {
-                    if (args[1].toUpperCase() === opt1_data_array[i][0]) {
-                        if (!(search[args[0].toUpperCase()] === undefined) && args[2].toUpperCase() === 'CLEAR') {
-                            const erase = {
-                                spreadsheetId: '1sQ6GpLUl9SP447bO2CoyivFNHA4uEJ32yt6c1J2hixM',
-                                range: 'ALL DETAILS!' + clear_range1[args[0].toUpperCase()] + (i + 2) + clear_range2[args[0].toUpperCase()] + (i + 2)
-                            };
-                            try {
-                                gsapi.spreadsheets.values.clear(erase);
-                            } catch (err) {
-                                console.log(err);
-                            }
-                            (await message.reply(`**Updated**!`)).react('✅');
-                            (await message).react('✅');
-                            number++;
-                        }
-                        else {
-                            if (!(search[args[0].toUpperCase()] === undefined) && !(args[0].toUpperCase() === 'ALL')) {
-                                rep_name = message.mentions.users.map(user => {
-                                    return user.username;
-                                });
-                                rep_id = message.mentions.users.map(user => {
-                                    return user.id;
-                                });
-                                rep_tag = message.mentions.users.map(user => {
-                                    return user.discriminator;
-                                });
-                                const opt2 = {
-                                    spreadsheetId: '1sQ6GpLUl9SP447bO2CoyivFNHA4uEJ32yt6c1J2hixM',
-                                    range: 'ALL DETAILS!' + search[args[0].toUpperCase()] + (i + 2) + search2[args[0].toUpperCase()] + (i + 2),
-                                    valueInputOption: 'USER_ENTERED',
-                                    resource: { values: [[rep_name[0] + "#" + rep_tag[0], rep_id[0]]] }
-                                };
-                                try {
-                                    gsapi.spreadsheets.values.update(opt2);
-                                    const embed = new Discord.MessageEmbed()
-                                        .setColor('#0099ff')
-                                        .setAuthor('WCL Bot')
-                                        .setTitle(`Preview for ${args[1].toUpperCase()}`)
-                                        .setDescription(`Details for ${identifier[args[0].toUpperCase()]}!`)
-                                        .addField('Discord Name', rep_name[0] + "#" + rep_tag[0], false)
-                                        .addField('Discord ID', rep_id[0], false)
-                                        .setFooter('Updated')
-                                    message.channel.send(embed);
-                                    number++;
-                                } catch (err) {
-                                    console.log(err);
-                                }
-                            }
-                            if (!(search[args[0].toUpperCase()] === undefined) && (args[0].toUpperCase() === 'ALL')) {
-                                rep_name = message.mentions.users.map(user => {
-                                    return user.username;
-                                });
-                                rep_id = message.mentions.users.map(user => {
-                                    return user.id;
-                                });
-                                rep_tag = message.mentions.users.map(user => {
-                                    return user.discriminator;
-                                });
-                                const opt2 = {
-                                    spreadsheetId: '1sQ6GpLUl9SP447bO2CoyivFNHA4uEJ32yt6c1J2hixM',
-                                    range: 'ALL DETAILS!' + search[args[0].toUpperCase()] + (i + 2) + search2[args[0].toUpperCase()] + (i + 2),
-                                    valueInputOption: 'USER_ENTERED',
-                                    resource: { values: [[rep_name[0] + "#" + rep_tag[0], rep_id[0], rep_name[1] + "#" + rep_tag[1], rep_id[1]]] }
-                                };
-                                try {
-                                    gsapi.spreadsheets.values.update(opt2);
-                                    const embed = new Discord.MessageEmbed()
-                                        .setColor('#0099ff')
-                                        .setAuthor('WCL Bot')
-                                        .setTitle(`Preview for ${args[1].toUpperCase()}`)
-                                        .setDescription(`Details for all representative!`)
-                                        .addField('Representative 1', rep_name[0] + "#" + rep_tag[0], false)
-                                        .addField('Discord ID', rep_id[0], false)
-                                        .addField('Representative 2', rep_name[1] + "#" + rep_tag[1], false)
-                                        .addField('Discord ID', rep_id[1], false)
-                                        .addField('Required Roster Rep', 'Type ' + "`" + 'wcl sreps rr ' + args[1].toUpperCase() + ' mention_roster_rep' + "`")
-                                        .setTimestamp()
-                                        .setFooter('Updated')
-                                    message.channel.send(embed);
-                                    number++;
-                                } catch (err) {
-                                    console.log(err);
-                                }
-                            }
-                        }
-                    }
-                }
-                if (number === 1) {
-                    let c = [];
-                    opt1_data_array.forEach(data => {
-                        if (!(data[0] === args[1].toUpperCase())) {
-                            c.push('N/A');
-                        }
-                    });
-                    if (c.length > 0) {
-                        message.channel.send(`Not found abb ${args[1].toUpperCase()}!`);
-                    }
-                }
+            return division;
+        }
+        if (message.author.id === '531548281793150987') {
+            var abbCheck = await checkAbb(args[0].toUpperCase());
+            if (abbCheck === '') {
+                message.reply(`Invalid clan abb ${args[0].toUpperCase()}`);
+                return;
+            }
+            if (args[1].toUpperCase() === 'R1') {
+                callChangeFirstRep(abbCheck);
+                return;
+            }
+            else if (args[1].toUpperCase() === 'R2') {
+                callChangeSecondRep(abbCheck);
+                return;
+            }
+            else if (args[1].toUpperCase() === 'ALL') {
+                callChangeAllRep(abbCheck);
+                return;
+            }
+            else if (args[1].toUpperCase() === 'CLEAR') {
+                callClearRep(abbCheck);
+                return;
+            }
+            else {
+                message.reply(`Invalid indentifier ${args[1].toUpperCase()}!`);
+                return;
             }
         }
-        else {
-            message.reply(`You don't have permission to use this command!`);
+
+        async function getRepInfo() {
+            var rep_name = message.mentions.users.map(user => {
+                return user.username;
+            });
+            var rep_id = message.mentions.users.map(user => {
+                return user.id;
+            });
+            var rep_tag = message.mentions.users.map(user => {
+                return user.discriminator;
+            });
+            return [rep_name, rep_id, rep_tag];
+        }
+
+        async function callChangeFirstRep(div) {
+            try {
+                var repInfo = await getRepInfo();
+                var repSchema = require('./repsSchema/repsSchema');
+
+                var repData = await repSchema.find({ div: div });
+                var collectRep;
+                repData[0].values.forEach(data => {
+                    if (data[0] === args[0].toUpperCase()) {
+                        collectRep = data;
+                    }
+                });
+
+                const addNewRep = await repSchema.findOneAndUpdate(
+                    { div: div },
+                    {
+                        $push: {
+                            'values': [args[0].toUpperCase(), repInfo[0][0] + "#" + repInfo[2][0], repInfo[1][0], collectRep[3], collectRep[4]]
+                        }
+                    }
+                );
+
+                const removeOldRep = await repSchema.findOneAndUpdate(
+                    { div: div },
+                    {
+                        $pull: {
+                            'values': collectRep
+                        }
+                    }
+                );
+
+                if (collectRep[1] === "" || collectRep[2] === "") {
+                    await message.react('✅');
+                    message.reply(`Updated rep change from **None** to **${repInfo[0][0] + "#" + repInfo[2][0]}**`).then((msg) => msg.react('✅'));
+                    return;
+                }
+
+                await message.react('✅');
+                message.reply(`Updated rep change from **${collectRep[1]}** to **${repInfo[0][0] + "#" + repInfo[2][0]}**`).then((msg) => msg.react('✅'));
+                return;
+            } catch (err) {
+                message.reply(err.message);
+                return;
+            }
+        }
+
+        async function callChangeSecondRep(div) {
+            try {
+                var repInfo = await getRepInfo();
+                var repSchema = require('./repsSchema/repsSchema');
+
+                var repData = await repSchema.find({ div: div });
+                var collectRep;
+                repData[0].values.forEach(data => {
+                    if (data[0] === args[0].toUpperCase()) {
+                        collectRep = data;
+                    }
+                });
+                if (collectRep[1] === "" || collectRep[2] === "") {
+                    const addNewRep = await repSchema.findOneAndUpdate(
+                        { div: div },
+                        {
+                            $push: {
+                                'values': [args[0].toUpperCase(), repInfo[0][0] + "#" + repInfo[2][0], repInfo[1][0], collectRep[3], collectRep[4]]
+                            }
+                        }
+                    );
+                } else {
+                    const addNewRep = await repSchema.findOneAndUpdate(
+                        { div: div },
+                        {
+                            $push: {
+                                'values': [args[0].toUpperCase(), collectRep[1], collectRep[2], repInfo[0][0] + "#" + repInfo[2][0], repInfo[1][0]]
+                            }
+                        }
+                    );
+                }
+
+                const removeOldRep = await repSchema.findOneAndUpdate(
+                    { div: div },
+                    {
+                        $pull: {
+                            'values': collectRep
+                        }
+                    }
+                );
+
+                if (collectRep[1] === "" || collectRep[2] === "") {
+                    await message.react('✅');
+                    message.reply(`Updated rep change from **None** to **${repInfo[0][0] + "#" + repInfo[2][0]}**`).then((msg) => msg.react('✅'));
+                    return;
+                }
+                else if (collectRep[3] === "" || collectRep[3] === "") {
+                    await message.react('✅');
+                    message.reply(`Updated rep change from **None** to **${repInfo[0][0] + "#" + repInfo[2][0]}**`).then((msg) => msg.react('✅'));
+                    return;
+                }
+                await message.react('✅');
+                message.reply(`Updated rep change from **${collectRep[3]}** to **${repInfo[0][0] + "#" + repInfo[2][0]}**`).then((msg) => msg.react('✅'));
+                return;
+            } catch (err) {
+                message.reply(err.message);
+                return;
+            }
+        }
+
+        async function callChangeAllRep(div) {
+            try {
+                var repInfo = await getRepInfo();
+                var repSchema = require('./repsSchema/repsSchema');
+
+                var repData = await repSchema.find({ div: div });
+                var collectRep;
+                repData[0].values.forEach(data => {
+                    if (data[0] === args[0].toUpperCase()) {
+                        collectRep = data;
+                    }
+                });
+
+                const addNewRep = await repSchema.findOneAndUpdate(
+                    { div: div },
+                    {
+                        $push: {
+                            'values': [args[0].toUpperCase(), repInfo[0][0] + "#" + repInfo[2][0], repInfo[1][0], repInfo[0][1] + "#" + repInfo[2][1], repInfo[1][1]]
+                        }
+                    }
+                );
+
+                const removeOldRep = await repSchema.findOneAndUpdate(
+                    { div: div },
+                    {
+                        $pull: {
+                            'values': collectRep
+                        }
+                    }
+                );
+
+                await message.react('✅');
+                message.reply(`Updated rep change from **${collectRep[1]}** and **${collectRep[3]}** to **${repInfo[0][0] + "#" + repInfo[2][0]}** and **${repInfo[0][1] + "#" + repInfo[2][1]}**!`).then((msg) => msg.react('✅'));
+                return;
+            } catch (err) {
+                message.reply(err.message);
+                return;
+            }
+        }
+
+        async function callClearRep(div) {
+            try {
+                var repInfo = await getRepInfo();
+                var repSchema = require('./repsSchema/repsSchema');
+
+                var repData = await repSchema.find({ div: div });
+                var collectRep;
+                repData[0].values.forEach(data => {
+                    if (data[0] === args[0].toUpperCase()) {
+                        collectRep = data;
+                    }
+                });
+
+                const addNewRep = await repSchema.findOneAndUpdate(
+                    { div: div },
+                    {
+                        $push: {
+                            'values': [args[0].toUpperCase(), "", "", "", ""]
+                        }
+                    }
+                );
+
+                const removeOldRep = await repSchema.findOneAndUpdate(
+                    { div: div },
+                    {
+                        $pull: {
+                            'values': collectRep
+                        }
+                    }
+                );
+
+                await message.react('✅');
+                message.reply(`Removed reps **${collectRep[1]}** and **${collectRep[3]}**!`).then((msg) => msg.react('✅'));
+                return;
+            } catch (err) {
+                message.reply(err.message);
+                return;
+            }
         }
     }
 }

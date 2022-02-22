@@ -1,9 +1,14 @@
 const fs = require('fs');
 const Discord = require('discord.js');
 const { prefix, token } = require('./auth.json');
+const mongoose = require('mongoose');
 const bot = new Discord.Client();
 const moment = require('moment');
 require('moment-duration-format');
+require('dotenv/config');
+mongoose.connect(process.env.CONNECT, { useNewUrlParser: true, useUnifiedTopology: true })
+	.then(() => console.log('Connected to DB'))
+	.catch((err) => console.log(err.message))
 
 bot.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -27,33 +32,33 @@ bot.on('message', async message => {
 
 	const command = bot.commands.get(commandName)
 		|| bot.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
-	
-	if(commandName.toLowerCase() === 'ins' || commandName.toLowerCase() === 'inspect') {
-	  //Uptime
-      const duration = moment.duration(bot.uptime).format(" D [days], H [hrs], m [mins], s [secs]");
 
-      //Memory Usage
-      var os = require('os');
+	if (commandName.toLowerCase() === 'ins' || commandName.toLowerCase() === 'inspect') {
+		//Uptime
+		const duration = moment.duration(bot.uptime).format(" D [days], H [hrs], m [mins], s [secs]");
 
-      var usedMemory = os.totalmem() -os.freemem(), totalMemory = os.totalmem();
-      
-      var  getpercentage = 
-        ((usedMemory/totalMemory) * 100).toFixed(2) + '%'
-      
-      //console.log("Memory used in GB", (usedMemory/ Math.pow(1024, 3)).toFixed(2))
-      //console.log("Used memory" , getpercentage);      
-      //message.channel.send(`Memory Usage **${process.memoryUsage().heapUsed/1024/1024}** MB`);
+		//Memory Usage
+		var os = require('os');
 
-	  const mu = process.memoryUsage().heapUsed/1024/1024;
+		var usedMemory = os.totalmem() - os.freemem(), totalMemory = os.totalmem();
 
-      const embed = new Discord.MessageEmbed()
-      .setAuthor(`By WCL TECHNICAL`,'https://media.discordapp.net/attachments/766306691994091520/804653857447477328/WCL_BOt.png')
-      .setTitle(`Inspect`)
-      .addField('Uptime',duration)
-      .addField('CPU',`Memory : ${(usedMemory/ Math.pow(1024, 3)).toFixed(2)} GB\nMemory Usage : ${mu.toString().substring(0,7)} MB\nRAM : ${getpercentage}`)
-      .setFooter(`By WCL TECHNICAL`)
-      .setTimestamp()
-      message.channel.send(embed);
+		var getpercentage =
+			((usedMemory / totalMemory) * 100).toFixed(2) + '%'
+
+		//console.log("Memory used in GB", (usedMemory/ Math.pow(1024, 3)).toFixed(2))
+		//console.log("Used memory" , getpercentage);      
+		//message.channel.send(`Memory Usage **${process.memoryUsage().heapUsed/1024/1024}** MB`);
+
+		const mu = process.memoryUsage().heapUsed / 1024 / 1024;
+
+		const embed = new Discord.MessageEmbed()
+			.setAuthor(`By WCL TECHNICAL`, 'https://media.discordapp.net/attachments/766306691994091520/804653857447477328/WCL_BOt.png')
+			.setTitle(`Inspect`)
+			.addField('Uptime', duration)
+			.addField('CPU', `Memory : ${(usedMemory / Math.pow(1024, 3)).toFixed(2)} GB\nMemory Usage : ${mu.toString().substring(0, 7)} MB\nRAM : ${getpercentage}`)
+			.setFooter(`By WCL TECHNICAL`)
+			.setTimestamp()
+		message.channel.send(embed);
 	}
 
 	if (!command) return /*message.channel.send(`There is no command with name or alias \`${commandName}\`, ${message.author}!`)*/;
@@ -62,24 +67,24 @@ bot.on('message', async message => {
 		return message.reply('I can\'t execute that command inside DMs!');
 	}
 
-	if(args[0] === 'trace' && command.author === message.author.id)
-	    (await message.channel.send('```js\n'+command.trace+'\n```')).react('🔁');
+	if (args[0] === 'trace' && command.author === message.author.id)
+		(await message.channel.send('```js\n' + command.trace + '\n```')).react('🔁');
 	else if (command.args && (command.length > args.length)) {
 		let count = args.length;
 		let c = '';
-		for(var i = count;i<command.missing.length;i++) {
+		for (var i = count; i < command.missing.length; i++) {
 			c += command.missing[i];
 		}
-		if(command.usage) {
+		if (command.usage) {
 			const embed = new Discord.MessageEmbed()
-			.setColor('#208e9e')
-			.setTitle(command.name.toUpperCase())
-			.setAuthor('By WCL')
-			.setDescription(command.description)
-			.addField('Missing Details/Data',c)
-			.addField('**Usage**',`**${prefix} ${command.aliases}** `+"`"+command.usage+"`"+`\n`+"```"+command.explanation+"```",true)
-			.setFooter(`Not enough parameters`)
-			.setTimestamp()
+				.setColor('#208e9e')
+				.setTitle(command.name.toUpperCase())
+				.setAuthor('By WCL')
+				.setDescription(command.description)
+				.addField('Missing Details/Data', c)
+				.addField('**Usage**', `**${prefix} ${command.aliases}** ` + "`" + command.usage + "`" + `\n` + "```" + command.explanation + "```", true)
+				.setFooter(`Not enough parameters`)
+				.setTimestamp()
 			return message.channel.send(embed);
 		}
 	}

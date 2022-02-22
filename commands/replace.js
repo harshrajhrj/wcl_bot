@@ -1,128 +1,220 @@
-const { google, GoogleApis } = require('googleapis');
-const keys = require('./keys.json');
-const Discord = require('discord.js');
-
+//to change abb and clan tag
+//updating clan abb changes take place in reps collection(matching through division), division-wise collection(matching through division), abbs collection(matching through division)
+const fs = require('fs');
+const fetch = require('node-fetch');
 module.exports = {
     name: 'replace',
-    aliases: ['replace'],
+    aliases: ['replaceabb', 'replacetag'],
     description: 'Replace a clan_abb',
     args: true,
-    length: 2,
+    length: 3,
     category: 'Admins',
-    usage: 'old_clan_abb new_clan_abb',
-    missing: ['`old_clan_abb`, ', '`new_clan_abb`'],
-    explanation: 'Ex : wcl replace cns lon',
-    execute: (message, args) => {
-        // if(message.guild.id === '765523244332875776' || message.guild.id === '615297658860601403' || message.member.hasPermission('MANAGE_ROLES')) {
-        if (message.author.id === '531548281793150987') {
-            const client = new google.auth.JWT(
-                keys.client_email,
-                null,
-                keys.private_key,
-                ['https://www.googleapis.com/auth/spreadsheets']
-            );
+    usage: 'type clanAbb detail',
+    missing: ['`type`, ', '`clanAbb`, ', '`detail`'],
+    explanation: 'Ex : wcl replace abb lon lp4\n\nWhile using abb\n@param2 and 3 are old and new clanAbb\nWhile using ct\n@param2 and 3 are clanAbb and new clanTag',
+    execute: async (message, args) => {
+        var ABBSobject = fs.readFileSync('./commands/abbs.json');
+        var abbs = JSON.parse(ABBSobject);
 
-            client.authorize(function (err, tokens) {
-
-                if (err) {
-                    console.log(err);
-                    return;
-                }
-                else {
-                    console.log('Connected!');
-                    gsrun(client);
+        async function abbCheck(abb) {
+            let division = '';
+            abbs.values.forEach(data => {
+                if (data[2] === abb) {
+                    division = data[3];
                 }
             });
+            return division;
+        }
 
-            async function gsrun(cl) {
-                const gsapi = google.sheets({ version: 'v4', auth: cl });
-
-                let find_old = await search(args[0].toUpperCase());
-                let find_new = await search(args[1].toUpperCase());
-                if (find_old === 0) {
-                    message.reply(`Clan **${args[0].toUpperCase()}** not found!`)
-                }
-
-                const rep = {
-                    spreadsheetId: '1sQ6GpLUl9SP447bO2CoyivFNHA4uEJ32yt6c1J2hixM',
-                    range: 'ALL DETAILS!A2:A'
-                };
-
-                const rep1 = {
-                    spreadsheetId: '1B269adx2hZNKzsFFZY8FUYdM5DJ3dLYlgqO3BMua6l0',
-                    range: 'CLANS!F4:F'
-                };
-                let rep1_data = await gsapi.spreadsheets.values.get(rep1);
-                let rep1_array = rep1_data.data.values;
-                let control1 = 0;
-                let m2 = 0;
-                let rep_data = await gsapi.spreadsheets.values.get(rep);
-                let rep_array = rep_data.data.values;
-                let control = 0;
-                let m1 = 0;
-                if (find_new === 0) {
-                    rep_array.forEach(async data => {
-                        m1 += 1;
-                        if (data[0] === args[0].toUpperCase() && control === 0) {
-                            const put = {
-                                spreadsheetId: '1sQ6GpLUl9SP447bO2CoyivFNHA4uEJ32yt6c1J2hixM',
-                                range: 'ALL DETAILS!A' + (m1 + 1),//+':A',
-                                valueInputOption: 'USER_ENTERED',
-                                resource: { values: [[args[1].toUpperCase()]] }
-                            };
-                            try {
-                                gsapi.spreadsheets.values.update(put);
-                                control++;
-                                (await message).react('✅');
-                                //(await message.reply(`Successfully replaced **${data[0]}** with **${args[1].toUpperCase()}**!`)).react('✅');//to be removed after clan announcement
-                            } catch (err) {
-                                console.log(err);
+        async function updateAbbsCollection(division) {
+            try {
+                const abbSchema = require(`./abbSchema/abbSchema`);
+                if (args[0].toUpperCase() === 'ABB') {
+                    const abbDataAdd = await abbSchema.findOneAndUpdate(
+                        { div: division },
+                        {
+                            $addToSet: {
+                                'values.$[element]': args[2].toUpperCase()
                             }
-                        }
-                    });
-
-                    rep1_array.forEach(async data => {
-                        m2 += 1;
-                        if (data[0] === args[0].toUpperCase() && control1 === 0) {
-                            const put = {
-                                spreadsheetId: '1B269adx2hZNKzsFFZY8FUYdM5DJ3dLYlgqO3BMua6l0',
-                                range: 'CLANS!F' + (m2 + 3) + ':F',
-                                valueInputOption: 'USER_ENTERED',
-                                resource: { values: [[args[1].toUpperCase()]] }
-                            };
-                            try {
-                                gsapi.spreadsheets.values.update(put);
-                                (await message.reply(`Successfully replaced **${args[0].toUpperCase()}** with **${args[1].toUpperCase()}**! Ref - ${m2 + 3}`)).react('✅');
-                                control1++;
-                            } catch (err) {
-                                console.log(err);
-                            }
-                        }
-                    });
+                        },
+                        { arrayFilters: [{ element: args[1].toUpperCase() }] }
+                    );
+                    const abbDataRemove = await abbSchema.findOneAndUpdate(
+                        { div: division },
+                        {
+                            $pull: {
+                                'values.$[element]': args[1].toUpperCase()
+                            },
+                        },
+                        { arrayFilters: [{ element: args[1].toUpperCase() }] }
+                    );
                 }
-                else {
-                    message.reply(`${args[1].toUpperCase()} already present, try another!`)
-                }
-
-                async function search(abb) {
-                    const find = {
-                        spreadsheetId: '1sQ6GpLUl9SP447bO2CoyivFNHA4uEJ32yt6c1J2hixM',
-                        range: 'ALL DETAILS!A2:A'
+                else if (args[0].toUpperCase() === 'CT') {
+                    const options = {
+                        'json': true,
+                        'Accept': 'application/json',
+                        'method': 'get',
+                        'muteHttpExceptions': true
                     };
-                    let find_data = await gsapi.spreadsheets.values.get(find);
-                    let find_array = find_data.data.values;
-                    let confirm = 0;
-                    find_array.forEach(data => {
-                        if (data[0] === abb) {
-                            confirm += 1;
+
+                    const fetchClan = await fetch(`https://api.clashofstats.com/clans/${args[2].slice(1)}`, options);
+
+                    if (fetchClan.status === 404) {
+                        message.reply(`Clan ${args[2].toUpperCase()} not found!`);
+                        return;
+                    }
+                    else if (fetchClan.status === 503) {
+                        message.reply(`Replacing paused due to maintenance break!`);
+                        return;
+                    }
+                    const clanData = await fetchClan.json();
+
+                    const abbData = await abbSchema.find({ div: division });
+
+                    var match;
+                    var control = 0;
+                    abbData[0].values.forEach(data => {
+                        if (data[2] === args[1].toUpperCase() && control === 0) {
+                            match = data;
+                            control++;
                         }
                     });
-                    return confirm;
+                    const repDataAdd = await abbSchema.findOneAndUpdate(
+                        { div: division },
+                        {
+                            $push: {
+                                'values': [args[2].toUpperCase(), clanData.name, match[2]]
+                            }
+                        }
+                    );
+                    const repDataRemove = await abbSchema.findOneAndUpdate(
+                        { div: division },
+                        {
+                            $pull: {
+                                'values': match
+                            },
+                        }
+                    );
                 }
+            } catch (err) {
+                message.reply(err.message);
+                return;
             }
         }
-        else {
-            message.reply(`Can't use in **${message.guild.name}**!\nOR\nNOT AUTHORIZED!`);
+
+        async function updateRepsCollection(division) {
+            try {
+                const repSchema = require('./repsSchema/repsSchema');
+
+                const repData = await repSchema.find({ div: division });
+
+                var match;
+                var control = 0;
+                repData[0].values.forEach(data => {
+                    if (data[0] === args[1].toUpperCase() && control === 0) {
+                        match = data;
+                        control++;
+                    }
+                });
+                const repDataAdd = await repSchema.findOneAndUpdate(
+                    { div: division },
+                    {
+                        $push: {
+                            'values': [args[2].toUpperCase(), match[1], match[2], match[3], match[4]]
+                        }
+                    }
+                );
+                const repDataRemove = await repSchema.findOneAndUpdate(
+                    { div: division },
+                    {
+                        $pull: {
+                            'values': match
+                        }
+                    }
+                );
+            } catch (err) {
+                message.reply(err.message);
+                return;
+            }
+        }
+
+        async function divRosterCollection(division) {
+            try {
+                var collectionFromDivision = {
+                    'HEAVY WEIGHT': 'Heavy',
+                    'FLIGHT': 'Flight',
+                    'ELITE': 'Elite',
+                    'BLOCKAGE': 'Blockage',
+                    'CHAMPIONS': 'Champions'
+                };
+
+                if (args[0].toUpperCase() === 'ABB') {
+                    var rosterSchema = require(`./rosterSchemas/rosterSchema${collectionFromDivision[division]}`);
+
+                    var rosterData = await rosterSchema.find({ abb: args[1].toUpperCase() });
+
+                    rosterData[0].abb = args[2].toUpperCase();
+                    await rosterData[0].save().then((data) => console.log(data)).catch((err) => console.log(err.message));
+                }
+                else if (args[0].toUpperCase() === 'CT') {
+                    var rosterSchema = require(`./rosterSchemas/rosterSchema${collectionFromDivision[division]}`);
+
+                    var rosterData = await rosterSchema.find({ abb: args[1].toUpperCase() });
+
+                    rosterData[0].clanTag = args[2].toUpperCase();
+                    rosterData[0].save().then((data) => console.log(data)).catch((err) => console.log(err.message));
+                }
+            } catch (err) {
+                message.reply(err.message);
+                return;
+            }
+        }
+
+        if (message.author.id === '531548281793150987') {
+            if (args[0].toUpperCase() === 'ABB') {//abb change
+                let division = await abbCheck(args[1].toUpperCase());
+                if (division === '') {
+                    message.reply(`Invalid abb ${args[1].toUpperCase()}`);
+                    return;
+                }
+
+                //Updating abbs collection
+                await updateAbbsCollection(division);
+                //Updating abbs collection ended
+
+                //Updating reps collection
+                if (args[0].toUpperCase() === 'ABB') {
+                    await updateRepsCollection(division);
+                }
+                //Updating reps collection ended
+
+                //Updating division-wise roster collection
+                await divRosterCollection(division);
+                //Updating division-wise roster collection ended
+
+                await message.react('✅');
+                message.reply(`Updated abb change from **${args[1].toUpperCase()}** to **${args[2].toUpperCase()}**\nPlease use ` + '`wcl updatedb` to successfully load database!').then((msg) => msg.react('✅'));
+                return;
+            }
+            else if (args[0].toUpperCase() === 'CT') {//clan tag change
+                let division = await abbCheck(args[1].toUpperCase());
+                if (division === '') {
+                    message.reply(`Invalid abb ${args[1].toUpperCase()}`);
+                    return;
+                }
+
+                //Updating abbs collection
+                await updateAbbsCollection(division);
+                //Updating abbs collection ended
+
+                //Updating division-wise roster collection
+                await divRosterCollection(division);
+                //Updating division-wise roster collection ended
+
+                await message.react('✅');
+                message.reply(`Updated clanTag for **${args[1].toUpperCase()}** to **${args[2].toUpperCase()}**\nPlease use ` + '`wcl updatedb` to successfully load database!').then((msg) => msg.react('✅'));
+                return;
+            }
         }
     }
 }

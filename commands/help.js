@@ -14,16 +14,7 @@ wcl subs - help to use substitution(Not allowed for Pirates(eSports) Division)\n
 All Warriors of WCL 🙂\n
 wcl abbs - lists all the clan abbreviations for a division\n
 wcl reps - lists the clan representative for a clan\n
-wcl roster - lists the clan's roster\n
-wcl fw - lists the weekly record for a clan and group standings for a clan\n
-wcl search - searches a player for being rostered in any team participating in WCL\n
-wcl sdual - searches a dual for being rostered in more than one team participating in WCL\n
-wcl standings - lists down the standings\n
-wcl logo - shows you a clan logo\n
-wcl attack_frame - lists the attack and time frames of WCL eSports wars\n
-wcl getwars - lists all the scheduled wars for a particular week being searched\n
-wcl warinfo - show the info of a scheduled war via warID\n
-wcl checkroster - help you to scan unrostered players in a live war roster\n\n\n
+wcl roster - lists the clan's roster\n\n\n
 More commands coming soon.........`
         message.channel.send('```plaintext\n'+com+'\n```')
     }

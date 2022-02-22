@@ -1,105 +1,107 @@
 const Discord = require('discord.js');
-const fetch = require('node-fetch');
+const fs = require('fs');
 
 module.exports = {
-    name: 'reps',
-    aliases: ['reps'],
+    name: 'claninfo',
+    aliases: ['cinfo', 'clan', 'reps'],
     description: 'Shows you the clan representatives for a WCL Clan',
     args: true,
     length: 1,
     category: 'representative',
-    usage: 'wcl reps clan_abb',
-    missing: ['`clan_abb`'],
-    explanation: 'Ex: wcl reps INQ\nwhere INQ - clan_abb',
+    usage: 'wcl reps clanAbb',
+    missing: ['`clanAbb`'],
+    explanation: 'Ex: wcl reps INQ\nwhere INQ - clanAbb',
     execute: async (message, args) => {
-        // if(!(message.channel.id === '842739523384901663' || message.channel.id === '842738408648474695' || message.channel.id === '842738445259898880' || message.channel.id === '842738468743413780')) {
+        const color = {
+            'HEAVY WEIGHT': '#008dff',
+            'FLIGHT': '#3f1f8b',
+            'ELITE': '#a40ae7',
+            'BLOCKAGE': '#fc3902',
+            'CHAMPIONS': '#ffb014',
+        }
+        const logo = {
+            'HEAVY WEIGHT': 'https://media.discordapp.net/attachments/914077029912170577/914443975107153920/WCL_Heavy.png?width=539&height=612',
+            'FLIGHT': 'https://media.discordapp.net/attachments/914077029912170577/914442651992989736/WCL_Flight.png?width=530&height=612',
+            'ELITE': 'https://media.discordapp.net/attachments/914077029912170577/914442651690991616/WCL_ELITE.png?width=514&height=612',
+            'BLOCKAGE': 'https://media.discordapp.net/attachments/914077029912170577/914442652315963402/WCL_Blockage_.png?width=435&height=613',
+            'CHAMPIONS': 'https://media.discordapp.net/attachments/914077029912170577/914442651238039572/WCL_Champions.png?width=548&height=612',
+        }
         if (message.author.id === '531548281793150987') {
-            const options = {
-                'json': true,
-                'Accept': 'application/json',
-                'method': 'get',
-                'muteHttpExceptions': true
-            };
+            var repSchema = require('./repsSchema/repsSchema');
+            var ABBSobject = fs.readFileSync('./commands/abbs.json');
+            var abbObject = JSON.parse(ABBSobject);
 
-            const div_identifier = {
-                'BLIZZARD (6/4/10/5) No Dip': '#ffcd0b',
-                'PIRATES (5/0/0/0) TH14 Only': '#93ad22'
-            };
-            const logo = {
-                'BLIZZARD (6/4/10/5) No Dip': 'https://media.discordapp.net/attachments/766306826542514178/841324500024688660/Blizzard_Division.png?width=495&height=612',
-                'PIRATES (5/0/0/0) TH14 Only': 'https://media.discordapp.net/attachments/766306826542514178/841324525954138192/Pirates_Division.png'
-            };
-
-            const clan_data = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/1sQ6GpLUl9SP447bO2CoyivFNHA4uEJ32yt6c1J2hixM/values/ALL DETAILS!A2:O?majorDimension=ROWS&key=AIzaSyDUq4w3z35sS28BKWLdXSh32hlwUDDaD1Y`, options);
-            if (clan_data.status === 200) {
-                const reps_data = await clan_data.json();
-                let blank = 0;
-                reps_data.values.forEach(data => {
-                    if (data[0] === args[0].toUpperCase()) {
-                        blank = 1;
-                    }
-                });
-                if (blank === 0) {
-                    message.reply(`${args[0].toUpperCase()} is invalid clan abb!`);
-                }
-                else {
-                    let r1 = '';
-                    let d1 = '';
-                    let r2 = '';
-                    let d2 = '';
-                    let rr = '';
-                    let dr = '';
-
-                    reps_data.values.forEach(data => {
-                        if (data[0] === args[0].toUpperCase()) {
-                            if (data[7] === '') {
-                                r1 += 'Empty';
-                                d1 += 'Empty';
-                            }
-                            else {
-                                r1 += data[7];
-                                d1 += data[8];
-                            }
-                            if (data[9] === '') {
-                                r2 += 'Empty';
-                                d2 += 'Empty';
-                            }
-                            else {
-                                r2 += data[9];
-                                d2 += data[10];
-                            }
-                            if (data[11] === '') {
-                                rr += 'Empty';
-                                dr += 'Empty';
-                            }
-                            else {
-                                rr += data[11];
-                                dr += data[12];
-                            }
-                            const embed = new Discord.MessageEmbed()
-                                .setColor(div_identifier[data[14]])
-                                .setAuthor('By WCL Technical')
-                                .setThumbnail(logo[data[14]])
-                                .setTitle(`Clan Representative Info for ${data[1]}`)
-                                .addField('Representative 1', r1, false)
-                                .addField('Discord ID', d1, false)
-                                .addField('Representative 2', r2, false)
-                                .addField('Discord ID', d2, false)
-                                .addField('Roster Rep', rr, false)
-                                .addField('Discord ID', dr, false)
-                                .setTimestamp()
-                            message.channel.send(embed);
-                        }
+            let division = '';
+            var repList = [];
+            abbObject.values.forEach(data => {
+                if (args[0].toUpperCase() === data[2]) {
+                    division = data[3];
+                    data.forEach(val => {
+                        repList.push(val);
                     });
                 }
+            });
+
+            if (division === '') {
+                return message.reply(`Invalid clan abb!`);
+            }
+
+            var findRepList = await repSchema.find({ div: division });
+            findRepList[0].values.forEach(data => {
+                if (data[0] === args[0].toUpperCase()) {
+                    data.forEach(val => {
+                        repList.push(val);
+                    });
+                    repList.splice(4, 1);
+                }
+            });
+            let rep2 = []; //to avoid embed for breaking due to missing field params of second rep
+            if (repList.length === 6) {
+                rep2.push('N/A', 'N/A');
             }
             else {
-                message.reply(`Internal error occured\nReport sent to the developer!`);
-                message.channel('847370251430526986').send('Error occured while using command : wcl reps' + args[0].toUpperCase());
+                rep2.push(repList[6], repList[7]);
             }
-        }
-        else {
-            message.reply(`Not an appropriate channel to use the command!`);
+            if (args.length === 1) {
+                const embed = new Discord.MessageEmbed()
+                    .setColor(color[division])
+                    .setThumbnail(logo[division])
+                    .setAuthor('WCL TECHNICAL', 'https://media.discordapp.net/attachments/766306691994091520/804653857447477328/WCL_BOt.png')
+                    .setTitle(`*Clan Info of ${repList[1]}*`)
+                    .addField('Clan name<:cc:944312115643166720>', repList[1])
+                    .addField('Clan tag:hash:', `[${repList[0]}](https://link.clashofclans.com/?action=OpenClanProfile&tag=%23${repList[0].slice(1)})`)
+                    .addFields(
+                        {
+                            name: 'Representative:one:',
+                            value: repList[4],
+                        },
+                        {
+                            name: 'Discord🆔',
+                            value: repList[5],
+                        },
+                        {
+                            name: 'Representative:two:',
+                            value: rep2[0],
+                        },
+                        {
+                            name: 'Discord🆔',
+                            value: rep2[1],
+                        }
+                    )
+                    .setTimestamp()
+                await message.channel.send(embed);
+            }
+            else if (args[1].toLowerCase() === 'tagreps' || args[1].toLowerCase() === 'tr') {
+                const embed = new Discord.MessageEmbed()
+                    .setColor(color[division])
+                    .setTitle(repList[2])
+                    .setDescription(`Rep1 - ${repList[4]}\nRep2 - ${rep2[0]}`)
+                message.channel.send(embed).then((msg) => {
+                    setTimeout(function() {
+                        msg.edit(`${repList[2]}\nRep1 - <@${repList[5]}>\nRep2 - <@${rep2[1]}>`)
+                    },1000)
+                });
+            }
         }
     }
 }
