@@ -6,28 +6,28 @@ module.exports = {
     description: 'Updates database for each change of clan(tag)/abb',
     args: false,
     execute: async (message, args) => {
-        async function allabbs() {
-            return mongoose.model('ALL ABBS', new mongoose.Schema({
-                populate_data: {
-                    type: Array,
-                    ref: mongoose.model('ABBS', new mongoose.Schema({
-                        div: {
-                            type: String,
-                            required: true
-                        },
-                        values: {
-                            type: Array,
-                            required: true,
-                        }
-                    }, { collection: 'abbs' }))
-                }
-            }, { collection: 'all_abbs' }));
-        }
+        // async function allabbs() {
+        //     return mongoose.model('ALL ABBS', new mongoose.Schema({
+        //         populate_data: {
+        //             type: Array,
+        //             ref: mongoose.model('ABBS', new mongoose.Schema({
+        //                 div: {
+        //                     type: String,
+        //                     required: true
+        //                 },
+        //                 values: {
+        //                     type: Array,
+        //                     required: true,
+        //                 }
+        //             }, { collection: 'abbs' }))
+        //         }
+        //     }, { collection: 'all_abbs' }));
+        // }
         if (message.guild.id === '765523244332875776' || message.guild.id === '615297658860601403' || message.member.hasPermission('MANAGE_ROLES')) {
             var data = fs.readFileSync('./commands/abbs.json');
             var myObject = JSON.parse(data);
-            const allAbbs = await allabbs();
-
+            // const allAbbs = await allabbs();
+            const allAbbs = require('./abbSchema/abbPop');
             const abbData = await allAbbs.find().populate('populate_data');
 
             const producedAbbs = [];
