@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const abbPop = mongoose.model('ALL ABBS', new mongoose.Schema({
     populate_data: {
         type: Array,
-        ref: mongoose.model('ABBS', new mongoose.Schema({
+        ref: mongoose.model('ABBS POPUP', new mongoose.Schema({
             div: {
                 type: String,
                 required: true
