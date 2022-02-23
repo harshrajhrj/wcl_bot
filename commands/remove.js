@@ -14,9 +14,9 @@ module.exports = {
     category: 'representative',
     missing: ['`clan_abb`, ', '`player_tag`, ', '`discord_id(optional)`'],
     usage: 'clan_abb player_tag discord_id(optional)',
-    explanation: 'Ex: wcl add INQ #XYZ DISCORD_ID\n\nwhere\nINQ is clan abb\n#XYZ is ClashOfClans PlayerTag and\nDISCORD_ID is long number ID of the player',
+    explanation: 'Ex: wcl add INQ #XYZ DISCORD_ID\n\nwhere\nINQ is clan abb\n#XYZ is ClashOfClans PlayerTag\nDISCORD_ID is long number ID of the player\n-F(forceRemove optional for league admins only)',
     execute: async (message, args) => {
-        if (message.channel.id === '941944848771080192' || message.channel.id === '941943402482782218' || message.channel.id === '847483626400907325' || message.channel.id === '766307563393515551') {
+        if (message.channel.id === '941944848771080192' || message.channel.id === '941943402482782218' || message.channel.id === '847483626400907325' || message.channel.id === '766307596197560320') {
             const options = {
                 'json': true,
                 'Accept': 'application/json',
@@ -78,6 +78,17 @@ module.exports = {
             //abb checking ended
 
             var rosterData = await sendBack(division, args[0].toUpperCase(), []);
+            let available = await isAvailable(args[1].toUpperCase(), rosterData.players);
+
+            //forceRemove
+            if (available === 'Found' && (message.author.id === '531548281793150987' || message.author.id === '602935588018061453') && args[2].toUpperCase() === '-F') {
+                const p = await fetch('https://api.clashofstats.com/players/' + args[1].toUpperCase().slice(1), options);
+                if (p.status === 404) {
+                    update(dateNtime, args[1].toUpperCase(), 'None', message.author.id, 'None', 'None');
+                    return;
+                }
+            }
+            //forceRemove
 
             let perm = [];
             if (rosterData.rosterReps[0].length === 1) {
@@ -94,11 +105,10 @@ module.exports = {
                 message.reply(final);
                 return;
             }
-            if (p.status === 404) {
+            else if (p.status === 404) {
                 message.reply(`${args[1].toUpperCase()} is invalid tag!`);
                 return;
             }
-            let available = await isAvailable(args[1].toUpperCase(), rosterData.players);
 
             if (available === 'Found') {
                 const data = await p.json();
