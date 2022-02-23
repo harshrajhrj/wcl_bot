@@ -32,7 +32,10 @@ module.exports = {
                     data.additionSpot = 'No';
                     await data.save().then((data) => { console.log(data) }).catch((err) => console.log(err.message));
                 }
-            })
+            });
+            message.reply(`Completed ✅!`);
+        } else {
+            message.reply(`You can't use this command!`);
         }
     }
 }

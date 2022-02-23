@@ -216,5 +216,8 @@ module.exports = {
                 return;
             }
         }
+        else {
+            message.reply(`You can't use this command!`);
+        }
     }
 }

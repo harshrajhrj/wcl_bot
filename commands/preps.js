@@ -16,6 +16,13 @@ module.exports = {
 Rep Prefix\nr1 - Representative 1\nr2 - Representative 2\nall - Both representatives`,
     accessableby: ['League Admins', 'Moderator'],
     execute: async (message, args) => {
+        const roster = {
+            'HEAVY WEIGHT': 'Heavy',
+            'FLIGHT': 'Flight',
+            'ELITE': 'Elite',
+            'BLOCKAGE': 'Blockage',
+            'CHAMPIONS': 'Champions'
+        };
         async function checkAbb(abb) {
             var abbDataObject = fs.readFileSync('./commands/abbs.json');
             var abbData = JSON.parse(abbDataObject);
@@ -29,7 +36,7 @@ Rep Prefix\nr1 - Representative 1\nr2 - Representative 2\nall - Both representat
             });
             return division;
         }
-        if (message.author.id === '531548281793150987') {
+        if (message.guild.id === '765523244332875776' || message.guild.id === '615297658860601403' || message.member.hasPermission('MANAGE_ROLES')) {
             var abbCheck = await checkAbb(args[0].toUpperCase());
             if (abbCheck === '') {
                 message.reply(`Invalid clan abb ${args[0].toUpperCase()}`);
@@ -55,6 +62,9 @@ Rep Prefix\nr1 - Representative 1\nr2 - Representative 2\nall - Both representat
                 message.reply(`Invalid indentifier ${args[1].toUpperCase()}!`);
                 return;
             }
+        } else {
+            message.reply(`You can't use this command!`);
+            return;
         }
 
         async function getRepInfo() {
@@ -73,6 +83,7 @@ Rep Prefix\nr1 - Representative 1\nr2 - Representative 2\nall - Both representat
         async function callChangeFirstRep(div) {
             try {
                 var repInfo = await getRepInfo();
+                var rosterSchema = require(`./rosterSchemas/rosterSchema${roster[div]}`);
                 var repSchema = require('./repsSchema/repsSchema');
 
                 var repData = await repSchema.find({ div: div });
@@ -101,6 +112,26 @@ Rep Prefix\nr1 - Representative 1\nr2 - Representative 2\nall - Both representat
                     }
                 );
 
+                var oldRosterRep = await rosterSchema.find({ abb: args[0].toUpperCase() });
+                var oldRepArr = oldRosterRep[0].rosterReps;
+                const addNewRosterRep = await rosterSchema.findOneAndUpdate(
+                    { abb: args[0].toUpperCase() },
+                    {
+                        $push: {
+                            'rosterReps': [repInfo[1][0], collectRep[4]]
+                        }
+                    }
+                );
+
+                const removeOldRosterRep = await rosterSchema.findOneAndUpdate(
+                    { abb: args[0].toUpperCase() },
+                    {
+                        $pull: {
+                            'rosterReps': oldRepArr[0]
+                        }
+                    }
+                );
+
                 if (collectRep[1] === "" || collectRep[2] === "") {
                     await message.react('✅');
                     message.reply(`Updated rep change from **None** to **${repInfo[0][0] + "#" + repInfo[2][0]}**`).then((msg) => msg.react('✅'));
@@ -119,6 +150,7 @@ Rep Prefix\nr1 - Representative 1\nr2 - Representative 2\nall - Both representat
         async function callChangeSecondRep(div) {
             try {
                 var repInfo = await getRepInfo();
+                var rosterSchema = require(`./rosterSchemas/rosterSchema${roster[div]}`);
                 var repSchema = require('./repsSchema/repsSchema');
 
                 var repData = await repSchema.find({ div: div });
@@ -137,12 +169,50 @@ Rep Prefix\nr1 - Representative 1\nr2 - Representative 2\nall - Both representat
                             }
                         }
                     );
+                    var oldRosterRep = await rosterSchema.find({ abb: args[0].toUpperCase() });
+                    var oldRepArr = oldRosterRep[0].rosterReps;
+                    const addNewRosterRep = await rosterSchema.findOneAndUpdate(
+                        { abb: args[0].toUpperCase() },
+                        {
+                            $push: {
+                                'rosterReps': [repInfo[1][0], collectRep[4]]
+                            }
+                        }
+                    );
+
+                    const removeOldRosterRep = await rosterSchema.findOneAndUpdate(
+                        { abb: args[0].toUpperCase() },
+                        {
+                            $pull: {
+                                'rosterReps': oldRepArr[0]
+                            }
+                        }
+                    );
                 } else {
                     const addNewRep = await repSchema.findOneAndUpdate(
                         { div: div },
                         {
                             $push: {
                                 'values': [args[0].toUpperCase(), collectRep[1], collectRep[2], repInfo[0][0] + "#" + repInfo[2][0], repInfo[1][0]]
+                            }
+                        }
+                    );
+                    var oldRosterRep = await rosterSchema.find({ abb: args[0].toUpperCase() });
+                    var oldRepArr = oldRosterRep[0].rosterReps;
+                    const addNewRosterRep = await rosterSchema.findOneAndUpdate(
+                        { abb: args[0].toUpperCase() },
+                        {
+                            $push: {
+                                'rosterReps': [collectRep[2], repInfo[1][0]]
+                            }
+                        }
+                    );
+
+                    const removeOldRosterRep = await rosterSchema.findOneAndUpdate(
+                        { abb: args[0].toUpperCase() },
+                        {
+                            $pull: {
+                                'rosterReps': oldRepArr[0]
                             }
                         }
                     );
@@ -179,6 +249,7 @@ Rep Prefix\nr1 - Representative 1\nr2 - Representative 2\nall - Both representat
         async function callChangeAllRep(div) {
             try {
                 var repInfo = await getRepInfo();
+                var rosterSchema = require(`./rosterSchemas/rosterSchema${roster[div]}`);
                 var repSchema = require('./repsSchema/repsSchema');
 
                 var repData = await repSchema.find({ div: div });
@@ -203,6 +274,26 @@ Rep Prefix\nr1 - Representative 1\nr2 - Representative 2\nall - Both representat
                     {
                         $pull: {
                             'values': collectRep
+                        }
+                    }
+                );
+
+                var oldRosterRep = await rosterSchema.find({ abb: args[0].toUpperCase() });
+                var oldRepArr = oldRosterRep[0].rosterReps;
+                const addNewRosterRep = await rosterSchema.findOneAndUpdate(
+                    { abb: args[0].toUpperCase() },
+                    {
+                        $push: {
+                            'rosterReps': [repInfo[1][0], repInfo[1][1]]
+                        }
+                    }
+                );
+
+                const removeOldRosterRep = await rosterSchema.findOneAndUpdate(
+                    { abb: args[0].toUpperCase() },
+                    {
+                        $pull: {
+                            'rosterReps': oldRepArr[0]
                         }
                     }
                 );

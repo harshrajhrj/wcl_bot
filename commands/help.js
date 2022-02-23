@@ -12,7 +12,8 @@ Coming soon\n\n\n
 All Warriors of WCL 🙂\n
 wcl abbs - lists all the clan abbreviations for a division\n
 wcl reps - lists the clan representative for a clan\n
-wcl roster - lists the clan's roster\n\n\n
+wcl roster - lists the clan's roster\n
+wcl attackframe - shows Champion(eSports) attack frame\n\n\n
 More commands coming soon.........`
         message.channel.send('```plaintext\n' + com + '\n```')
     }

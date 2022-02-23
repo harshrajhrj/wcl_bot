@@ -7,10 +7,12 @@ module.exports = {
         if (message.guild.id === '615297658860601403' || message.guild.id === '765523244332875776') {
             const com = `Developer Only\n\n
 League Admins Only
-wcl forceadd - coming soon....
 wcl replace - replaces old clan_abb with new clan_abb
 wcl updatedb - populates new details of clan abbreviations
-wcl creps - interchange/update the clan representatives\n\n
+wcl changeroster - to change a complete roster
+wcl changesize - to resize new teams roster addition spot(author only)
+wcl creps - interchange/update the clan representatives
+wcl forceadd - coming soon....\n\n
 More commands coming soon.........`
             message.channel.send('```plaintext\n' + com + '\n```');
         }

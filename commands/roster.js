@@ -147,6 +147,8 @@ module.exports = {
             else {
                 message.reply(`Clan abb **${args[0].toUpperCase()}** is invalid`);
             }
+        } else {
+            message.reply(`You can't use this command here!`);
         }
     }
 }

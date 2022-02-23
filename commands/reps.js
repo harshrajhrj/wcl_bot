@@ -43,7 +43,7 @@ module.exports = {
             });
 
             if (division === '') {
-                return message.reply(`Invalid clan abb!`);
+                return message.reply(`Invalid clan abb ${args[0].toUpperCase()}!`);
             }
 
             var findRepList = await repSchema.find({ div: division });

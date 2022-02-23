@@ -165,8 +165,8 @@ module.exports = {
                     .setFunctionEmojis({
                         '✅': (_, instance) => {
                             sendBack(division, args[0].toUpperCase(), [date, tag, name, auth_id, dc_id]);
-                            instance.addField(`Added By`, `<@${message.author.id}>`);
-                            instance.setColor('#0d9e12');
+                            instance.addField(`Removed By`, `<@${message.author.id}>`);
+                            instance.setColor('#630000');
                             instance.resetEmojis();
                         },
                         '❎': (_, instance) => {

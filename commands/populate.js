@@ -47,6 +47,8 @@ module.exports = {
                 }
                 message.reply(`Updated!\nTotal data : ${producedAbbs.length}`);
             });
+        } else {
+            message.reply(`You can't use this command!`);
         }
     }
 }

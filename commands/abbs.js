@@ -152,7 +152,7 @@ module.exports = {
             }
         }
         else {
-            message.reply(`You're not authorized user!`);
+            message.reply(`You can't use this command here!`);
         }
     }
 }
