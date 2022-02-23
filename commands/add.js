@@ -305,8 +305,8 @@ module.exports = {
             else {
                 var rosterSize = getData[0].rosterSize + 1;
                 var additionSpot = getData[0].additionSpot;
-                //var additionStatus = getData[0].additionStatus;
-                //var additionStatusLimit = getData[0].additionStatusLimit - 1;
+                var additionStatus = getData[0].additionStatus;
+                var additionStatusLimit = getData[0].additionStatusLimit - 1;
 
                 if (rosterSize >= rSize[div][0]) {
                     additionSpot = 'No'
@@ -317,8 +317,8 @@ module.exports = {
 
                 getData[0].rosterSize = rosterSize;
                 getData[0].additionSpot = additionSpot;
-                //getData[0].additionStatus = additionStatus;
-                //getData[0].additionStatusLimit = additionStatusLimit;
+                getData[0].additionStatus = additionStatus;
+                getData[0].additionStatusLimit = additionStatusLimit;
 
                 if (getData[0].additionRecord[0][0] === 'N/A') {
                     const deleteRecordNA = await rosterSchema.findOneAndUpdate(
