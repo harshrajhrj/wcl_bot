@@ -311,15 +311,20 @@ module.exports = {
                 if (rosterSize >= rSize[div][0]) {
                     additionSpot = 'No'
                 }
-                //if (additionStatusLimit <= 0) {
-                //    additionStatus = 'No'
-                //}
+                if (additionStatusLimit <= 0) {
+                    additionStatus = 'No'
+                }
 
-                getData[0].rosterSize = rosterSize;
-                getData[0].additionSpot = additionSpot;
-                getData[0].additionStatus = additionStatus;
-                getData[0].additionStatusLimit = additionStatusLimit;
+                if ((args.includes('-F') || args.includes('-f')) && message.member.hasPermission('MANAGE_ROLES')) {
+                    getData[0].rosterSize = rosterSize;
+                    getData[0].additionSpot = additionSpot;
+                } else {
+                    getData[0].rosterSize = rosterSize;
+                    getData[0].additionSpot = additionSpot;
+                    getData[0].additionStatus = additionStatus;
+                    getData[0].additionStatusLimit = additionStatusLimit;
 
+                }
                 if (getData[0].additionRecord[0][0] === 'N/A') {
                     const deleteRecordNA = await rosterSchema.findOneAndUpdate(
                         { abb: abb },

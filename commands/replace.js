@@ -79,6 +79,10 @@ module.exports = {
                             control++;
                         }
                     });
+                    if (match[0] === args[2].toUpperCase()) {
+                        message.reply(`Clan tag *${args[2].toUpperCase()} : ${clanData.name}* already exists!`)
+                        return 'Bad request';
+                    }
                     const repDataAdd = await abbSchema.findOneAndUpdate(
                         { div: division },
                         {
@@ -204,8 +208,11 @@ module.exports = {
                 }
 
                 //Updating abbs collection
-                await updateAbbsCollection(division);
+                var status = await updateAbbsCollection(division);
                 //Updating abbs collection ended
+
+                if (status === 'Bad request')
+                    return;
 
                 //Updating division-wise roster collection
                 await divRosterCollection(division);
