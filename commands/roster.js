@@ -25,6 +25,9 @@ module.exports = {
             if (getData.status === 404) {
                 return { name: 'N/A', townHallLevel: -1 };
             }
+            else if (getData.status === 500) {
+                return { name: 'U/C', townHallLevel: -1 };
+            }
             else if (getData.status === 200) {
                 const freshData = await getData.json();
                 return freshData;
@@ -72,6 +75,7 @@ module.exports = {
                 var uptoEnd = new Promise((resolve, reject) => {
                     rosterData[0].players.forEach(async data => {
                         let fetechedData = await getPlayerDetail(data[0]);
+                        console.log(data[0]);
                         playerDetail.push([data[0], fetechedData.townHallLevel, fetechedData.name]);
                         if (fetechedData.townHallLevel === 14)
                             townHalls['th14']++;

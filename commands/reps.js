@@ -10,7 +10,7 @@ module.exports = {
     category: 'representative',
     usage: 'wcl reps clanAbb',
     missing: ['`clanAbb`'],
-    explanation: 'Ex: wcl reps INQ\nwhere INQ - clanAbb',
+    explanation: 'Ex: wcl reps INQ\nwhere INQ - clanAbb\n\nOptional\nUsing tr after putting clanAbb would help you to get the rep pinged!',
     execute: async (message, args) => {
         const color = {
             'HEAVY WEIGHT': '#008dff',
