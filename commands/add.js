@@ -14,7 +14,7 @@ module.exports = {
     category: 'representative',
     missing: ['`clan_abb`, ', '`player_tag`, ', '`discord_id(optional)`'],
     usage: 'clan_abb player_tag discord_id(optional)',
-    explanation: 'Ex: wcl add INQ #XYZ DISCORD_ID\n\nwhere\nINQ is clan abb\n#XYZ is ClashOfClans PlayerTag and\nDISCORD_ID is long number ID of the player',
+    explanation: 'Ex: wcl add INQ #XYZ DISCORD_ID\n\nwhere\nINQ is clan abb\n#XYZ is ClashOfClans PlayerTag and\nDISCORD_ID is long number ID of the player\n-F(forceAdd optional for league admins only)',
     execute: async (message, args) => {
         if (message.channel.id === '941944848771080192' || message.channel.id === '941943402482782218' || message.channel.id === '847483626400907325' || message.channel.id === '766307563393515551') {
             const options = {
