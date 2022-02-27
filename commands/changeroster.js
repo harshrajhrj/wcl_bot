@@ -98,6 +98,9 @@ module.exports = {
                             await rosterData[0].save().then((data) => console.log(data)).catch((err) => console.log(err.message));
                             await message.reply(`Succesfully changed roster!`).then((msg) => msg.react('✅'))
                         }
+                        else {
+                            message.reply(`Roster has extra player(s) than that of required as per division!!`);
+                        }
                     } else {
                         message.reply("The import_range must have two column containing only #players_tags and DC_ID.");
                     }

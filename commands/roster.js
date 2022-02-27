@@ -75,7 +75,6 @@ module.exports = {
                 var uptoEnd = new Promise((resolve, reject) => {
                     rosterData[0].players.forEach(async data => {
                         let fetechedData = await getPlayerDetail(data[0]);
-                        console.log(data[0]);
                         playerDetail.push([data[0], fetechedData.townHallLevel, fetechedData.name]);
                         if (fetechedData.townHallLevel === 14)
                             townHalls['th14']++;
