@@ -6,6 +6,7 @@ module.exports = {
     args: true,
     length: 2,
     category: 'league admins',
+    description : 'Helps changing roster for a new replacement',
     missing: ['`clanAbb`, ', '`rosterLink`'],
     usage: 'clanAbb rosterLink(gSheet link)',
     explanation: 'wcl crs XYZ https://docs.google.com/spreadsheets/d/..../',

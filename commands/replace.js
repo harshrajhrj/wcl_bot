@@ -181,6 +181,11 @@ module.exports = {
                     message.reply(`Invalid abb ${args[1].toUpperCase()}`);
                     return;
                 }
+                let newDivision = await abbCheck(args[2].toUpperCase());
+                if (newDivision != '') {
+                    message.reply(`Abb : **${args[2].toUpperCase()}** already exists!\nPlease choose another new clanAbb!`);
+                    return;
+                }
 
                 //Updating abbs collection
                 await updateAbbsCollection(division);
