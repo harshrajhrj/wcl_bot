@@ -121,6 +121,10 @@ module.exports = {
                                     const abbUpdate = await abbCollection.findOne({ abb: args[0].toUpperCase() })
                                     abbUpdate.clanTag = args[1].toUpperCase();
                                     abbUpdate.clanName = clanNameId.name;
+                                    const repUpdate = await repCollection.findOne({ abb: args[0].toUpperCase() })
+                                    repUpdate.clanTag = args[1].toUpperCase();
+                                    repUpdate.clanName = clanNameId.name;
+                                    await repUpdate.save();
                                     await abbUpdate.save();
                                     await rosterData.save().then((data) => console.log(data)).catch((err) => console.log(err.message));
                                     await message.reply(`Succesfully changed roster!`).then((msg) => msg.react('✅'))
@@ -132,6 +136,7 @@ module.exports = {
                                         message.reply(`**${args[0].toUpperCase()}** already exists for ${args[1].toUpperCase()} : ${clanNameId.name} | Division : ${abbCheck.div}`);
                                         return;
                                     } else {
+                                        const repCollection = require('./repsSchema/repsSchema');
                                         var additionSpot;
                                         if (fresh.length < division[2]) {
                                             additionSpot = 'Yes';
@@ -153,8 +158,15 @@ module.exports = {
                                             div: division[0],
                                             abb: args[0].toUpperCase(),
                                             clanTag: args[1].toUpperCase(),
-                                            clanName : clanNameId.name
+                                            clanName: clanNameId.name
                                         })
+                                        const newReps = new repCollection({
+                                            div: division[0],
+                                            abb: args[0].toUpperCase(),
+                                            clanTag: args[1].toUpperCase(),
+                                            clanName: clanNameId.name
+                                        })
+                                        await newReps.save();
                                         await newAbb.save();
                                         await rosterData.save().then((data) => console.log(data)).catch((err) => console.log(err.message));
                                         await message.reply(`Succesfully added roster!`).then((msg) => msg.react('✅'))

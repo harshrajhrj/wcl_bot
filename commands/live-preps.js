@@ -17,11 +17,13 @@ Rep Prefix\nr1 - Representative 1\nr2 - Representative 2\nall - Both representat
     accessableby: ['League Admins', 'Moderator'],
     execute: async (message, args) => {
         const roster = {
-            'HEAVY WEIGHT': 'Heavy',
+            'HEAVY': 'Heavy',
             'FLIGHT': 'Flight',
             'ELITE': 'Elite',
             'BLOCKAGE': 'Blockage',
-            'CHAMPIONS': 'Champions'
+            'CHAMPIONS': 'Champions',
+            'LIGHT': 'Light',
+            'CLASSIC': 'Classic'
         };
         async function checkAbb(abb) {
             var abbDataObject = fs.readFileSync('./commands/abbs.json');

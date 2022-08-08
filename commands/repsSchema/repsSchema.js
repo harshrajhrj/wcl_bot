@@ -5,10 +5,43 @@ const repSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    values: {
-        type: Array,
-        required: true
+    abb: {
+        type: String,
+        required: true,
+        unique: true,
+        maxlength: 4,
+    },
+    clanTag: {
+        type: String,
+        required: true,
+        maxlength: 15
+    },
+    clanName: {
+        type: String,
+        required: true,
+        maxlength: 15,
+        default: 'team'
+    },
+    rep1: {
+        type: String,
+        required: true,
+        default: 'No entry'
+    },
+    rep1_dc: {
+        type: Number,
+        required: true,
+        default: 0
+    },
+    rep2: {
+        type: String,
+        required: true,
+        default: 'No entry'
+    },
+    rep2_dc: {
+        type: Number,
+        required: true,
+        default: 0
     }
-}, { collection: 'reps' });
+}, { collection: 'reps', versionKey: false });
 
 module.exports = mongoose.model('REPS', repSchema);

@@ -185,19 +185,23 @@ module.exports = {
 
         async function sendBack(div, abb, dataArray) {
             var options = {
-                'HEAVY WEIGHT': ['heavy', 'rosterSchemaHeavy'],
+                'HEAVY': ['heavy', 'rosterSchemaHeavy'],
                 'FLIGHT': ['flight', 'rosterSchemaFlight'],
                 'ELITE': ['elite', 'rosterSchemaElite'],
                 'BLOCKAGE': ['blockage', 'rosterSchemaBlockage'],
-                'CHAMPIONS': ['champions', 'rosterSchemaChampions']
+                'CHAMPIONS': ['champions', 'rosterSchemaChampions'],
+                'CLASSIC': ['classic', 'rosterSchemaClassic'],
+                'LIGHT': ['light', 'rosterSchemaLight']
             };
 
             var rSize = {
-                'HEAVY WEIGHT': [80, 40],
-                'FLIGHT': [60, 30],
-                'ELITE': [50, 25],
+                'HEAVY': [100, 25],
+                'FLIGHT': [70, 20],
+                'ELITE': [50, 20],
                 'BLOCKAGE': [40, 20],
-                'CHAMPIONS': [8, 6]
+                'CHAMPIONS': [10, 3],
+                'CLASSIC': [50, 20],
+                'LIGHT': [50, 20]
             };
 
             var rosterSchema = require('./rosterSchemas/' + options[div][1])
