@@ -117,6 +117,10 @@ module.exports = {
                                     rosterData.additionStatus = 'Yes';
                                     rosterData.additionRecord = [['N/A', 'N/A', 'N/A', 'N/A']];
                                     rosterData.removalRecord = [['N/A', 'N/A', 'N/A', 'N/A']];
+                                    const abbUpdate = await abbCollection.findOne({ abb: args[0].toUpperCase() })
+                                    abbUpdate.clanTag = args[1].toUpperCase();
+                                    abbUpdate.clanName = clanNameId.name;
+                                    await abbUpdate.save();
                                     await rosterData.save().then((data) => console.log(data)).catch((err) => console.log(err.message));
                                     await message.reply(`Succesfully changed roster!`).then((msg) => msg.react('✅'))
                                 } else {
