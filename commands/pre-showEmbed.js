@@ -19,7 +19,7 @@ module.exports = async function showEmbed(message, args, embedData, embedType) {
                     .setThumbnail(thumbnail)
                     .setAuthor('By WCL Technical')
                     .setTitle(`Submitted roster of ${args[0].toUpperCase()}!`)
-                    .setDescription("```" + `Player Tag   TH Player Name` + `\n\n` + roster.slice(1984, rs.length) + "```")
+                    .setDescription("```" + `Player Tag   TH Player Name` + `\n\n` + roster.slice(1984, roster.length) + "```")
                     .setTimestamp()
                 embeds.push(embedagain);
             }
