@@ -1,6 +1,6 @@
 module.exports = {
-    name: 'changesize',
-    aliases: ['cs'],
+    name: 'changesize-lock',
+    aliases: ['csl'],
     description: 'Fixes addition spot status',
     args: true,
     length: 1,

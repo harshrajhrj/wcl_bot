@@ -5,8 +5,8 @@ const PaginationEmbed = require('discord-paginationembed');
 const fs = require('fs');
 
 module.exports = {
-    name: 'rosterremove',
-    aliases: ['remove'],
+    name: 'rosterremove-lock',
+    aliases: ['removel'],
     description: 'Allows you to remove a player to the WCL Roster',
     args: true,
     length: 2,

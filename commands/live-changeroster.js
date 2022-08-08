@@ -1,8 +1,8 @@
 const fs = require('fs');
 const fetch = require('node-fetch');
 module.exports = {
-    name: 'changeroster',
-    aliases: ['crs'],
+    name: 'changeroster-lock',
+    aliases: ['crsl'],
     args: true,
     length: 3,
     category: 'league admins',

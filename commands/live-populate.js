@@ -1,8 +1,8 @@
 const fs = require('fs');
 const mongoose = require('mongoose');
 module.exports = {
-    name: 'updatedb',
-    aliases: ['updb'],
+    name: 'updatedb-lock',
+    aliases: ['updbl'],
     description: 'Updates database for each change of clan(tag)/abb',
     args: false,
     execute: async (message, args) => {

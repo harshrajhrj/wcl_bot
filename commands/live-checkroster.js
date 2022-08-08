@@ -2,8 +2,8 @@ const fetch = require('node-fetch');
 const Discord = require('discord.js');
 const PaginationEmbed = require('discord-paginationembed');
 module.exports = {
-    name: 'checkroster',
-    aliases: ['checkroster', 'cr'],
+    name: 'checkroster-lock',
+    aliases: ['checkrosterl', 'crl'],
     description: 'Scans the rostered players',
     args: true,
     length: 1,

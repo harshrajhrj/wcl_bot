@@ -3,8 +3,8 @@
 const fs = require('fs');
 const fetch = require('node-fetch');
 module.exports = {
-    name: 'replace',
-    aliases: ['replaceabb', 'replacetag'],
+    name: 'replace-lock',
+    aliases: ['replaceabbl', 'replacetagl'],
     description: 'Replace a clan_abb',
     args: true,
     length: 3,

@@ -5,8 +5,8 @@ const PaginationEmbed = require('discord-paginationembed');
 const fs = require('fs');
 
 module.exports = {
-    name: 'rosteradd',
-    aliases: ['add'],
+    name: 'rosteradd-lock',
+    aliases: ['addl'],
     description: 'Allows you to add a player to the WCL Roster',
     args: true,
     length: 2,

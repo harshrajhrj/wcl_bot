@@ -2,8 +2,8 @@ const { google, GoogleApis } = require('googleapis');
 const keys = require('./keys.json');
 
 module.exports = {
-    name: 'logo',
-    aliases: ['logo'],
+    name: 'logo-lock',
+    aliases: ['logol'],
     description: 'Shows you the clan logo',
     args: true,
     length: 1,

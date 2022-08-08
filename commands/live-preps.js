@@ -4,8 +4,8 @@
 //3 - rep mention
 const fs = require('fs');
 module.exports = {
-    name: 'changerep',
-    aliases: ['creps', 'cr'],
+    name: 'changerep-lock',
+    aliases: ['crepsl', 'crl'],
     description: 'Stores the information of clan representative!',
     args: true,
     length: 2,

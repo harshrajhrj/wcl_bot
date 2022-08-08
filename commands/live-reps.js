@@ -2,8 +2,8 @@ const Discord = require('discord.js');
 const fs = require('fs');
 
 module.exports = {
-    name: 'claninfo',
-    aliases: ['cinfo', 'clan', 'reps'],
+    name: 'claninfo-lock',
+    aliases: ['cinfol', 'clanl', 'repsl'],
     description: 'Shows you the clan representatives for a WCL Clan',
     args: true,
     length: 1,
