@@ -22,7 +22,7 @@ const rosterSchema = new mongoose.Schema({
     rosterSize: {
         type: Number,
         required: true,
-        max: 80
+        max: 100
     },
     additionSpot: {
         type: String,
@@ -41,6 +41,7 @@ const rosterSchema = new mongoose.Schema({
     rosterReps: {
         type: Array,
         required: true,
+        default: [['N/A', 'N/A']]
     },
     players: {
         type: Array,
@@ -57,6 +58,6 @@ const rosterSchema = new mongoose.Schema({
         required: true,
         default: [['N/A', 'N/A', 'N/A', 'N/A']]
     }
-}, { collection: 'heavy', versionKey: false });
+}, { collection: 'rosterH', versionKey: false });
 
 module.exports = mongoose.model('HEAVY WEIGHT', rosterSchema);

@@ -4,7 +4,7 @@ module.exports = {
     name: 'changeroster',
     aliases: ['crs'],
     args: true,
-    length: 2,
+    length: 3,
     category: 'league admins',
     description : 'Helps changing roster for a new replacement',
     missing: ['`clanAbb`, ', '`rosterLink`'],

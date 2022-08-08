@@ -3,8 +3,8 @@ const fs = require('fs');
 const paginationembed = require('discord-paginationembed');
 const Discord = require('discord.js');
 module.exports = {
-    name: 'roster',
-    aliases: ['rs'],
+    name: 'roster-lock',
+    aliases: ['rsl'],
     description: `Helps to see you a clan's roster`,
     args: true,
     length: 1,

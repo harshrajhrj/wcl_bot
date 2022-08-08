@@ -3,8 +3,8 @@ const Discord = require('discord.js');
 const fs = require('fs');
 
 module.exports = {
-    name: 'abbs',
-    aliases: ['abbs'],
+    name: 'abbs-lock',
+    aliases: ['abbsl'],
     description: 'List all clan abbreviations',
     args: true,
     length: 1,

@@ -22,7 +22,7 @@ const rosterSchema = new mongoose.Schema({
     rosterSize: {
         type: Number,
         required: true,
-        max: 10
+        max: 50
     },
     additionSpot: {
         type: String,
@@ -58,6 +58,6 @@ const rosterSchema = new mongoose.Schema({
         required: true,
         default: [['N/A', 'N/A', 'N/A', 'N/A']]
     }
-}, { collection: 'rosterCHAMP', versionKey: false });
+}, { collection: 'rosterCLASS', versionKey: false });
 
-module.exports = mongoose.model('CHAMPIONS', rosterSchema);
+module.exports = mongoose.model('CLASSIC', rosterSchema);
