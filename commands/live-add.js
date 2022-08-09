@@ -150,12 +150,13 @@ module.exports = {
             var rosterData = await sendBack(division, args[0].toUpperCase(), []);
 
             let perm = [];
-            if (rosterData.rosterReps[0].length === 1) {
-                perm.push(rosterData.rosterReps[0][0])
-            }
-            else {
-                perm.push(rosterData.rosterReps[0][0], rosterData.rosterReps[0][1])
-            }
+            // if (rosterData.rosterReps[0].length === 1) {
+            //     perm.push(rosterData.rosterReps[0][0])
+            // }
+            // else {
+            //     perm.push(rosterData.rosterReps[0][0], rosterData.rosterReps[0][1])
+            // }
+            perm.push(rosterData.rep1_dc, rosterData.rep2_dc);
             // let t = id_data[1][0];
             // let r = id_data[2][0];
 
@@ -310,6 +311,8 @@ module.exports = {
                 var rosterSize = getData[0].rosterSize + 1;
                 var additionSpot = getData[0].additionSpot;
                 var additionStatus = getData[0].additionStatus;
+
+                // to be blocked during pre-season roster changes
                 var additionStatusLimit = getData[0].additionStatusLimit - 1;
 
                 if (rosterSize >= rSize[div][0]) {
@@ -326,6 +329,8 @@ module.exports = {
                     getData[0].rosterSize = rosterSize;
                     getData[0].additionSpot = additionSpot;
                     getData[0].additionStatus = additionStatus;
+
+                    // to be blocked during pre-season roster changes
                     getData[0].additionStatusLimit = additionStatusLimit;
 
                 }

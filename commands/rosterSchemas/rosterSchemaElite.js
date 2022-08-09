@@ -38,10 +38,15 @@ const rosterSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    rosterReps: {
-        type: Array,
+    rep1_dc: {
+        type: String,
         required: true,
-        default: [['N/A', 'N/A']]
+        default: 0
+    },
+    rep2_dc: {
+        type: String,
+        required: true,
+        default: 0
     },
     players: {
         type: Array,

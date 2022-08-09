@@ -28,7 +28,7 @@ const repSchema = new mongoose.Schema({
         default: 'No entry'
     },
     rep1_dc: {
-        type: Number,
+        type: String,
         required: true,
         default: 0
     },
@@ -38,7 +38,7 @@ const repSchema = new mongoose.Schema({
         default: 'No entry'
     },
     rep2_dc: {
-        type: Number,
+        type: String,
         required: true,
         default: 0
     }

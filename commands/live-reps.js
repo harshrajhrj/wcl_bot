@@ -88,7 +88,7 @@ module.exports = {
                 message.channel.send(embed).then((msg) => {
                     setTimeout(function () {
                         msg.edit(`${findRepList.abb}\nRep1 - <@${findRepList.rep1_dc}>\nRep2 - <@${findRepList.rep2_dc}>`)
-                    }, 1000)
+                    }, 100)
                 });
             }
         }

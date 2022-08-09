@@ -4,8 +4,8 @@
 //3 - rep mention
 const fs = require('fs');
 module.exports = {
-    name: 'changerep-lock',
-    aliases: ['crepsl', 'crl'],
+    name: 'changerep',
+    aliases: ['creps', 'cr'],
     description: 'Stores the information of clan representative!',
     args: true,
     length: 2,
@@ -25,7 +25,7 @@ Rep Prefix\nr1 - Representative 1\nr2 - Representative 2\nall - Both representat
             'LIGHT': 'Light',
             'CLASSIC': 'Classic'
         };
-        async function checkAbb(abb) {
+        function checkAbb(abb) {
             var abbDataObject = fs.readFileSync('./commands/abbs.json');
             var abbData = JSON.parse(abbDataObject);
             var division = '';
@@ -39,7 +39,7 @@ Rep Prefix\nr1 - Representative 1\nr2 - Representative 2\nall - Both representat
             return division;
         }
         if (message.guild.id === '765523244332875776' || message.guild.id === '615297658860601403' || message.member.hasPermission('MANAGE_ROLES')) {
-            var abbCheck = await checkAbb(args[0].toUpperCase());
+            var abbCheck = checkAbb(args[0].toUpperCase());
             if (abbCheck === '') {
                 message.reply(`Invalid clan abb ${args[0].toUpperCase()}`);
                 return;
@@ -87,61 +87,25 @@ Rep Prefix\nr1 - Representative 1\nr2 - Representative 2\nall - Both representat
                 var repInfo = await getRepInfo();
                 var rosterSchema = require(`./rosterSchemas/rosterSchema${roster[div]}`);
                 var repSchema = require('./repsSchema/repsSchema');
+                var oldRep;
 
-                var repData = await repSchema.find({ div: div });
-                var collectRep;
-                repData[0].values.forEach(data => {
-                    if (data[0] === args[0].toUpperCase()) {
-                        collectRep = data;
-                    }
-                });
-
-                const addNewRep = await repSchema.findOneAndUpdate(
-                    { div: div },
+                var repData = await repSchema.findOneAndUpdate(
+                    { abb: args[0].toUpperCase() },
                     {
-                        $push: {
-                            'values': [args[0].toUpperCase(), repInfo[0][0] + "#" + repInfo[2][0], repInfo[1][0], collectRep[3], collectRep[4]]
-                        }
+                        rep1: repInfo[0][0] + "#" + repInfo[2][0],
+                        rep1_dc: repInfo[1][0]
                     }
-                );
+                ).then((data) => oldRep = data.rep1);
 
-                const removeOldRep = await repSchema.findOneAndUpdate(
-                    { div: div },
-                    {
-                        $pull: {
-                            'values': collectRep
-                        }
-                    }
-                );
-
-                var oldRosterRep = await rosterSchema.find({ abb: args[0].toUpperCase() });
-                var oldRepArr = oldRosterRep[0].rosterReps;
                 const addNewRosterRep = await rosterSchema.findOneAndUpdate(
                     { abb: args[0].toUpperCase() },
                     {
-                        $push: {
-                            'rosterReps': [repInfo[1][0], collectRep[4]]
-                        }
+                        rep1_dc: repInfo[1][0]
                     }
                 );
-
-                const removeOldRosterRep = await rosterSchema.findOneAndUpdate(
-                    { abb: args[0].toUpperCase() },
-                    {
-                        $pull: {
-                            'rosterReps': oldRepArr[0]
-                        }
-                    }
-                );
-
-                if (collectRep[1] === "" || collectRep[2] === "") {
-                    await message.react('✅');
-                    message.reply(`Updated rep change from **None** to **${repInfo[0][0] + "#" + repInfo[2][0]}**`).then((msg) => msg.react('✅'));
-                    return;
-                }
 
                 await message.react('✅');
-                message.reply(`Updated rep change from **${collectRep[1]}** to **${repInfo[0][0] + "#" + repInfo[2][0]}**`).then((msg) => msg.react('✅'));
+                message.reply(`Updated rep change from **${oldRep}** to **${repInfo[0][0] + "#" + repInfo[2][0]}**`).then((msg) => msg.react('✅'));
                 return;
             } catch (err) {
                 message.reply(err.message);
@@ -154,93 +118,24 @@ Rep Prefix\nr1 - Representative 1\nr2 - Representative 2\nall - Both representat
                 var repInfo = await getRepInfo();
                 var rosterSchema = require(`./rosterSchemas/rosterSchema${roster[div]}`);
                 var repSchema = require('./repsSchema/repsSchema');
+                var oldRep;
 
-                var repData = await repSchema.find({ div: div });
-                var collectRep;
-                repData[0].values.forEach(data => {
-                    if (data[0] === args[0].toUpperCase()) {
-                        collectRep = data;
-                    }
-                });
-                if (collectRep[1] === "" || collectRep[2] === "") {
-                    const addNewRep = await repSchema.findOneAndUpdate(
-                        { div: div },
-                        {
-                            $push: {
-                                'values': [args[0].toUpperCase(), repInfo[0][0] + "#" + repInfo[2][0], repInfo[1][0], collectRep[3], collectRep[4]]
-                            }
-                        }
-                    );
-                    var oldRosterRep = await rosterSchema.find({ abb: args[0].toUpperCase() });
-                    var oldRepArr = oldRosterRep[0].rosterReps;
-                    const addNewRosterRep = await rosterSchema.findOneAndUpdate(
-                        { abb: args[0].toUpperCase() },
-                        {
-                            $push: {
-                                'rosterReps': [repInfo[1][0], collectRep[4]]
-                            }
-                        }
-                    );
-
-                    const removeOldRosterRep = await rosterSchema.findOneAndUpdate(
-                        { abb: args[0].toUpperCase() },
-                        {
-                            $pull: {
-                                'rosterReps': oldRepArr[0]
-                            }
-                        }
-                    );
-                } else {
-                    const addNewRep = await repSchema.findOneAndUpdate(
-                        { div: div },
-                        {
-                            $push: {
-                                'values': [args[0].toUpperCase(), collectRep[1], collectRep[2], repInfo[0][0] + "#" + repInfo[2][0], repInfo[1][0]]
-                            }
-                        }
-                    );
-                    var oldRosterRep = await rosterSchema.find({ abb: args[0].toUpperCase() });
-                    var oldRepArr = oldRosterRep[0].rosterReps;
-                    const addNewRosterRep = await rosterSchema.findOneAndUpdate(
-                        { abb: args[0].toUpperCase() },
-                        {
-                            $push: {
-                                'rosterReps': [collectRep[2], repInfo[1][0]]
-                            }
-                        }
-                    );
-
-                    const removeOldRosterRep = await rosterSchema.findOneAndUpdate(
-                        { abb: args[0].toUpperCase() },
-                        {
-                            $pull: {
-                                'rosterReps': oldRepArr[0]
-                            }
-                        }
-                    );
-                }
-
-                const removeOldRep = await repSchema.findOneAndUpdate(
-                    { div: div },
+                var repData = await repSchema.findOneAndUpdate(
+                    { abb: args[0].toUpperCase() },
                     {
-                        $pull: {
-                            'values': collectRep
-                        }
+                        rep2: repInfo[0][0] + "#" + repInfo[2][0],
+                        rep2_dc: repInfo[1][0]
+                    }
+                ).then((data) => oldRep = data.rep2);
+
+                const addNewRosterRep = await rosterSchema.findOneAndUpdate(
+                    { abb: args[0].toUpperCase() },
+                    {
+                        rep2_dc: repInfo[1][0]
                     }
                 );
-
-                if (collectRep[1] === "" || collectRep[2] === "") {
-                    await message.react('✅');
-                    message.reply(`Updated rep change from **None** to **${repInfo[0][0] + "#" + repInfo[2][0]}**`).then((msg) => msg.react('✅'));
-                    return;
-                }
-                else if (collectRep[3] === "" || collectRep[3] === "") {
-                    await message.react('✅');
-                    message.reply(`Updated rep change from **None** to **${repInfo[0][0] + "#" + repInfo[2][0]}**`).then((msg) => msg.react('✅'));
-                    return;
-                }
                 await message.react('✅');
-                message.reply(`Updated rep change from **${collectRep[3]}** to **${repInfo[0][0] + "#" + repInfo[2][0]}**`).then((msg) => msg.react('✅'));
+                message.reply(`Updated rep change from **${oldRep}** to **${repInfo[0][0] + "#" + repInfo[2][0]}**`).then((msg) => msg.react('✅'));
                 return;
             } catch (err) {
                 message.reply(err.message);
@@ -253,55 +148,28 @@ Rep Prefix\nr1 - Representative 1\nr2 - Representative 2\nall - Both representat
                 var repInfo = await getRepInfo();
                 var rosterSchema = require(`./rosterSchemas/rosterSchema${roster[div]}`);
                 var repSchema = require('./repsSchema/repsSchema');
+                var oldRep;
 
-                var repData = await repSchema.find({ div: div });
-                var collectRep;
-                repData[0].values.forEach(data => {
-                    if (data[0] === args[0].toUpperCase()) {
-                        collectRep = data;
-                    }
-                });
-
-                const addNewRep = await repSchema.findOneAndUpdate(
-                    { div: div },
+                var repData = await repSchema.findOneAndUpdate(
+                    { abb: args[0].toUpperCase() },
                     {
-                        $push: {
-                            'values': [args[0].toUpperCase(), repInfo[0][0] + "#" + repInfo[2][0], repInfo[1][0], repInfo[0][1] + "#" + repInfo[2][1], repInfo[1][1]]
-                        }
+                        rep1: repInfo[0][0] + "#" + repInfo[2][0],
+                        rep2_dc: repInfo[1][0],
+                        rep2: repInfo[0][1] + "#" + repInfo[2][1],
+                        rep2_dc: repInfo[1][1]
                     }
-                );
+                ).then((data) => oldRep = [data.rep1, data.rep2]);
 
-                const removeOldRep = await repSchema.findOneAndUpdate(
-                    { div: div },
-                    {
-                        $pull: {
-                            'values': collectRep
-                        }
-                    }
-                );
-
-                var oldRosterRep = await rosterSchema.find({ abb: args[0].toUpperCase() });
-                var oldRepArr = oldRosterRep[0].rosterReps;
                 const addNewRosterRep = await rosterSchema.findOneAndUpdate(
                     { abb: args[0].toUpperCase() },
                     {
-                        $push: {
-                            'rosterReps': [repInfo[1][0], repInfo[1][1]]
-                        }
-                    }
-                );
-
-                const removeOldRosterRep = await rosterSchema.findOneAndUpdate(
-                    { abb: args[0].toUpperCase() },
-                    {
-                        $pull: {
-                            'rosterReps': oldRepArr[0]
-                        }
+                        rep1_dc: repInfo[1][0],
+                        rep2_dc: repInfo[1][1]
                     }
                 );
 
                 await message.react('✅');
-                message.reply(`Updated rep change from **${collectRep[1]}** and **${collectRep[3]}** to **${repInfo[0][0] + "#" + repInfo[2][0]}** and **${repInfo[0][1] + "#" + repInfo[2][1]}**!`).then((msg) => msg.react('✅'));
+                message.reply(`Updated rep change from **${oldRep[0]}** and **${oldRep[1]}** to **${repInfo[0][0] + "#" + repInfo[2][0]}** and **${repInfo[0][1] + "#" + repInfo[2][1]}**!`).then((msg) => msg.react('✅'));
                 return;
             } catch (err) {
                 message.reply(err.message);
@@ -312,36 +180,30 @@ Rep Prefix\nr1 - Representative 1\nr2 - Representative 2\nall - Both representat
         async function callClearRep(div) {
             try {
                 var repInfo = await getRepInfo();
+                var rosterSchema = require(`./rosterSchemas/rosterSchema${roster[div]}`);
                 var repSchema = require('./repsSchema/repsSchema');
+                var oldRep;
 
-                var repData = await repSchema.find({ div: div });
-                var collectRep;
-                repData[0].values.forEach(data => {
-                    if (data[0] === args[0].toUpperCase()) {
-                        collectRep = data;
-                    }
-                });
-
-                const addNewRep = await repSchema.findOneAndUpdate(
-                    { div: div },
+                var repData = await repSchema.findOneAndUpdate(
+                    { abb: args[0].toUpperCase() },
                     {
-                        $push: {
-                            'values': [args[0].toUpperCase(), "", "", "", ""]
-                        }
+                        rep1: 'No entry',
+                        rep1_dc: "0",
+                        rep2: 'No entry',
+                        rep2_dc: "0"
                     }
-                );
+                ).then((data) => oldRep = [data.rep1, data.rep2]);
 
-                const removeOldRep = await repSchema.findOneAndUpdate(
-                    { div: div },
+                const addNewRosterRep = await rosterSchema.findOneAndUpdate(
+                    { abb: args[0].toUpperCase() },
                     {
-                        $pull: {
-                            'values': collectRep
-                        }
+                        rep1_dc: "0",
+                        rep2_dc: "0"
                     }
                 );
 
                 await message.react('✅');
-                message.reply(`Removed reps **${collectRep[1]}** and **${collectRep[3]}**!`).then((msg) => msg.react('✅'));
+                message.reply(`Removed reps **${oldRep[0]}** and **${oldRep[1]}**!`).then((msg) => msg.react('✅'));
                 return;
             } catch (err) {
                 message.reply(err.message);

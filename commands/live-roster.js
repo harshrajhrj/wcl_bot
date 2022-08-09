@@ -61,6 +61,10 @@ module.exports = {
                     model = require('./rosterSchemas/rosterSchemaBlockage');
                 else if (division === 'CHAMPIONS')
                     model = require('./rosterSchemas/rosterSchemaChampions');
+                else if (division.div === 'CLASSIC')
+                    model = require('./rosterSchemas/rosterSchemaClassic');
+                else if (division.div === 'LIGHT')
+                    model = require('./rosterSchemas/rosterSchemaLight');
 
                 const rosterData = await model.find({ abb: args[0].toUpperCase() });
 

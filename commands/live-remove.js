@@ -93,12 +93,13 @@ module.exports = {
             //forceRemove
 
             let perm = [];
-            if (rosterData.rosterReps[0].length === 1) {
-                perm.push(rosterData.rosterReps[0][0])
-            }
-            else {
-                perm.push(rosterData.rosterReps[0][0], rosterData.rosterReps[0][1])
-            }
+            // if (rosterData.rosterReps[0].length === 1) {
+            //     perm.push(rosterData.rosterReps[0][0])
+            // }
+            // else {
+            //     perm.push(rosterData.rosterReps[0][0], rosterData.rosterReps[0][1])
+            // }
+            perm.push(rosterData.rep1_dc, rosterData.rep2_dc);
 
             const p = await fetch('https://api.clashofstats.com/players/' + args[1].toUpperCase().slice(1), options); //http://wclapi.tk/player/
             let final = '';

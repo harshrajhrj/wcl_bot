@@ -43,11 +43,13 @@ module.exports = {
 
         async function changeRoster(division) {
             const roster = {
-                'HEAVY WEIGHT': ['Heavy', 32, 80],
-                'FLIGHT': ['Flight', 24, 60],
+                'HEAVY WEIGHT': ['Heavy', 25, 100],
+                'FLIGHT': ['Flight', 20, 70],
                 'ELITE': ['Elite', 20, 50],
-                'BLOCKAGE': ['Blockage', 16, 40],
-                'CHAMPIONS': ['Champions', 3, 8]
+                'BLOCKAGE': ['Blockage', 20, 40],
+                'LIGHT WEIGHT': ['Light', 20, 50],
+                'CLASSIC': ['Classic', 20, 50],
+                'CHAMPIONS': ['Champions', 3, 10]
             };
             try {
                 var rosterSchema = require(`./rosterSchemas/rosterSchema${roster[division][0]}`);
