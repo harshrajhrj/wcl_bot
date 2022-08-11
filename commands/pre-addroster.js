@@ -101,6 +101,8 @@ module.exports = {
                                 }
                             });
                             if (fresh.length <= division[2]) {
+                                const abbCollection = require('./abbSchema/registeredAbbs');
+                                const repCollection = require('./repsSchema/repsSchema');
                                 var rosterData = await rosterSchema.findOne({ abb: args[0].toUpperCase() });
                                 if (rosterData) {
                                     // var values = rosterData.players;
@@ -184,7 +186,8 @@ module.exports = {
                     message.reply("Bad tag " + args[1].toUpperCase());
                 }
             } catch (err) {
-                message.reply(err.message);
+                console.log(err);
+                message.reply(err);
             }
         }
     }
