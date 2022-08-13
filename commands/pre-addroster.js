@@ -70,6 +70,7 @@ module.exports = {
                         if (div.status === 200) {
                             div = await div.json();
                             div = div.values[0][0];
+                            div = div.replace(/[\t\n\r]/gm,'');
                             var DivisionChecking = Object.keys(roster);
                             DivisionChecking.forEach(key => {
                                 if (key.indexOf(div.toUpperCase()) != -1) {
