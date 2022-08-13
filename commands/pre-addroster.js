@@ -50,10 +50,12 @@ module.exports = {
                     var division;
                     if (new_data.length === 1) {
                         data = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${new_data[0]}/values/ROSTER!B6:C?majorDimension=ROWS&key=AIzaSyDUq4w3z35sS28BKWLdXSh32hlwUDDaD1Y`, options);
-                        var div = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${new_data[0]}/values/ROSTER!C2?majorDimension=ROWS&key=AIzaSyDUq4w3z35sS28BKWLdXSh32hlwUDDaD1Y`, options);
+                        var div = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${new_data[0]}/values/ROSTER!C2:E2?majorDimension=ROWS&key=AIzaSyDUq4w3z35sS28BKWLdXSh32hlwUDDaD1Y`, options);
                         if (div.status === 200) {
                             div = await div.json();
-                            div = div.values[0][0];
+                            div = div.values[0];
+                            div = div.find(function (eachVal) { return eachVal != "" ? eachVal : null });
+                            div = div.replace(/[\t\n\r]/gm, '');
                             var DivisionChecking = Object.keys(roster);
                             DivisionChecking.forEach(key => {
                                 if (key.indexOf(div.toUpperCase()) != -1) {
@@ -66,11 +68,12 @@ module.exports = {
                     }
                     else if (new_data.length > 1) {
                         data = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${new_data[5]}/values/ROSTER!B6:C?majorDimension=ROWS&key=AIzaSyDUq4w3z35sS28BKWLdXSh32hlwUDDaD1Y`, options);
-                        var div = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${new_data[5]}/values/ROSTER!C2?majorDimension=ROWS&key=AIzaSyDUq4w3z35sS28BKWLdXSh32hlwUDDaD1Y`, options);
+                        var div = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${new_data[5]}/values/ROSTER!C2:E2?majorDimension=ROWS&key=AIzaSyDUq4w3z35sS28BKWLdXSh32hlwUDDaD1Y`, options);
                         if (div.status === 200) {
                             div = await div.json();
-                            div = div.values[0][0];
-                            div = div.replace(/[\t\n\r]/gm,'');
+                            div = div.values[0];
+                            div = div.find(function (eachVal) { return eachVal != "" ? eachVal : null });
+                            div = div.replace(/[\t\n\r]/gm, '');
                             var DivisionChecking = Object.keys(roster);
                             DivisionChecking.forEach(key => {
                                 if (key.indexOf(div.toUpperCase()) != -1) {
