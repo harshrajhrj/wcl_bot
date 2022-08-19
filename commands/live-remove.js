@@ -5,8 +5,8 @@ const PaginationEmbed = require('discord-paginationembed');
 const fs = require('fs');
 
 module.exports = {
-    name: 'rosterremove-lock',
-    aliases: ['removel'],
+    name: 'rosterremove',
+    aliases: ['remove'],
     description: 'Allows you to remove a player to the WCL Roster',
     args: true,
     length: 2,
@@ -16,7 +16,7 @@ module.exports = {
     usage: 'clan_abb player_tag discord_id(optional)',
     explanation: 'Ex: wcl add INQ #XYZ DISCORD_ID\n\nwhere\nINQ is clan abb\n#XYZ is ClashOfClans PlayerTag\nDISCORD_ID is long number ID of the player\n-F(forceRemove optional for league admins only)',
     execute: async (message, args) => {
-        if (message.channel.id === '941944848771080192' || message.channel.id === '941943402482782218' || message.channel.id === '847483626400907325' || message.channel.id === '766307596197560320') {
+        if (message.guild.id === '998948665383190659' || message.guild.id === '998948405864845353' || message.guild.id === '389162246627917826' || message.guild.id === '765523244332875776') {
             const options = {
                 'json': true,
                 'Accept': 'application/json',
@@ -119,7 +119,7 @@ module.exports = {
                 if (p.status === 200) {
                     final += data.name;
                     th += data.townHallLevel;
-                    if (perm.includes(message.author.id) || message.author.id === '531548281793150987' || message.author.id === '602935588018061453') {
+                    if (perm.includes(message.author.id) || message.author.id === '531548281793150987' || message.author.id === '602935588018061453' || message.member.hasPermission('MANAGE_SERVER')) {
                         update(dateNtime, args[1].toUpperCase(), final, message.author.id, th, dcid);
                     }
                     else {

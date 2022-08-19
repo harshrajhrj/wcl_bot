@@ -68,9 +68,16 @@ module.exports = {
                     }
                 }
 
+                // mapping clan names
+                const abbCollection = require('./abbSchema/registeredAbbs');
+                const allAbbs = await abbCollection.find({ div: options[args[0].toUpperCase()].toUpperCase() })
+                duals.forEach(dual => {
+                    var abbData = allAbbs.find(function (abb) { return abb.abb === dual[1] });
+                    dual.push(abbData.clanName);
+                })
                 let embedData = '';
                 duals.forEach(dual => {
-                    embedData += dual[1].padEnd(4, ' ') + " " + dual[0].padEnd(12, ' ') + " " + dual[2].padEnd(9, ' ') + " " + dual[3].padEnd(15, ' ') + '\n';
+                    embedData += dual[1].padEnd(4, ' ') + " " + dual[0].padEnd(12, ' ') + " " + dual[3].padEnd(15, ' ') + " \n" + dual[4].padEnd(15, ' ') + '\n\n';
                 })
 
                 if (embedData === '') {

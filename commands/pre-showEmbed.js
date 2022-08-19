@@ -3,13 +3,13 @@ const Discord = require('discord.js');
 module.exports = async function showEmbed(message, args, embedData, embedType) {
     try {
         if (embedType === "roster") {
-            const { headerName, roster, thumbnail, townHalls, rosterSize, additionStatusLimit } = embedData;
+            const { headerName, roster, thumbnail, townHalls, rosterSize, additionStatusLimit, clanName } = embedData;
             const embeds = [];
             const embed = new Discord.MessageEmbed()
                 .setColor('#1980de')
                 .setThumbnail(thumbnail)
                 .setAuthor('By WCL Technical')
-                .setTitle(`Submitted roster of ${args[0].toUpperCase()}!`)
+                .setTitle(`Submitted roster of ${args[0].toUpperCase()} | ${clanName}!`)
                 .setDescription("```" + `Player Tag   TH Player Name` + `\n\n` + roster.slice(0, 1984) + "```")
                 .setTimestamp()
             embeds.push(embed);
@@ -18,7 +18,7 @@ module.exports = async function showEmbed(message, args, embedData, embedType) {
                     .setColor('#1980de')
                     .setThumbnail(thumbnail)
                     .setAuthor('By WCL Technical')
-                    .setTitle(`Submitted roster of ${args[0].toUpperCase()}!`)
+                    .setTitle(`Submitted roster of ${args[0].toUpperCase()} | ${clanName}!`)
                     .setDescription("```" + `Player Tag   TH Player Name` + `\n\n` + roster.slice(1984, roster.length) + "```")
                     .setTimestamp()
                 embeds.push(embedagain);
@@ -146,7 +146,7 @@ module.exports = async function showEmbed(message, args, embedData, embedType) {
                 .setAuthor('By WCL Technical')
                 .setThumbnail('https://media.discordapp.net/attachments/914077029912170577/914442650957008906/WCL_new.png?width=532&height=612')
                 .setTitle(`Found duals for ${div}!`)
-                .setDescription("```" + `Abb  Player Tag   Division  Player Name` + `\n\n` + embeddata.slice(0, 4004) + "```")
+                .setDescription("```" + `Abb  Player Tag   Player Name      Clan Name` + `\n\n` + embeddata.slice(0, 4004) + "```")
                 .setTimestamp()
             embeds.push(embed);
             if (embeddata.length > 4004) {
@@ -155,7 +155,7 @@ module.exports = async function showEmbed(message, args, embedData, embedType) {
                     .setAuthor('By WCL Technical')
                     .setThumbnail('https://media.discordapp.net/attachments/914077029912170577/914442650957008906/WCL_new.png?width=532&height=612')
                     .setTitle(`Found duals for ${div}!`)
-                    .setDescription("```" + `Abb  Player Tag   Division  Player Name` + `\n\n` + embeddata.slice(4004, embeddata.length) + "```")
+                    .setDescription("```" + `Abb  Player Tag   Player Name      Clan Name` + `\n\n` + embeddata.slice(4004, embeddata.length) + "```")
                     .setTimestamp()
                 embeds.push(embed1);
             }

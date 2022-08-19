@@ -100,7 +100,8 @@ module.exports = {
                             roster: rs,
                             townHalls: townHalls,
                             rosterSize: rosterData[0].rosterSize,
-                            additionStatusLimit: rosterData[0].additionStatusLimit
+                            additionStatusLimit: rosterData[0].additionStatusLimit,
+                            clanName : division.clanName
                         },
                         "roster"
                     )
