@@ -127,6 +127,77 @@ module.exports = async function showEmbed(message, args, embedData, embedType) {
 
                 await Embeds.build();
             }
+        } else if (embedType === 'searchRoster') {
+            const embeds = [];
+            const embed = new Discord.MessageEmbed()
+                .setColor('#1980de')
+                .setThumbnail('https://media.discordapp.net/attachments/914077029912170577/914442650957008906/WCL_new.png?width=532&height=612')
+                .setAuthor('By WCL Technical')
+                .setTitle(`Search results for ${args[0].toUpperCase()}!`)
+                .setDescription("```" + `Abb  Player Tag   Division  Player Name` + `\n\n` + embedData.slice(0, 1984) + "```")
+                .setTimestamp()
+            embeds.push(embed);
+            message.channel.send(embeds[0].setFooter(`Page 1/1`));
+        } else if (embedType === 'viewdual') {
+            const { div, embeddata } = embedData;
+            const embeds = [];
+            const embed = new Discord.MessageEmbed()
+                .setColor("#1980de")
+                .setAuthor('By WCL Technical')
+                .setThumbnail('https://media.discordapp.net/attachments/914077029912170577/914442650957008906/WCL_new.png?width=532&height=612')
+                .setTitle(`Found duals for ${div}!`)
+                .setDescription("```" + `Abb  Player Tag   Division  Player Name` + `\n\n` + embeddata.slice(0, 4004) + "```")
+                .setTimestamp()
+            embeds.push(embed);
+            if (embeddata.length > 4004) {
+                const embed1 = new Discord.MessageEmbed()
+                    .setColor("#1980de")
+                    .setAuthor('By WCL Technical')
+                    .setThumbnail('https://media.discordapp.net/attachments/914077029912170577/914442650957008906/WCL_new.png?width=532&height=612')
+                    .setTitle(`Found duals for ${div}!`)
+                    .setDescription("```" + `Abb  Player Tag   Division  Player Name` + `\n\n` + embeddata.slice(4004, embeddata.length) + "```")
+                    .setTimestamp()
+                embeds.push(embed1);
+            }
+
+            if (embeds.length === 1) {
+                message.channel.send(embeds[0].setFooter(`Page 1/1`));
+            }
+            else {
+                let m1 = 0;
+                embeds.map(function (r) { m1++; return r.setFooter(`Page ${m1}/${embeds.length}`) })
+                const Embeds = new paginationembed.Embeds()
+                    .setArray(embeds)
+                    .setTimeout(600000)
+                    .setChannel(message.channel)
+                    /* Sets the client's assets to utilise. Available options:
+                     *  - message: the client's Message object (edits the message instead of sending new one for this instance)
+                     *  - prompt: custom content for the message sent when prompted to jump to a page
+                     *      {{user}} is the placeholder for the user mention
+                     *.setClientAssets({ prompt: 'Enter the page number between 1-6, you want to jump on {{user}}' })
+                     */
+                    .setDeleteOnTimeout(false)
+                    .setDisabledNavigationEmojis(['back', 'forward', 'jump', 'delete'])
+                    .setFunctionEmojis({
+                        /*'⏮️': (_,instance) => { //to be enabled during season 9
+                            instance.setPage(1);
+                        },*/
+                        '◀️': (_, instance) => {
+                            instance.setPage('back');
+                        },
+                        '▶️': (_, instance) => {
+                            instance.setPage('forward');
+                        },
+                        /*'⏭️': (_,instance) => { //to be enabled during season 9
+                            instance.setPage(4);
+                        },*/
+                        '🔄': (_, instance) => {
+                            instance.resetEmojis();
+                        }
+                    })
+
+                await Embeds.build();
+            }
         }
     } catch (err) {
         console.log(err.message);
