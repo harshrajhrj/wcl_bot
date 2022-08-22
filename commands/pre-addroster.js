@@ -98,7 +98,9 @@ module.exports = {
                     }
                     else if (data.status === 200) {
                         const convert = await data.json();
-                        if (convert.values[0].length > 1) {
+                        if (!Object.keys(convert).includes('values'))
+                            return message.reply('No roster data!');
+                        if (convert.values.find(function (row) { return row.length > 1; })) {
                             convert.values.forEach(data => {
                                 if (!(data[1] === undefined || data[1] === ' '))/*condition to eliminate blank values*/ {
                                     fresh.push([(data[1].trim()).toUpperCase(), data[0]]);
@@ -190,8 +192,8 @@ module.exports = {
                     message.reply("Bad tag " + args[1].toUpperCase());
                 }
             } catch (err) {
-                console.log(err);
-                message.reply(err);
+                console.log(err.message);
+                message.reply(err.message);
             }
         }
     }
