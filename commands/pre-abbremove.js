@@ -10,8 +10,8 @@ module.exports = {
     explanation: 'Ex: wcl removeabb HR\nwhere HR - clanAbb',
     accessableby: ['League Admins', 'Moderator'],
     execute: async (message, args) => {
-        if (message.member.hasPermission('MANAGE_GUILD')) {
-            try {
+        try {
+            if (message.member.hasPermission('MANAGE_GUILD')) {
                 const abbCollection = require('./abbSchema/registeredAbbs');
                 const findAbb = await abbCollection.findOne({ abb: args[0].toUpperCase() });
                 if (findAbb) {
@@ -42,12 +42,14 @@ module.exports = {
                     message.reply(`No such abb registered till now!`);
                     return;
                 }
-            } catch (err) {
-                console.log(err);
-                message.reply(err.message);
             }
-        } else {
-            message.reply(`You can't use this command!`);
+            else {
+                message.reply(`You can't use this command!`);
+            }
+        }
+        catch (err) {
+            console.log(err);
+            message.reply(err.message);
         }
     }
 }
