@@ -17,9 +17,10 @@ module.exports = {
             'method': 'get',
             'muteHttpExceptions': true
         };
+        // console.log(message.member.permissions.bitfield === 2147483647); //guild manage perm
         //message.guild.id === '765523244332875776' || message.guild.id === '615297658860601403'
         try {
-            if (message.member.hasPermission('MANAGE_GUILD')) {
+            if (message.member.permissions.bitfield === 2147483647) {
                 await changeRoster();
                 return;
             } else {
