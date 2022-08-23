@@ -26,17 +26,22 @@ Rep Prefix\nr1 - Representative 1\nr2 - Representative 2\nall - Both representat
             'CLASSIC': 'Classic'
         };
         function checkAbb(abb) {
-            var abbDataObject = fs.readFileSync('./commands/abbs.json');
-            var abbData = JSON.parse(abbDataObject);
-            var division = '';
-            var control = 0
-            abbData.values.forEach(data => {
-                if (data[2] === abb && control === 0) {
-                    division = data[3];
-                    control++;
-                }
-            });
-            return division;
+            try {
+                var abbDataObject = fs.readFileSync('./commands/abbs.json');
+                var abbData = JSON.parse(abbDataObject);
+                var division = '';
+                var control = 0
+                abbData.values.forEach(data => {
+                    if (data[2] === abb && control === 0) {
+                        division = data[3];
+                        control++;
+                    }
+                });
+                return division;
+            } catch (err) {
+                console.log(err.message);
+                message.reply(err.message);
+            }
         }
         if (message.guild.id === '765523244332875776' || message.guild.id === '615297658860601403' || message.member.hasPermission('MANAGE_ROLES')) {
             var abbCheck = checkAbb(args[0].toUpperCase());
@@ -149,12 +154,12 @@ Rep Prefix\nr1 - Representative 1\nr2 - Representative 2\nall - Both representat
                 var rosterSchema = require(`./rosterSchemas/rosterSchema${roster[div]}`);
                 var repSchema = require('./repsSchema/repsSchema');
                 var oldRep;
-
+                console.log(repInfo);
                 var repData = await repSchema.findOneAndUpdate(
                     { abb: args[0].toUpperCase() },
                     {
                         rep1: repInfo[0][0] + "#" + repInfo[2][0],
-                        rep2_dc: repInfo[1][0],
+                        rep1_dc: repInfo[1][0],
                         rep2: repInfo[0][1] + "#" + repInfo[2][1],
                         rep2_dc: repInfo[1][1]
                     }
