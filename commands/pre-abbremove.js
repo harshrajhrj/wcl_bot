@@ -11,7 +11,7 @@ module.exports = {
     accessableby: ['League Admins', 'Moderator'],
     execute: async (message, args) => {
         try {
-            if (message.member.permissions.bitfield === 2147483647) {
+            if (message.member.hasPermission('MANAGE_GUILD')) {
                 const abbCollection = require('./abbSchema/registeredAbbs');
                 const findAbb = await abbCollection.findOne({ abb: args[0].toUpperCase() });
                 if (findAbb) {

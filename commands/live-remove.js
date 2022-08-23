@@ -119,7 +119,7 @@ module.exports = {
                 if (p.status === 200) {
                     final += data.name;
                     th += data.townHallLevel;
-                    if (perm.includes(message.author.id) || message.author.id === '531548281793150987' || message.author.id === '602935588018061453' || message.member.permissions.bitfield === 2147483647) {
+                    if (perm.includes(message.author.id) || message.author.id === '531548281793150987' || message.author.id === '602935588018061453' || message.member.hasPermission('MANAGE_GUILD')) {
                         update(dateNtime, args[1].toUpperCase(), final, message.author.id, th, dcid);
                     }
                     else {
