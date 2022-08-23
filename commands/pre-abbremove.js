@@ -10,7 +10,7 @@ module.exports = {
     explanation: 'Ex: wcl removeabb HR\nwhere HR - clanAbb',
     accessableby: ['League Admins', 'Moderator'],
     execute: async (message, args) => {
-        if (message.member.hasPermission('MANAGE_SERVER')) {
+        if (message.member.hasPermission('MANAGE_GUILD')) {
             try {
                 const abbCollection = require('./abbSchema/registeredAbbs');
                 const findAbb = await abbCollection.findOne({ abb: args[0].toUpperCase() });

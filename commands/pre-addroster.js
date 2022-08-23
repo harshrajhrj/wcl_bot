@@ -18,7 +18,7 @@ module.exports = {
             'muteHttpExceptions': true
         };
         //message.guild.id === '765523244332875776' || message.guild.id === '615297658860601403'
-        if (message.member.hasPermission('MANAGE_SERVER')) {
+        if (message.member.hasPermission('MANAGE_GUILD')) {
             await changeRoster();
             return;
         } else {
