@@ -20,6 +20,7 @@ module.exports = {
         };
 
         async function getPlayerDetail(tag) {
+            tag = tag.replace(/[\t\n\r]/gm, '')
             const getData = await fetch(`https://api.clashofstats.com/players/${tag.slice(1)}`, options)
             if (getData.status === 404) {
                 return { name: 'N/A', townHallLevel: -1 };
@@ -62,7 +63,8 @@ module.exports = {
                     'th13': 0,
                     'th12': 0,
                     'th11': 0,
-                    'less than 11': 0,
+                    'th10': 0,
+                    'less than 10': 0,
                 }
                 var uptoEnd = new Promise((resolve, reject) => {
                     rosterData[0].players.forEach(async data => {
@@ -76,8 +78,10 @@ module.exports = {
                             townHalls['th12']++;
                         else if (fetechedData.townHallLevel === 11)
                             townHalls['th11']++;
-                        else if (fetechedData.townHallLevel < 11)
-                            townHalls['less than 11']++;
+                        else if (fetechedData.townHallLevel === 10)
+                            townHalls['th10']++;
+                        else if (fetechedData.townHallLevel < 10)
+                            townHalls['less than 10']++;
                         if (rosterData[0].rosterSize === playerDetail.length) {
                             resolve(playerDetail);
                         }
@@ -101,7 +105,7 @@ module.exports = {
                             townHalls: townHalls,
                             rosterSize: rosterData[0].rosterSize,
                             additionStatusLimit: rosterData[0].additionStatusLimit,
-                            clanName : division.clanName
+                            clanName: division.clanName
                         },
                         "roster"
                     )

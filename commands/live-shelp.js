@@ -4,7 +4,7 @@ module.exports = {
     description: 'Lists the commands for staffs of WCL',
     args: false,
     execute: async (message) => {
-        if (message.guild.id === '615297658860601403' || message.guild.id === '765523244332875776') {
+        if (message.member.hasPermission('MANAGE_SERVER') || message.member.hasPermission('MANAGE_ROLES') || !message.guild.id('389162246627917826')) {
             const com = `Developer Only\n\n
 League Admins Only
 wcl replace - replaces old clan_abb with new clan_abb
