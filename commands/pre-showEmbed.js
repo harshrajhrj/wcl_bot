@@ -35,7 +35,7 @@ module.exports = async function showEmbed(message, args, embedData, embedType) {
                     .setTimeout(300000)
                     .setChannel(message.channel)
                     .setDisabledNavigationEmojis(['all'])
-                    .setDisabledNavigationEmojis(['back', 'forward', 'jump'])
+                    .setDisabledNavigationEmojis(['back', 'forward', 'jump', 'delete'])
                     .setFunctionEmojis({
                         '◀️': (_, instance) => {
                             instance.setPage('back');
