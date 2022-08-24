@@ -20,13 +20,12 @@ module.exports = {
         };
 
         async function getPlayerDetail(tag) {
-            tag = tag.replace(/[\t\n\r]/gm, '')
             const getData = await fetch(`https://api.clashofstats.com/players/${tag.slice(1)}`, options)
             if (getData.status === 404) {
-                return { name: 'N/A', townHallLevel: -1 };
+                return { tag: tag, name: 'N/A', townHallLevel: -1 };
             }
             else if (getData.status === 500) {
-                return { name: 'U/C', townHallLevel: -1 };
+                return { tag: tag, name: 'U/C', townHallLevel: -1 };
             }
             else if (getData.status === 200) {
                 const freshData = await getData.json();
@@ -66,10 +65,11 @@ module.exports = {
                     'th10': 0,
                     'less than 10': 0,
                 }
+                
                 var uptoEnd = new Promise((resolve, reject) => {
                     rosterData[0].players.forEach(async data => {
                         let fetechedData = await getPlayerDetail(data[0]);
-                        playerDetail.push([data[0], fetechedData.townHallLevel, fetechedData.name]);
+                        playerDetail.push([fetechedData.tag, fetechedData.townHallLevel, fetechedData.name]);
                         if (fetechedData.townHallLevel === 14)
                             townHalls['th14']++;
                         else if (fetechedData.townHallLevel === 13)
@@ -95,7 +95,7 @@ module.exports = {
 
                     newData.forEach(data => {
                         if (!(data[0] === undefined)) {
-                            rs += `${data[0].padEnd(12, ' ')} ${(data[1].toString()).padEnd(2, ' ')} ${data[2].padEnd(15, ' ')}\n`;
+                            rs += `${data[0].toString().padEnd(12, ' ')} ${(data[1].toString()).padEnd(2, ' ')} ${data[2].padEnd(15, ' ')}\n`;
                         }
                     });
                     popUpEmbed(message, args,
