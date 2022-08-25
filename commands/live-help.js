@@ -13,7 +13,7 @@ All Warriors of WCL 🙂\n
 wcl abbs - lists all the clan abbreviations for a division\n
 wcl reps - lists the clan representative for a clan\n
 wcl roster - lists the clan's roster\n
-wcl attackframe - shows Champion(eSports) attack frame
+wcl attackframe - shows Champion(eSports) attack frame\n
 wcl search - searches a player for all available rosters\n
 wcl vdual - shows all duals in a particular division\n\n\n
 More commands coming soon.........`
