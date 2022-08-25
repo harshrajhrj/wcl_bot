@@ -109,9 +109,10 @@ module.exports = {
                         if (convert.values.find(function (row) { return row.length > 1; })) {
                             convert.values.forEach(data => {
                                 if (!(data[1] === undefined || data[1] === ' '))/*condition to eliminate blank values*/ {
-                                    data[1].replace(/[\t\n\r]/gm, '')
-                                    data[1].replace(/\s/g, '');
-                                    fresh.push([data[1].toUpperCase(), data[0]]);
+                                    const u1 = data[1].replace(/[\t\n\r]/gm, '')
+                                    const u2 = u1.replace(/\s/g, '');
+                                    const u3 = decodeURIComponent(u2).replace(/[^\x00-\x7F]/g, "")
+                                    fresh.push([u3.toUpperCase(), data[0]]);
                                 }
                             });
                             if (fresh.length <= division[2]) {

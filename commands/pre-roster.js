@@ -20,7 +20,7 @@ module.exports = {
         };
 
         async function getPlayerDetail(tag) {
-            const getData = await fetch(`https://api.clashofstats.com/players/${tag.slice(1)}`, options)
+            const getData = await fetch(`https://api.clashofstats.com/players/${decodeURIComponent(tag.slice(1)).replace(/[^\x00-\x7F]/g, "")}`, options)
             if (getData.status === 404) {
                 return { tag: tag, name: 'N/A', townHallLevel: -1 };
             }

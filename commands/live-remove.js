@@ -83,9 +83,13 @@ module.exports = {
             //forceRemove
             if (available === 'Found' && (message.author.id === '531548281793150987' || message.author.id === '602935588018061453' || message.member.hasPermission('MANAGE_GUILD')) && args.length > 2) {
                 if (args[2].toUpperCase() === '-F') {
-                    const p = await fetch('https://api.clashofstats.com/players/' + args[1].toUpperCase().slice(1), options);
+                    const p = await fetch('https://api.clashofstats.com/players/' + decodeURIComponent(args[1].toUpperCase().slice(1)).replace(/[^\x00-\x7F]/g, ""), options);
                     if (p.status === 404) {
                         update(dateNtime, args[1].toUpperCase(), 'None', message.author.id, 'None', 'None');
+                        return;
+                    } else {
+                        const data = await p.json();
+                        update(dateNtime, args[1].toUpperCase(), data.name, message.author.id, data.townHallLevel, 'None');
                         return;
                     }
                 }
@@ -101,7 +105,7 @@ module.exports = {
             // }
             perm.push(rosterData.rep1_dc, rosterData.rep2_dc);
 
-            const p = await fetch('https://api.clashofstats.com/players/' + args[1].toUpperCase().slice(1), options); //http://wclapi.tk/player/
+            const p = await fetch('https://api.clashofstats.com/players/' + decodeURIComponent(args[1].toUpperCase().slice(1)).replace(/[^\x00-\x7F]/g, ""), options); //http://wclapi.tk/player/
             let final = '';
             if (p.status === 503) {
                 final += 'Addition paused due to Maintenance Break!'
