@@ -2,7 +2,7 @@ const fs = require('fs');
 const Discord = require('discord.js');
 const { prefix, token } = require('./auth.json');
 const mongoose = require('mongoose');
-const bot = new Discord.Client();
+const bot = new Discord.Client({intents : Discord.Intents.ALL});
 const moment = require('moment');
 require('moment-duration-format');
 require('dotenv/config');
