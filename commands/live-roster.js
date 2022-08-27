@@ -13,6 +13,14 @@ module.exports = {
     missing: ['`clanAbb`'],
     explanation: 'Ex: wcl rs INQ',
     execute: async (message, args) => {
+        const notForUseChannels = [
+            '1011618454735966268',
+            '1011618703814705262',
+            '1011620257275838485',
+            '1011622480600903690',
+            '1011622635781771294'
+        ]
+
         const options = {
             'contentType': 'application/json',
             'method': 'get',
@@ -34,7 +42,7 @@ module.exports = {
             }
         }
 
-        if (!(message.channel.id === '941944701358047292' || message.channel.id === '941944848771080192' || message.channel.id === '941944931382075422' || message.channel.id === '941944985211772978' || message.channel.id === '941943218721923072' || message.channel.id === '941943402482782218' || message.channel.id === '941943477258842122')) {
+        if (!notForUseChannels.includes(message.channel.id)) {
             var getAbbRefer = fs.readFileSync('./commands/abbs.json');
             var getAbbData = JSON.parse(getAbbRefer);
 

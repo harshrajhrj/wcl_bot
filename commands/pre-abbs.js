@@ -12,6 +12,13 @@ module.exports = {
     explanation: 'Ex: wcl abbs H\nwhere H - Heavyweight division\n\nPrefix\nH - Heavy Weight\nF - Flight\nCL - Classic\nL - Light Weight\nE - Elite\nB - Blockage\nCS - Champions(Esports)',
     accessableby: ['League Admins', 'Moderator'],
     execute: async (message, args) => {
+        const notForUseChannels = [
+            '1011618454735966268',
+            '1011618703814705262',
+            '1011620257275838485',
+            '1011622480600903690',
+            '1011622635781771294'
+        ]
         const options = {
             'H': 'HEAVY',
             'F': 'FLIGHT',
@@ -48,7 +55,7 @@ module.exports = {
             'L': 'https://cdn.discordapp.com/attachments/995764484218028112/995764946975596564/WCl_Light_Division-.png?width=548&height=612',
             'CL': 'https://cdn.discordapp.com/attachments/995764484218028112/995765980972195850/WCL_Classic-.png?width=548&height=612'
         };
-        if (!(message.channel.id === '941944701358047292' || message.channel.id === '941944848771080192' || message.channel.id === '941944931382075422' || message.channel.id === '941944985211772978' || message.channel.id === '941943218721923072' || message.channel.id === '941943402482782218' || message.channel.id === '941943477258842122')) {
+        if (!notForUseChannels.includes(message.channel.id)) {
             if (!options[args[0].toUpperCase()])
                 return message.reply(`Incorrect division ${args[0].toUpperCase()}!`);
 

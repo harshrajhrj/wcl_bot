@@ -8,7 +8,7 @@ module.exports = {
     category: 'representative',
     usage: 'div_prefix',
     missing: ['`div_prefix`'],
-    explanation: 'Ex: wcl rl CL\n\nwhere CS - Champions\n\nPrefix\nH - Heavy Weight\nF - Flight\nCL - Classic\nL - Light Weight\nE - Elite\nB - Blockage\nCS - Champions(Esports)\n\nwcl rl CL -r\nwhere "-r" flag removes all the roles for a given div_prefix!',
+    explanation: 'Ex: wcl rl CS\n\nwhere CS - Champions\n\nPrefix\nH - Heavy Weight\nF - Flight\nCL - Classic\nL - Light Weight\nE - Elite\nB - Blockage\nCS - Champions(Esports)\n\nwcl rl CL -r\nwhere "-r" flag removes all the roles for a given div_prefix!',
     execute: async (message, args) => {
         const options = {
             'H': 'Heavy',
