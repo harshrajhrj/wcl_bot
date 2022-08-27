@@ -12,7 +12,8 @@ wcl updatedb - populates new details of clan abbreviations
 wcl changeroster - to change a complete roster
 wcl changesize - to resize new teams roster addition spot(author only)
 wcl creps - interchange/update the clan representatives
-wcl rts - removes all trailing white spaces and special characters from all tags\n\n
+wcl rts - removes all trailing white spaces and special characters from all tags
+wcl roleup - Helps to assign roles prior to a division\n\n
 More commands coming soon.........`
             message.channel.send('```plaintext\n' + com + '\n```');
         }

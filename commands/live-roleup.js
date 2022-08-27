@@ -1,7 +1,7 @@
 const repsSchema = require("./repsSchema/repsSchema");
 module.exports = {
-    name: 'roleup-lock',
-    aliases: ['rll'],
+    name: 'roleup',
+    aliases: ['rl'],
     description: `Helps to assign roles prior to a division`,
     args: true,
     length: 1,
