@@ -198,6 +198,25 @@ module.exports = async function showEmbed(message, args, embedData, embedType) {
 
                 await Embeds.build();
             }
+        } else if (embedType === 'schedule') {
+            const { color, warID, thumbnail, week, div, clan, opponent, dow, tow, duration, scheduledBy, approvedBy } = embedData;
+            const embed = new Discord.MessageEmbed()
+                .setColor(color)
+                .setTitle(`Schedule/War ID : ${warID}`)
+                .setThumbnail(thumbnail)
+                .setAuthor('By WCL')
+                .addField('Week', week, false)
+                .addField('Division', div, false)
+                .addField('Clan 1', clan, true)
+                .addField('Clan 2', opponent, false)
+                .addField('Scheduled On', ':calendar: ' + Date(dow).toLocaleString(), true)
+                .addField('Time(EST)', ':clock1: ' + tow, false)
+                .addField('Duration', ':timer: ' + duration, false)
+                .addField('Scheduled By', `<@${scheduledBy}>`, false)
+                .addField('Agreed By', `<@${approvedBy}>`, false)
+                .setTimestamp()
+                .setFooter('Agreed Time will be in EST Time Zone!')
+            await message.channel.send(embed);
         }
     } catch (err) {
         console.log(err.message);

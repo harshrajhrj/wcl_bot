@@ -5,8 +5,8 @@ const PaginationEmbed = require('discord-paginationembed');
 const fs = require('fs');
 
 module.exports = {
-    name: 'rosteradd-lock',
-    aliases: ['addl'],
+    name: 'rosteradd',
+    aliases: ['add'],
     description: 'Allows you to add a player to the WCL Roster',
     args: true,
     length: 2,
@@ -16,9 +16,12 @@ module.exports = {
     usage: 'clan_abb player_tag discord_id(optional)',
     explanation: 'Ex: wcl add INQ #XYZ DISCORD_ID\n\nwhere\nINQ is clan abb\n#XYZ is ClashOfClans PlayerTag and\nDISCORD_ID is long number ID of the player\n-F(forceAdd optional for league admins only)',
     execute: async (message, args) => {
-        if (message.channel.id === '941944848771080192' || message.channel.id === '941943402482782218' || message.channel.id === '847483626400907325' || message.channel.id === '766307563393515551') {
+        const channelPermmissions = [
+            '1011618703814705262',
+            '1011622635781771294'
+        ];
+        if (channelPermmissions.includes(message.channel.id) || message.member.hasPermission('MANAGE_GUILD')) {
             const options = {
-                'json': true,
                 'Accept': 'application/json',
                 'method': 'get',
                 'muteHttpExceptions': true
@@ -65,7 +68,7 @@ module.exports = {
             //cos history checking
             const dt = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/1qckELKFEYecbyGeDqRqItjSKm02ADpKfhkK1FiRbQ-c/values/Banned Clans!C6:C?majorDimension=ROWS&key=AIzaSyDUq4w3z35sS28BKWLdXSh32hlwUDDaD1Y`, options);
             const dt_array = await dt.json();
-            const data = await fetch(`https://api.clashofstats.com/players/${args[1].slice(1)}/history/clans/`, options);
+            const data = await fetch(`https://api.clashofstats.com/players/${decodeURIComponent(args[1].toUpperCase().slice(1)).replace(/[^\x00-\x7F]/g, "")}/history/clans/`, options);
             if (data.status === 403) {
                 message.reply(`**${args[1].toUpperCase()}** Clash Of Stats history is private, so couldn't process transaction!`);
                 return;
@@ -93,7 +96,7 @@ module.exports = {
             let a = 0;
             let found = '';
             async function pull(data1, data2, data3) {
-                const dt = await fetch(`https://api.clashofstats.com/clans/${data1.slice(1)}`, options); //http://wclapi.tk/clan/
+                const dt = await fetch(`https://api.clashofstats.com/clans/${decodeURIComponent(data1.slice(1)).replace(/[^\x00-\x7F]/g, "")}`, options); //http://wclapi.tk/clan/
                 const result = await dt.json();
                 return `Visited banned clan : **${data1}** : **${result.name}** on ${data2} for ${data3} days.`;
             };
@@ -160,7 +163,7 @@ module.exports = {
             // let t = id_data[1][0];
             // let r = id_data[2][0];
 
-            const p = await fetch('https://api.clashofstats.com/players/' + args[1].toUpperCase().slice(1), options); //http://wclapi.tk/player/
+            const p = await fetch('https://api.clashofstats.com/players/' + decodeURIComponent(args[1].toUpperCase().slice(1)).replace(/[^\x00-\x7F]/g, ""), options); //http://wclapi.tk/player/
             let final = '';
             if (p.status === 503) {
                 final += 'Addition paused due to Maintenance Break!'
@@ -178,7 +181,7 @@ module.exports = {
                         final += data.name;
                         th += data.townHallLevel;
                         if (found === '') {
-                            if (perm.includes(message.author.id) || message.author.id === '531548281793150987' || message.author.id === '602935588018061453') {
+                            if (perm.includes(message.author.id) || message.member.hasPermission('MANAGE_GUILD')) {
                                 if (rosterData.additionStatus === 'Yes') {
                                     if (rosterData.additionSpot === 'Yes') {
                                         update(dateNtime, args[1].toUpperCase(), final, message.author.id, th, dcid);
@@ -322,7 +325,7 @@ module.exports = {
                     additionStatus = 'No'
                 }
 
-                if ((args.includes('-F') || args.includes('-f')) && message.member.hasPermission('MANAGE_ROLES')) {
+                if ((args.includes('-F') || args.includes('-f')) && message.member.hasPermission('MANAGE_GUILD')) {
                     getData[0].rosterSize = rosterSize;
                     getData[0].additionSpot = additionSpot;
                 } else {
@@ -331,7 +334,7 @@ module.exports = {
                     getData[0].additionStatus = additionStatus;
 
                     // to be blocked during pre-season roster changes
-                    getData[0].additionStatusLimit = additionStatusLimit;
+                    // getData[0].additionStatusLimit = additionStatusLimit;
 
                 }
                 if (getData[0].additionRecord[0][0] === 'N/A') {

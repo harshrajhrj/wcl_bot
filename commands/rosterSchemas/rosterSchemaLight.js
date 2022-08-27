@@ -51,7 +51,7 @@ const rosterSchema = new mongoose.Schema({
     players: {
         type: Array,
         required: true,
-        default: [['N/A', 'N/A', 'N/A']]
+        default: [['N/A', 'N/A']]
     },
     additionRecord: {
         type: Array,

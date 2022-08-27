@@ -16,7 +16,11 @@ module.exports = {
     usage: 'clan_abb player_tag discord_id(optional)',
     explanation: 'Ex: wcl add INQ #XYZ DISCORD_ID\n\nwhere\nINQ is clan abb\n#XYZ is ClashOfClans PlayerTag\nDISCORD_ID is long number ID of the player\n-F(forceRemove optional for league admins only)',
     execute: async (message, args) => {
-        if (message.guild.id === '998948665383190659' || message.guild.id === '998948405864845353' || message.guild.id === '389162246627917826' || message.guild.id === '765523244332875776') {
+        const channelPermmissions = [
+            '1011618703814705262',
+            '1011622635781771294'
+        ];
+        if (channelPermmissions.includes(message.channel.id) || message.member.hasPermission('MANAGE_GUILD')) {
             const options = {
                 'json': true,
                 'Accept': 'application/json',
@@ -81,7 +85,7 @@ module.exports = {
             let available = await isAvailable(args[1].toUpperCase(), rosterData.players);
 
             //forceRemove
-            if (available === 'Found' && (message.author.id === '531548281793150987' || message.author.id === '602935588018061453' || message.member.hasPermission('MANAGE_GUILD')) && args.length > 2) {
+            if (available === 'Found' && message.member.hasPermission('MANAGE_GUILD') && args.length > 2) {
                 if (args[2].toUpperCase() === '-F') {
                     const p = await fetch('https://api.clashofstats.com/players/' + decodeURIComponent(args[1].toUpperCase().slice(1)).replace(/[^\x00-\x7F]/g, ""), options);
                     if (p.status === 404) {
@@ -123,7 +127,7 @@ module.exports = {
                 if (p.status === 200) {
                     final += data.name;
                     th += data.townHallLevel;
-                    if (perm.includes(message.author.id) || message.author.id === '531548281793150987' || message.author.id === '602935588018061453' || message.member.hasPermission('MANAGE_GUILD')) {
+                    if (perm.includes(message.author.id) || message.member.hasPermission('MANAGE_GUILD')) {
                         update(dateNtime, args[1].toUpperCase(), final, message.author.id, th, dcid);
                     }
                     else {

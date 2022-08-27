@@ -8,7 +8,8 @@ module.exports = {
 wcl add - allows you to add a player to the roster\n
 wcl remove - allows you to remove a player from the roster\n\n\n
 Representative Only\n
-Coming soon\n\n\n
+wcl sch - go for a war scheduling\n
+More commands coming soon.........\n\n\n
 All Warriors of WCL 🙂\n
 wcl abbs - lists all the clan abbreviations for a division\n
 wcl reps - lists the clan representative for a clan\n
