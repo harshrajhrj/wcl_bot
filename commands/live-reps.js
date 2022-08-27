@@ -98,6 +98,8 @@ module.exports = {
                     }, 100)
                 });
             }
+        } else {
+            message.reply(`You can't use this command here!`);
         }
     }
 }
