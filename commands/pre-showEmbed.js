@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 module.exports = async function showEmbed(message, args, embedData, embedType) {
     try {
         if (embedType === "roster") {
-            const { headerName, roster, thumbnail, townHalls, rosterSize, additionStatusLimit, clanName } = embedData;
+            const { headerName, roster, thumbnail, townHalls, rosterSize, additionStatusLimit, clanName, maxRosterSize, totalAdditions } = embedData;
             const embeds = [];
             const embed = new Discord.MessageEmbed()
                 .setColor('#1980de')
@@ -25,11 +25,11 @@ module.exports = async function showEmbed(message, args, embedData, embedType) {
             }
 
             if (embeds.length === 1) {
-                message.channel.send(embeds[0].addField(`**Roster Information**`, `<:townhall14:842730161718820885> | **${townHalls['th14']}**\n<:townhall13:766289069486506004> | **${townHalls['th13']}**\n<:townhall12:766289153766850562> | **${townHalls['th12']}**\n<:townhall11:766289216661356564> | **${townHalls['th11']}**\n<:townhall10:766289275490533426> | **${townHalls['th10']}**\n**Less than** <:townhall10:766289275490533426> | **${townHalls['less than 10']}**\n**Total Accounts** | **${rosterSize}**\n**Addition Left** | **${additionStatusLimit}**`).setFooter(`Page 1/1`));
+                message.channel.send(embeds[0].addField(`**Roster Information**`, `<:townhall14:842730161718820885> | **${townHalls['th14']}**\n<:townhall13:766289069486506004> | **${townHalls['th13']}**\n<:townhall12:766289153766850562> | **${townHalls['th12']}**\n<:townhall11:766289216661356564> | **${townHalls['th11']}**\n<:townhall10:766289275490533426> | **${townHalls['th10']}**\n**Less than** <:townhall10:766289275490533426> | **${townHalls['less than 10']}**\n**Total Accounts** | **${rosterSize}/${maxRosterSize}**\n**Addition Left** | **${additionStatusLimit}/${totalAdditions}**`).setFooter(`Page 1/1`));
             }
             else {
                 let m1 = 0;
-                embeds.map(function (r) { m1++; return r.addField(`**Roster Information**`, `<:townhall14:842730161718820885> | **${townHalls['th14']}**\n<:townhall13:766289069486506004> | **${townHalls['th13']}**\n<:townhall12:766289153766850562> | **${townHalls['th12']}**\n<:townhall11:766289216661356564> | **${townHalls['th11']}**\n<:townhall10:766289275490533426> | **${townHalls['th10']}**\n**Less than** <:townhall10:766289275490533426> | **${townHalls['less than 10']}**\n**Total Accounts** | **${rosterSize}**\n**Addition Left** | **${additionStatusLimit}**`).setFooter(`Page ${m1}/2`) })
+                embeds.map(function (r) { m1++; return r.addField(`**Roster Information**`, `<:townhall14:842730161718820885> | **${townHalls['th14']}**\n<:townhall13:766289069486506004> | **${townHalls['th13']}**\n<:townhall12:766289153766850562> | **${townHalls['th12']}**\n<:townhall11:766289216661356564> | **${townHalls['th11']}**\n<:townhall10:766289275490533426> | **${townHalls['th10']}**\n**Less than** <:townhall10:766289275490533426> | **${townHalls['less than 10']}**\n**Total Accounts** | **${rosterSize}/${maxRosterSize}**\n**Addition Left** | **${additionStatusLimit}/${totalAdditions}**`).setFooter(`Page ${m1}/2`) })
                 const Embeds = new paginationembed.Embeds()
                     .setArray(embeds)
                     .setTimeout(300000)

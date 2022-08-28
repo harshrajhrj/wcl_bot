@@ -73,7 +73,17 @@ module.exports = {
                     'th10': 0,
                     'less than 10': 0,
                 }
-                
+
+                var rSize = {
+                    'HEAVY': [100, 25],
+                    'FLIGHT': [70, 20],
+                    'ELITE': [50, 20],
+                    'BLOCKAGE': [40, 20],
+                    'CHAMPIONS': [10, 3],
+                    'CLASSIC': [50, 20],
+                    'LIGHT': [50, 20]
+                };
+
                 var uptoEnd = new Promise((resolve, reject) => {
                     rosterData[0].players.forEach(async data => {
                         let fetechedData = await getPlayerDetail(data[0]);
@@ -112,8 +122,10 @@ module.exports = {
                             roster: rs,
                             townHalls: townHalls,
                             rosterSize: rosterData[0].rosterSize,
+                            maxRosterSize: rSize[division.div][0],
                             additionStatusLimit: rosterData[0].additionStatusLimit,
-                            clanName: division.clanName
+                            totalAdditions: rSize[division.div][1],
+                            clanName: division.teamName === 'NONE' ? division.clanName : division.teamName
                         },
                         "roster"
                     )

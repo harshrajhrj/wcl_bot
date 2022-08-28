@@ -66,7 +66,10 @@ module.exports = {
                 if (allABBS.length > 0) {
                     var reqABBS = [];
                     allABBS.forEach(abb => {
-                        reqABBS.push([abb.abb, abb.clanTag, abb.clanName]);
+                        if (abb.teamName && abb.teamName != 'NONE')
+                            reqABBS.push([abb.abb, abb.clanTag, abb.teamName]);
+                        else
+                            reqABBS.push([abb.abb, abb.clanTag, abb.clanName])
                     });
 
                     reqABBS.sort(function (a, b) {
@@ -85,7 +88,7 @@ module.exports = {
                     let col = '';
                     reqABBS.forEach(data => {
                         if (!(data[0] === undefined)) {
-                            col += `${data[0].padEnd(4, ' ')} ${data[1].padEnd(12, ' ')} ${data[2].padEnd(15, ' ')}\n`;
+                            col += `${data[0].padEnd(4, ' ')} ${data[1].padEnd(12, ' ')} ${data[2].padEnd(15, ' ').substring(0, 15)}\n`;
                         }
                     });
 

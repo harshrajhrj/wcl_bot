@@ -10,17 +10,28 @@ const repSchema = new mongoose.Schema({
         required: true,
         unique: true,
         maxlength: 4,
+        uppercase: true,
     },
     clanTag: {
         type: String,
         required: true,
         maxlength: 15
     },
+    secondaryClanTag: {
+        type: String,
+        required: true,
+        default: '#N/A'
+    },
     clanName: {
         type: String,
         required: true,
         maxlength: 15,
         default: 'team'
+    },
+    teamName: {
+        type: String,
+        required: true,
+        default: "NONE"
     },
     rep1: {
         type: String,

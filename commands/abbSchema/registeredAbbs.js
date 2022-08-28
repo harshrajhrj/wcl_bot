@@ -19,12 +19,22 @@ const abbsSchema = new mongoose.Schema({
         maxlength: 15,
         uppercase: true
     },
+    secondaryClanTag: {
+        type: String,
+        required: true,
+        default: '#N/A'
+    },
     clanName: {
         type: String,
         required: true,
         maxlength: 15,
         default: "team"
-    }
+    },
+    teamName: {
+        type: String,
+        required: true,
+        default: "NONE"
+    },
 }, { collection: 'registered_abbs' });
 
 module.exports = mongoose.model('REGISTERED ABBS', abbsSchema);

@@ -62,9 +62,11 @@ module.exports = {
                         .setColor(color[division])
                         .setThumbnail(logo[division])
                         .setAuthor('WCL TECHNICAL', 'https://media.discordapp.net/attachments/766306691994091520/804653857447477328/WCL_BOt.png')
-                        .setTitle(`*Clan Info of ${findRepList.clanName}*`)
+                        .setTitle(`*Clan Info of ${findRepList.teamName === 'NONE' ? findRepList.clanName : findRepList.teamName}*`)
+                        .addField(`Team name:male_sign:`, findRepList.teamName === 'NONE' ? findRepList.clanName : findRepList.teamName)
                         .addField('Clan name<:cc:944312115643166720>', findRepList.clanName)
                         .addField('Clan tag:hash:', `[${findRepList.clanTag}](https://link.clashofclans.com/?action=OpenClanProfile&tag=%23${findRepList.clanTag.slice(1)})`)
+                        .addField('Secondary clan tag:hash:', `[${findRepList.secondaryClanTag}](https://link.clashofclans.com/?action=OpenClanProfile&tag=%23${findRepList.secondaryClanTag.slice(1)})`)
                         .addFields(
                             {
                                 name: 'Representative:one:',
