@@ -82,13 +82,25 @@ const scheduleSchema = new mongoose.Schema({
         default: 'INACTIVE',
     },
     scheduledBy: {
-        type: String,
+        type: [String],
         required: true,
     },
     approvedBy: {
-        type: String,
+        type: [String],
         required: true,
+    },
+    forfeit: {
+        type: Boolean,
+        default: false
     }
 }, { collection: 'schedules', timestamps: true, versionKey: false })
 
 module.exports = mongoose.model('SCHEDULE', scheduleSchema);
+
+/*
+status
+inactive
+pending
+active
+completed
+*/

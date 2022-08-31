@@ -25,7 +25,7 @@ module.exports = {
             'contentType': 'application/json',
             'method': 'get',
             'muteHttpExceptions': true,
-            // 'headers': { 'Accept': 'application/json', 'authorization': `Bearer ${token}`}
+            // 'headers': { 'Accept': 'application/json', 'authorization': `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6IjcwNWIyOGY2LWFhMjEtNDc4NC1hOTNiLWMwYzg4MjM5YzI2YyIsImlhdCI6MTY2MTY5MzU4Miwic3ViIjoiZGV2ZWxvcGVyLzA3OTVlYmEzLWMxN2UtNjc2NS00ZWUzLThkMDdlMmExNTY0MCIsInNjb3BlcyI6WyJjbGFzaCJdLCJsaW1pdHMiOlt7InRpZXIiOiJkZXZlbG9wZXIvc2lsdmVyIiwidHlwZSI6InRocm90dGxpbmcifSx7ImNpZHJzIjpbIjEwMy4zMC4xNzguMzIiXSwidHlwZSI6ImNsaWVudCJ9XX0.XGhCj_RexHT6F5NsIHoWYRTKxjBXPDUWeUra5ogpHgZIpBYqxRfRgCDxR89pjOy9LcdICUcGQXgdM_tYcqgDUg`}
         };
 
         async function getPlayerDetail(tag) {

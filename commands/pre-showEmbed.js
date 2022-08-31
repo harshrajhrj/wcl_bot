@@ -209,7 +209,7 @@ module.exports = async function showEmbed(message, args, embedData, embedType) {
                 .addField('Division', div, false)
                 .addField('Clan 1', clan, true)
                 .addField('Clan 2', opponent, false)
-                .addField('Scheduled On', ':calendar: ' + Date(dow).toLocaleString(), true)
+                .addField('Scheduled On', ':calendar: ' + dow, true)
                 .addField('Time(EST)', ':clock1: ' + tow, false)
                 .addField('Duration', ':timer: ' + duration, false)
                 .addField('Scheduled By', `<@${scheduledBy}>`, false)
