@@ -161,7 +161,7 @@ Note - The steps must be in above order in single line, no line break!`,
 
             // checking existing scheduled war which couldn't be overriden
             if (await checkExisting(week[args[0].toUpperCase()], clan[3], clan[2], opponent[2]))
-                return message.reply(`War between **${clan[1]}** and **${opponent[1]}** is already scheduled for **${week[args[0].toUpperCase()]}** | **${clan[3]}**\OR\nTeam is in other war!(Trying deleting your warID)`);
+                return message.reply(`War between **${clan[1]}** and **${opponent[1]}** is already scheduled for **${week[args[0].toUpperCase()]}** | **${clan[3]}**\nOR\nTeam is in other war!(Trying deleting your warID)`);
 
             // after all checking let's schedule a war
             // generate a new warID
