@@ -199,6 +199,7 @@ module.exports = async function showEmbed(message, args, embedData, embedType) {
                 await Embeds.build();
             }
         } else if (embedType === 'schedule') {
+            await message.react('✅');
             const { color, warID, thumbnail, week, div, clan, opponent, dow, tow, duration, scheduledBy, approvedBy } = embedData;
             const embed = new Discord.MessageEmbed()
                 .setColor(color)
