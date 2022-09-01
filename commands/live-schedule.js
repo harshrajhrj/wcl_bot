@@ -125,7 +125,7 @@ Note - The steps must be in above order in single line, no line break!`,
             var yearIndex = formatItems.indexOf("yyyy");
             var month = parseInt(dateItems[monthIndex]);
             month -= 1;
-            var formatedDate = new Date(dateItems[yearIndex], month, dateItems[dayIndex]);
+            var formatedDate = new Date(dateItems[yearIndex], month, `${parseInt(dateItems[dayIndex], 10) + 1}`);
             return formatedDate;
         }
 
