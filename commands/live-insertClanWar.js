@@ -11,7 +11,25 @@ module.exports = {
     category: "admins",
     usage: 'wk-Starting-Ending clanAbb opponentAbb1 opponentAbb2 ... ...',
     missing: ['`wk-Starting-Ending`, ', '`clanAbb`, ', '`opponentAbb1`, ', '`opponentAbb2`, ', '`...`, ', '`...`'],
-    explanation: 'Ex: wcl iwars wk-1-7 ABC XYZ PQR\n\nwhere wk-1-7 is wk 1 to 7\nABC - clanAbb\nXYZ - opponentAbb for wk1\nPQR - opponentAbb for wk2\n\nNote: Once the command is used, then the opponents are locked!',
+    explanation: `Ex: wcl iwars wk-1-7 ABC XYZ PQR\n\nwhere wk-1-7 is wk 1 to 7\nABC - clanAbb\nXYZ - opponentAbb for wk1\nPQR - opponentAbb for wk2\n\nWeek code/range
+    1: 'WK1',
+    2: 'WK2',
+    3: 'WK3',
+    4: 'WK4',
+    5: 'WK5',
+    6: 'WK6',
+    7: 'WK7',
+    8: 'WK8',
+    9: 'WK9',
+    10: 'WK10',
+    11: 'WK11',
+    12: 'R128',
+    13: 'R64',
+    14: 'R32',
+    15: 'WC',
+    16: 'QF',
+    17: 'SF',
+    18: 'F'\n\nNote: Once the command is used, then the opponents are locked!`,
     accessableby: ['League Admins', 'Moderator'],
     execute: async (message, args) => {
         const notForUseChannels = [
@@ -77,7 +95,7 @@ module.exports = {
         }
 
         try {
-            if (!notForUseChannels.includes(message.channel.id) || message.member.hasPermission('MANAGE_GUILD')) {
+            if (!notForUseChannels.includes(message.channel.id) && message.member.hasPermission('MANAGE_GUILD')) {
 
                 // checking week ranges
                 const weeks = args[0].toUpperCase().split('-');
@@ -140,6 +158,7 @@ module.exports = {
 
                 } else {
                     var opponentObject = new Object;
+                    var messageString = '';
                     for (var i = parseInt(weeks[1], 10); i <= parseInt(weeks[2], 10); i++) {
                         var opponentObjectData = new Object;
                         opponentObjectData['abb'] = opponentClans[i - 1][2];
@@ -151,6 +170,7 @@ module.exports = {
                         opponentObjectData['warID'] = null;
                         opponentObjectData['deleteHistory'] = null;
                         opponentObject[week[i]] = opponentObjectData;
+                        messageString += `${week[i]} | ${args[1].toUpperCase()}    vs     ${opponentClans[i - 1][2]}\n`;
                     }
                     const insertWar = new indWarSchema({
                         abb: args[1].toUpperCase(),
@@ -162,6 +182,9 @@ module.exports = {
                     })
                     await insertWar.save()
                         .then((insWar) => console.log(insWar));
+
+                    await message.react('✅');
+                    message.reply(`Scheduled **${args[1].toUpperCase()}** from Week ${weeks[1]} to ${weeks[2]}\n` + "```plaintext\n" + messageString + "```");
                 }
             }
         } catch (err) {

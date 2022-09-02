@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const repSchema = new mongoose.Schema({
     div: {
         type: String,
-        required: true
+        required: true,
+        uppercase: true
     },
     abb: {
         type: String,

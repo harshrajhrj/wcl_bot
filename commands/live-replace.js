@@ -2,6 +2,7 @@
 //updating clan abb changes take place in reps collection(matching through division), division-wise collection(matching through division), abbs collection(matching through division)
 const fs = require('fs');
 const fetch = require('node-fetch');
+
 module.exports = {
     name: 'replace',
     aliases: ['replace'],
@@ -287,6 +288,79 @@ module.exports = {
             }
         }
 
+        async function updateIndWarRecord(division) {
+            const individualWarRecord = require('./war&schedule&standings/individualWarRecord');
+            if (args[0].toUpperCase() === 'ABB') {
+                await individualWarRecord.findOneAndUpdate(
+                    { abb: args[1].toUpperCase() },
+                    { abb: args[2].toUpperCase() }
+                ).then((data) => console.log(data));
+            } else if (args[0].toUpperCase() === 'CT') {
+
+                const options = {
+                    'json': true,
+                    'Accept': 'application/json',
+                    'method': 'get',
+                    'muteHttpExceptions': true
+                };
+
+                const fetchClan = await fetch(`https://api.clashofstats.com/clans/${decodeURIComponent(args[2].toUpperCase().slice(1)).replace(/[^\x00-\x7F]/g, "")}`, options);
+
+                if (fetchClan.status === 404) {
+                    message.reply(`Clan ${args[2].toUpperCase()} not found!`);
+                    return;
+                }
+                else if (fetchClan.status === 503) {
+                    message.reply(`Replacing paused due to maintenance break!`);
+                    return;
+                }
+
+                await individualWarRecord.findOneAndUpdate(
+                    { abb: args[1].toUpperCase() },
+                    {
+                        clanTag: args[2].toUpperCase(),
+                    }
+                ).then((data) => console.log(data));
+
+                const findDivClans = await individualWarRecord.find({ div: division });
+                for (var i = 0; i < findDivClans.length; i++) {
+                    for (const week in findDivClans[i].opponent) {
+                        if (findDivClans[i].opponent[week].abb === args[1].toUpperCase()) {
+                            findDivClans[i].opponent[week].clanTag = args[2].toUpperCase();
+                        }
+                    }
+                    await findDivClans[i].markModified("opponent");
+                    await findDivClans[i].save()
+                        .then((record) => console.log(record));
+                }
+            } else if (args[0].toUpperCase() === 'SWAP') {
+
+                const abbSchema = require(`./abbSchema/registeredAbbs`);
+
+                const oldData = await abbSchema.findOne({ abb: args[1].toUpperCase() });
+                // var primaryClan = oldData.clanTag;
+                var secClan = oldData.clanTag;
+                await individualWarRecord.findOneAndUpdate(
+                    { abb: args[1].toUpperCase() },
+                    {
+                        clanTag: secClan
+                    }
+                ).then((data) => console.log(data));
+
+                const findDivClans = await individualWarRecord.find({ div: division });
+                for (var i = 0; i < findDivClans.length; i++) {
+                    for (const week in findDivClans[i].opponent) {
+                        if (findDivClans[i].opponent[week].abb === args[1].toUpperCase()) {
+                            findDivClans[i].opponent[week].clanTag = secClan;
+                        }
+                    }
+                    await findDivClans[i].markModified("opponent");
+                    await findDivClans[i].save()
+                        .then((record) => console.log(record));
+                }
+            }
+        }
+
         if (!notForUseChannels.includes(message.channel.id) && message.member.hasPermission('MANAGE_GUILD')) {
             if (args[0].toUpperCase() === 'ABB') { //abb change
                 let division = await abbCheck(args[1].toUpperCase());
@@ -317,6 +391,10 @@ module.exports = {
                 await divRosterCollection(division);
                 //Updating division-wise roster collection ended
 
+                //Updating individual war record
+                await updateIndWarRecord(division);
+                //Updating individual war record collection ended
+
                 await message.react('✅');
                 message.reply(`Updated abb change from **${args[1].toUpperCase()}** to **${args[2].toUpperCase()}**\nPlease use ` + '`wcl updatedb` to successfully load database!').then((msg) => msg.react('✅'));
                 return;
@@ -339,6 +417,10 @@ module.exports = {
                 //Updating division-wise roster collection
                 await divRosterCollection(division);
                 //Updating division-wise roster collection ended
+
+                //Updating individual war record
+                await updateIndWarRecord(division);
+                //Updating individual war record collection ended
 
                 await message.react('✅');
                 message.reply(`Updated clanTag for **${args[1].toUpperCase()}** to **${args[2].toUpperCase()}**\nPlease use ` + '`wcl updatedb` to successfully load database!').then((msg) => msg.react('✅'));
@@ -397,6 +479,10 @@ module.exports = {
                 //Updating division-wise roster collection
                 await divRosterCollection(division);
                 //Updating division-wise roster collection ended
+
+                //Updating individual war record
+                await updateIndWarRecord(division);
+                //Updating individual war record collection ended
 
                 await message.react('✅');
                 message.reply(`Swaped primaryClanTag for **${args[1].toUpperCase()}** to **${args[2].toUpperCase()}**\nPlease use ` + '`wcl updatedb` to successfully load database!').then((msg) => msg.react('✅'));
