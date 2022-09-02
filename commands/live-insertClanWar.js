@@ -95,7 +95,7 @@ module.exports = {
         }
 
         try {
-            if (!notForUseChannels.includes(message.channel.id) && message.member.hasPermission('MANAGE_GUILD')) {
+            if (!notForUseChannels.includes(message.channel.id) && message.member.hasPermission('MANAGE_ROLES')) {
 
                 // checking week ranges
                 const weeks = args[0].toUpperCase().split('-');
