@@ -361,7 +361,7 @@ module.exports = {
             }
         }
 
-        if (!notForUseChannels.includes(message.channel.id) && message.member.hasPermission('MANAGE_GUILD')) {
+        if (!notForUseChannels.includes(message.channel.id) && message.member.hasPermission('MANAGE_ROLES')) {
             if (args[0].toUpperCase() === 'ABB') { //abb change
                 let division = await abbCheck(args[1].toUpperCase());
                 if (division === '') {
