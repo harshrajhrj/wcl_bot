@@ -10,6 +10,7 @@ League Admins Only
 wcl replace - replaces old clan_abb with new clan_abb
 wcl updatedb - populates new details of clan abbreviations
 wcl insertwars - inserts official wars for tracking
+wcl deletewars - Delete official wars
 wcl changeroster - to change a complete roster
 wcl changesize - to resize new teams roster addition spot(author only)
 wcl creps - interchange/update the clan representatives
