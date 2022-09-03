@@ -1,0 +1,1 @@
+//populates weekly bans of Blockage division
