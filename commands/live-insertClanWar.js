@@ -1,13 +1,12 @@
-const popUpEmbed = require('./pre-showEmbed');
 const fs = require('fs');
 const indWarSchema = require('./war&schedule&standings/individualWarRecord');
 
 module.exports = {
-    name: 'insertWars',
+    name: 'insertwars',
     aliases: ['iwars'],
     description: 'Insert official wars',
     args: true,
-    length: 2,
+    length: 3,
     category: "admins",
     usage: 'wk-Starting-Ending clanAbb opponentAbb1 opponentAbb2 ... ...',
     missing: ['`wk-Starting-Ending`, ', '`clanAbb`, ', '`opponentAbb1`, ', '`opponentAbb2`, ', '`...`, ', '`...`'],

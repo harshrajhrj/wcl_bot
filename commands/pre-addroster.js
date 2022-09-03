@@ -118,6 +118,7 @@ module.exports = {
                             if (fresh.length <= division[2]) {
                                 const abbCollection = require('./abbSchema/registeredAbbs');
                                 const repCollection = require('./repsSchema/repsSchema');
+                                const backUpRosterSchema = require('./war&schedule&standings/backUp');
                                 var rosterData = await rosterSchema.findOne({ abb: args[0].toUpperCase() });
                                 if (rosterData) {
                                     // var values = rosterData.players;
@@ -127,6 +128,17 @@ module.exports = {
                                     else {
                                         rosterData.additionSpot = 'No';
                                     }
+
+                                    // storing roster as backup
+                                    const backUpRosterSchemaData = new backUpRosterSchema({
+                                        type: 'ROSTER',
+                                        abb: args[0].toUpperCase(),
+                                        history: rosterData
+                                    })
+
+                                    await backUpRosterSchemaData.save()
+                                        .then((data) => console.log(data));
+                                    
                                     rosterData.div = division[0];
                                     rosterData.clanTag = args[1].toUpperCase();
                                     rosterData.rosterSize = fresh.length;
