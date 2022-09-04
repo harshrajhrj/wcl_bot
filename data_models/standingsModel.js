@@ -11,6 +11,7 @@
         this.abb = clanRecordObject.abb;
         this.clanTag = clanRecordObject.clanTag;
         this.conference = clanRecordObject.conference;
+        this.opponents = clanRecordObject.opponent;
         this.wins = 0;
         this.loses = 0;
         this.ties = 0;
@@ -18,7 +19,7 @@
         this.matchesPlayed = 0;
         this.starsFor = 0;
         this.starsAgainst = 0;
-        this.setStats(clanRecordObject.opponent);
+        this.setStats(this.opponents);
     }
 
     /**
@@ -44,6 +45,25 @@
         }
         this.averageSD = (this.starsFor - this.starsAgainst)/this.matchesPlayed;
         this.averagePerDest = this.perDest/this.matchesPlayed;
+    }
+
+    /**
+     * Get opponent of a particular week of the clan.
+     * @async
+     * @param {String} week Ex: `WK1` 
+     * @return {returnType}
+     */
+    async getOpponent(week){
+        var returnType = {
+            abb: "",
+            clanTag: "",
+            status: "W/L/T/UNDECLARED",
+            starFor: 0,
+            starAgainst: 0,
+            perDest: 0,
+            warID: 0
+        }
+        return this.opponents[week];
     }
 }
 
@@ -103,3 +123,4 @@ class StandingsModel{
 }
 
 module.exports.StandingsModel = StandingsModel;
+module.exports.ClanModel = ClanModel;
