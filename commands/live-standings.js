@@ -8,8 +8,8 @@ const ErrorHandler = require("../utility/errorUtils");
 
 module.exports = {
     name : "standings",
-    aliases : ["std","standings","rank"],
-    description: 'Lists the standings for WCL',
+    aliases : ['std','standings','rank'],
+    description: 'Lists the official standings of WCL for a particular division',
     args: true,
     length: 1,
     category: "all",
