@@ -28,7 +28,7 @@ state - inWar
 */
 
 // running every 10 mins
-cron.schedule('0 * * * *', async function () {
+cron.schedule('*/10 * * * *', async function () {
     const getActiveWars = await scheduleSchema.find({ status: 'ACTIVE' });
     var productsToReturn = []
     let requests = getActiveWars.map(id => {
