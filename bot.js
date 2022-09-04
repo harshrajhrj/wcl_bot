@@ -1,6 +1,6 @@
 const fs = require('fs');
 const Discord = require('discord.js');
-const { prefix, token } = require('./auth.json');
+const { prefix, token, utilityToken } = require('./auth.json');
 const mongoose = require('mongoose');
 const bot = new Discord.Client({intents : Discord.Intents.ALL});
 const moment = require('moment');
@@ -21,7 +21,7 @@ for (const file of commandFiles) {
 const cooldowns = new Discord.Collection();
 
 bot.once('ready', () => {
-	console.log('Ready!');
+	console.log('Connected to Discord!');
 });
 
 bot.on('message', async message => {
