@@ -5,8 +5,8 @@ const scheduleSchema = require('./war&schedule&standings/scheduleSchema');
 const fetch = require('node-fetch');
 
 
-// const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6ImIyN2ZiMWIzLWZjZmUtNDY2Ni1hNzBkLWI5ZTU3YzM0YzU2MSIsImlhdCI6MTY2MjIyNDQ2MSwic3ViIjoiZGV2ZWxvcGVyLzA3OTVlYmEzLWMxN2UtNjc2NS00ZWUzLThkMDdlMmExNTY0MCIsInNjb3BlcyI6WyJjbGFzaCJdLCJsaW1pdHMiOlt7InRpZXIiOiJkZXZlbG9wZXIvc2lsdmVyIiwidHlwZSI6InRocm90dGxpbmcifSx7ImNpZHJzIjpbIjEwMy4zMC4xNzguNDAiXSwidHlwZSI6ImNsaWVudCJ9XX0.U5cMsV9ABZehyVzb0JFTrJ29xSMpRQlaxpzPn0gI2wUpFWOgPyZITcACwonUt0yCvSi7V8PFJtFsSaZXuhOSFA';
-const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6IjY4YzMyYzE4LTZmMjYtNGYzMS1iNGRhLWQxZmI1MDRkYTM5MyIsImlhdCI6MTY2MjIzNDYyNSwic3ViIjoiZGV2ZWxvcGVyLzA3OTVlYmEzLWMxN2UtNjc2NS00ZWUzLThkMDdlMmExNTY0MCIsInNjb3BlcyI6WyJjbGFzaCJdLCJsaW1pdHMiOlt7InRpZXIiOiJkZXZlbG9wZXIvc2lsdmVyIiwidHlwZSI6InRocm90dGxpbmcifSx7ImNpZHJzIjpbIjE2Mi4yNDguMTAxLjIxMSJdLCJ0eXBlIjoiY2xpZW50In1dfQ.yaUi4pl2Kk9PU7C8GVdnj__V1Fafw5xCLe_tVPAyZofbbk7LjzROebytl-XaAVxevfL84nd8Ih50gRfae9wuXQ'
+const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6ImIyN2ZiMWIzLWZjZmUtNDY2Ni1hNzBkLWI5ZTU3YzM0YzU2MSIsImlhdCI6MTY2MjIyNDQ2MSwic3ViIjoiZGV2ZWxvcGVyLzA3OTVlYmEzLWMxN2UtNjc2NS00ZWUzLThkMDdlMmExNTY0MCIsInNjb3BlcyI6WyJjbGFzaCJdLCJsaW1pdHMiOlt7InRpZXIiOiJkZXZlbG9wZXIvc2lsdmVyIiwidHlwZSI6InRocm90dGxpbmcifSx7ImNpZHJzIjpbIjEwMy4zMC4xNzguNDAiXSwidHlwZSI6ImNsaWVudCJ9XX0.U5cMsV9ABZehyVzb0JFTrJ29xSMpRQlaxpzPn0gI2wUpFWOgPyZITcACwonUt0yCvSi7V8PFJtFsSaZXuhOSFA';
+// const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6IjY4YzMyYzE4LTZmMjYtNGYzMS1iNGRhLWQxZmI1MDRkYTM5MyIsImlhdCI6MTY2MjIzNDYyNSwic3ViIjoiZGV2ZWxvcGVyLzA3OTVlYmEzLWMxN2UtNjc2NS00ZWUzLThkMDdlMmExNTY0MCIsInNjb3BlcyI6WyJjbGFzaCJdLCJsaW1pdHMiOlt7InRpZXIiOiJkZXZlbG9wZXIvc2lsdmVyIiwidHlwZSI6InRocm90dGxpbmcifSx7ImNpZHJzIjpbIjE2Mi4yNDguMTAxLjIxMSJdLCJ0eXBlIjoiY2xpZW50In1dfQ.yaUi4pl2Kk9PU7C8GVdnj__V1Fafw5xCLe_tVPAyZofbbk7LjzROebytl-XaAVxevfL84nd8Ih50gRfae9wuXQ'
 const options = {
     'contentType': 'application/json',
     'method': 'get',
@@ -28,7 +28,7 @@ state - inWar
 */
 
 // running every 10 mins
-cron.schedule('*/10 * * * *', async function () {
+cron.schedule('*/20 * * * * *', async function () {
     const getActiveWars = await scheduleSchema.find({ status: 'ACTIVE' });
     var productsToReturn = []
     let requests = getActiveWars.map(id => {
@@ -49,8 +49,8 @@ cron.schedule('*/10 * * * *', async function () {
         try {
             getActiveWars.forEach(async war => {
                 const warData = productsToReturn.find(function (warData) {
-                    if (warData.state != undefined) {
-                        return warData.opponent.tag === war.opponent.tag
+                    if (warData.state != undefined && warData.state != 'notInWar') {
+                        return war.clan.tag === warData.clan.tag && warData.opponent.tag === war.opponent.tag
                     }
                 })
                 if (warData) {
