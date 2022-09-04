@@ -57,7 +57,8 @@ module.exports = {
                         scheduledBy: warID.scheduledBy[0],
                         approvedBy: warID.approvedBy[0],
                         clanStats: warID.clan,
-                        opponentStats: warID.opponent
+                        opponentStats: warID.opponent,
+                        status: warID.status,
                     },
                     'stats'
                 );

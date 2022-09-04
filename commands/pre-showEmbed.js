@@ -219,7 +219,7 @@ module.exports = async function showEmbed(message, args, embedData, embedType) {
                 .setFooter('Agreed Time will be in EST Time Zone!')
             await message.channel.send(embed);
         } else if (embedType === 'stats') {
-            const { color, warID, thumbnail, week, div, clan, opponent, dow, tow, duration, scheduledBy, approvedBy, clanStats, opponentStats } = embedData;
+            const { color, warID, thumbnail, week, div, clan, opponent, dow, tow, duration, scheduledBy, approvedBy, clanStats, opponentStats, status } = embedData;
             const embeds = [];
             const embed = new Discord.MessageEmbed()
                 .setColor(color)
@@ -246,6 +246,7 @@ module.exports = async function showEmbed(message, args, embedData, embedType) {
                 .addField(`Clan - ${clanStats.abb}`, `${clanStats.dest}%`, false)
                 .addField(`Opponent - ${opponentStats.abb}`, `⭐ ${opponentStats.star}`, false)
                 .addField(`Opponent - ${opponentStats.abb}`, `${opponentStats.dest}%`, false)
+                .addField('Status', status, false)
                 .setTimestamp()
             embeds.push(embedStats);
             let m1 = 0;
