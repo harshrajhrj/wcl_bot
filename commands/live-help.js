@@ -18,6 +18,7 @@ wcl roster - lists the clan's roster
 wcl attackframe - shows Champion(eSports) attack frame
 wcl search - searches a player for all available rosters
 wcl vdual - shows all duals in a particular division
+wcl stats - shows scheduled war detail with the war stats(if active)
 More commands coming soon.........`
         message.channel.send('```plaintext\n' + com + '\n```')
     }
