@@ -25,10 +25,10 @@ class ErrorHandler{
                     .setTimestamp();
                     
         const c = message.client;
-        const auditLog = await c.channels.fetch("1015187009331003442");
+        const auditLog = await c.channels.fetch("765523244332875779");
         const spooky = await c.users.fetch("602935588018061453");
-        // const raj = await c.users.fetch("531548281793150987");
-        auditLog.send({content:`test ${spooky.toString()}`,embed:emb}); //${raj.toString()}
+        const raj = await c.users.fetch("531548281793150987");
+        auditLog.send({content:`${raj.toString()} ${spooky.toString()}`,embed:emb}); //${raj.toString()}
 
         message.reply("Something went wrong, The dev team has been notified. They'll get back to you soon!")
     }
