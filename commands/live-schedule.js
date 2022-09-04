@@ -230,8 +230,8 @@ Note - The steps must be in above order in single line, no line break!`,
 
                     await newWar.save()
                         .then((war) => console.log(war));
-                    // await updateIndWarRecordWarID(clan[2], warID[0].warID + 1);
-                    // await updateIndWarRecordWarID(opponent[2], warID[0].warID + 1);
+                    await updateIndWarRecordWarID(clan[2], warID[0].warID + 1);
+                    await updateIndWarRecordWarID(opponent[2], warID[0].warID + 1);
 
                     dateOfWar = dateOfWar.toISOString().split('T')[0];
                     showEmbed(message, args,
