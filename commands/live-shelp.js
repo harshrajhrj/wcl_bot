@@ -15,7 +15,7 @@ wcl getwartags - List the clan tags of wars of WCL for a particular division, we
 wcl insertwars - Inserts official wars for tracking
 wcl replace - Replaces old clan_abb with new clan_abb
 wcl res - Manual resulting of a war using warID and clanAbb
-wcl roleup - Helps to assign roles prior to a division\n\n
+wcl roleup - Helps to assign roles prior to a division
 wcl rts - Removes all trailing white spaces and special characters from all tags
 wcl updatedb - Populates new details of clan abbreviations
 More commands coming soon.........`
