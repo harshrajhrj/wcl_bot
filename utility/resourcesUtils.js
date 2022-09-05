@@ -32,6 +32,27 @@ class ResourcesUtils{
         'L': 'https://cdn.discordapp.com/attachments/995764484218028112/995764946975596564/WCl_Light_Division-.png?width=548&height=612',
         'CL': 'https://cdn.discordapp.com/attachments/995764484218028112/995765980972195850/WCL_Classic-.png?width=548&height=612'
     };
+
+    static WEEK_ABBS = {
+        'WK1': 'WK1',
+        'WK2': 'WK2',
+        'WK3': 'WK3',
+        'WK4': 'WK4',
+        'WK5': 'WK5',
+        'WK6': 'WK6',
+        'WK7': 'WK7',
+        'WK8': 'WK8',
+        'WK9': 'WK9',
+        'WK10': 'WK10',
+        'WK11': 'WK11',
+        'R128': 'R128',
+        'R64': 'R64',
+        'R32': 'R32',
+        'WC': 'WC',
+        'QF': 'QF',
+        'SF': 'SF',
+        'F': 'F',
+    }
 }
 
 module.exports = ResourcesUtils;

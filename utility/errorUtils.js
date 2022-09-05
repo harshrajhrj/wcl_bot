@@ -25,7 +25,7 @@ class ErrorHandler{
                     .setTimestamp();
                     
         const c = message.client;
-        const auditLog = await c.channels.fetch("1015971677760397342");
+        const auditLog = await c.channels.fetch("1015971677760397342"); // 1015971677760397342 => auditLog in wcl dev server.
         const spooky = await c.users.fetch("602935588018061453");
         const raj = await c.users.fetch("531548281793150987");
         auditLog.send({content:`${raj.toString()} ${spooky.toString()}`,embed:emb}); //${raj.toString()}
