@@ -5,6 +5,7 @@ const PaginationEmbed = require("discord-paginationembed");
 const Utility = require("../utility/utility");
 const { MessageEmbed } = require("discord.js");
 
+/*
 module.exports = {
     name : "clanstats",
     aliases : ['cs','clanstats'],
@@ -39,6 +40,7 @@ module.exports = {
             const title = `Clan Stats for ${obj.teamName}`
             const author = "By WCL Technical";
 
+            var embeds = [];
             const embed1 = new MessageEmbed()
                 .setAuthor(author)
                 .setColor(color)
@@ -46,17 +48,64 @@ module.exports = {
                 .setTitle(title)
                 .addField("W/T/L",`${clan.wins}/${clan.ties}/${clan.loses}`,false)
                 .addField("Stars",`\`\`\`\nAverage Star Diff => ${clan.averageSD}\nTotal Stars For => ${clan.starsFor}\nTotal Stars Against => ${clan.starsAgainst}\n\`\`\``,false)
-                .addField("Percentage",`\`\`\`\nAverage Destruction % => ${clan.averagePerDest}\n\`\`\``,false)
-                .setFooter("Page 1/1");
-            
-            message.channel.send(embed1);
+                .addField("Percentage",`\`\`\`\nAverage Destruction % => ${clan.averagePerDest}%\n\`\`\``,false);
+                
+            embeds.push(embed1);
+            // message.channel.send(embed1);
+            const weeks = Object.keys(clan.opponents); //["WK1","WK2", ...]
+            for(let wk of weeks){
+                const opp = await clan.getOpponent(wk);
 
+                // if(opp.status === "UNDECLARED") continue;
+                
+                var oppTeamName = await (await Utility.getClanByAbb(opp.abb)).teamName;
+                var pageTitle = `${obj.teamName} VS ${oppTeamName}`;
+                const oppRecords = await indWarSchema.findOne({abb : opp.abb});
+                const oppClan = new ClanModel(oppRecords);
+                const oppPerDest = await oppClan.getOpponent(wk).perDest;
+                var emb = new MessageEmbed()
+                    .setAuthor(author)
+                    .setColor(color)
+                    .setThumbnail(thumbnail)
+                    .setTitle(pageTitle)
+                    .setDescription(`${obj.teamName} => ${opp.starsFor} <:c_star:1016290573994442824>  ${opp.perDest}\n${oppTeamName} => ${opp.starAgainst} <:c_star:1016290573994442824>  ${oppPerDest}`)
+                
+                embeds.push(emb);
+                }
+
+                if(embeds.length === 1){
+                    message.channel.send(embeds[0].setFooter("Page 1/1"));
+                }else{
+                    //if more than 1 embed is created then send it as a embed pagination.
+                    let pageCount = 0; 
+                    embeds.map((e) => { pageCount++; return e.setFooter(`Page ${pageCount}/${embeds.length}`)});
+    
+                    const Embeds = new PaginationEmbed.Embeds()
+                        .setArray(embeds)
+                        .setTimeout(120000) //2 mins
+                        .setChannel(message.channel)
+                        .setDeleteOnTimeout(false)
+                        .setDisabledNavigationEmojis(["back","forward","jump","delete"])
+                        .setFunctionEmojis({
+                            '◀️': (_, instance) => {
+                                instance.setPage('back');
+                            },
+                            '▶️': (_, instance) => {
+                                instance.setPage('forward');
+                            },
+                            '⛔': (_, instance) => {
+                                //stops awaiting on click.
+                                instance.setTimeout(5);
+                            }
+                        })
+                    await Embeds.build();
+                }
         } catch (error) {
             return await ErrorHandler.unexpectedErrorHandler(error,message);
         }
     }
 }
-
+*/
 
 // /**
 //      * @static

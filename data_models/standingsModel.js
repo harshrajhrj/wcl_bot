@@ -61,7 +61,8 @@
             starFor: 0,
             starAgainst: 0,
             perDest: 0,
-            warID: 0
+            warID: 0,
+            deleteHistory: ""
         }
         return this.opponents[week];
     }
