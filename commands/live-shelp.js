@@ -14,6 +14,7 @@ wcl deletewars - Delete official wars which were used for tracking
 wcl getwartags - List the clan tags of wars of WCL for a particular division, week.
 wcl insertwars - Inserts official wars for tracking
 wcl replace - Replaces old clan_abb with new clan_abb
+wcl res - Manual resulting of a war using warID and clanAbb
 wcl roleup - Helps to assign roles prior to a division\n\n
 wcl rts - Removes all trailing white spaces and special characters from all tags
 wcl updatedb - Populates new details of clan abbreviations
