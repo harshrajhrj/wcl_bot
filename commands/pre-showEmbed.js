@@ -218,6 +218,66 @@ module.exports = async function showEmbed(message, args, embedData, embedType) {
                 .setTimestamp()
                 .setFooter('Agreed Time will be in EST Time Zone!')
             await message.channel.send(embed);
+        } else if (embedType === 'stats') {
+            const { embedArr } = embedData;
+            const embeds = [];
+            embedArr.forEach(embed => {
+                const Embed = new Discord.MessageEmbed()
+                    .setColor(embed.color)
+                    .setTitle(`Schedule/War ID : ${embed.warID}`)
+                    .setThumbnail(embed.thumbnail)
+                    .setAuthor('By WCL')
+                    .addField('Week', embed.week, false)
+                    .addField('Division', embed.div, false)
+                    .addField('Clan 1', embed.clan, true)
+                    .addField('Clan 2', embed.opponent, false)
+                    .addField('Scheduled On', ':calendar: ' + embed.dow, true)
+                    .addField('Time(EST)', ':clock1: ' + embed.tow, false)
+                    .addField('Duration', ':timer: ' + embed.duration, false)
+                    .addField('Scheduled By', `<@${embed.scheduledBy}>`, false)
+                    .addField('Agreed By', `<@${embed.approvedBy}>\n\u200B`, false)
+                    .addField('⚔️-----WAR STATS-----⚔️', '\u200B')
+                    .addField(`Clan - ${embed.clanStats.abb}`, `⭐ ${embed.clanStats.star}`, false)
+                    .addField(`Clan - ${embed.clanStats.abb}`, `${embed.clanStats.dest}%`, false)
+                    .addField(`Opponent - ${embed.opponentStats.abb}`, `⭐ ${embed.opponentStats.star}`, false)
+                    .addField(`Opponent - ${embed.opponentStats.abb}`, `${embed.opponentStats.dest}%`, false)
+                    .addField('Status', embed.status, false)
+                    .setTimestamp()
+                embeds.push(Embed);
+            })
+            let m1 = 0;
+            embeds.map(function (r) { m1++; return r.setFooter(`Page ${m1}/${embeds.length}`) })
+            const Embeds = new paginationembed.Embeds()
+                .setArray(embeds)
+                .setTimeout(600000)
+                .setChannel(message.channel)
+                /* Sets the client's assets to utilise. Available options:
+                 *  - message: the client's Message object (edits the message instead of sending new one for this instance)
+                 *  - prompt: custom content for the message sent when prompted to jump to a page
+                 *      {{user}} is the placeholder for the user mention
+                 *.setClientAssets({ prompt: 'Enter the page number between 1-6, you want to jump on {{user}}' })
+                 */
+                .setDeleteOnTimeout(false)
+                .setDisabledNavigationEmojis(['back', 'forward', 'jump', 'delete'])
+                .setFunctionEmojis({
+                    /*'⏮️': (_,instance) => { //to be enabled during season 9
+                        instance.setPage(1);
+                    },*/
+                    '◀️': (_, instance) => {
+                        instance.setPage('back');
+                    },
+                    '▶️': (_, instance) => {
+                        instance.setPage('forward');
+                    },
+                    /*'⏭️': (_,instance) => { //to be enabled during season 9
+                        instance.setPage(4);
+                    },*/
+                    '🔄': (_, instance) => {
+                        instance.resetEmojis();
+                    }
+                })
+
+            await Embeds.build();
         }
     } catch (err) {
         console.log(err.message);

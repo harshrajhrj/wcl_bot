@@ -51,8 +51,8 @@ module.exports = {
                     return message.reply(`You're not authorized rep to delete the schedule of this war!`);
                 else {
                     await scheduleSchema.findOneAndDelete({ warID: parseInt(args[0].toUpperCase(), 10) })
-                    // await updateIndWarRecord(findSchedule.clan.abb, findSchedule);
-                    // await updateIndWarRecord(findSchedule.opponent.abb, findSchedule);
+                    await updateIndWarRecord(findSchedule.clan.abb, findSchedule);
+                    await updateIndWarRecord(findSchedule.opponent.abb, findSchedule);
                     message.reply(`Successfully deleted schedule!` + "```" + `${findSchedule.week} | ${findSchedule.div}\n\n${findSchedule.clan.abb} | ${findSchedule.clan.tag}\nvs\n${findSchedule.opponent.abb} | ${findSchedule.opponent.tag}` + "```")
                 }
             } else {

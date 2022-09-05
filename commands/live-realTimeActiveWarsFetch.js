@@ -49,8 +49,8 @@ cron.schedule('*/10 * * * *', async function () {
         try {
             getActiveWars.forEach(async war => {
                 const warData = productsToReturn.find(function (warData) {
-                    if (warData.state != undefined) {
-                        return warData.opponent.tag === war.opponent.tag
+                    if (warData.state != undefined && warData.state != 'notInWar') {
+                        return war.clan.tag === warData.clan.tag && warData.opponent.tag === war.opponent.tag
                     }
                 })
                 if (warData) {
