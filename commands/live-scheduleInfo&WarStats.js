@@ -9,9 +9,9 @@ module.exports = {
     args: true,
     length: 1,
     category: 'representative',
-    usage: 'warID',
-    missing: ['`warID`'],
-    explanation: 'Ex: wcl stats 1001',
+    usage: 'clanAbb',
+    missing: ['`clanAbb`'],
+    explanation: 'Ex: wcl stats ABC\nwhereABC is a clan abb',
     execute: async (message, args) => {
         const notForUseChannels = [
             '1011618454735966268',
