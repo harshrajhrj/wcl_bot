@@ -15,6 +15,7 @@ All Warriors of WCL 🙂
 wcl abbs - lists all the clan abbreviations for a division
 wcl reps - lists the clan representative for a clan
 wcl roster - lists the clan's roster
+wcl standings - lists official standing according to a division
 wcl attackframe - shows Champion(eSports) attack frame
 wcl search - searches a player for all available rosters
 wcl vdual - shows all duals in a particular division
