@@ -8,7 +8,7 @@ const Utility = require("../utility/utility");
 
 
 module.exports = {
-    name : "getAllWarTags",
+    name : "getallwartags",
     aliases : ["getwartags","gwt"],
     description: "Lists the clan tags of wars of WCL for a particular division, week.\nIn the form of `#clanTag1 #oppTag1 #clanTag2 #oppTag2 ...`",
     args: true,

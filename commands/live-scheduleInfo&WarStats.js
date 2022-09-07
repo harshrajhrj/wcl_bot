@@ -9,9 +9,9 @@ module.exports = {
     args: true,
     length: 1,
     category: 'representative',
-    usage: 'warID',
-    missing: ['`warID`'],
-    explanation: 'Ex: wcl stats 1001',
+    usage: 'clanAbb',
+    missing: ['`clanAbb`'],
+    explanation: 'Ex: wcl stats ABC\nwhereABC is a clan abb',
     execute: async (message, args) => {
         const notForUseChannels = [
             '1011618454735966268',
@@ -49,74 +49,79 @@ module.exports = {
         }
 
         if (!notForUseChannels.includes(message.channel.id)) {
-            var warIDs1 = await scheduleSchema.find({ 'clan.abb': args[0].toUpperCase() });
-            var warIDs2 = await scheduleSchema.find({ 'opponent.abb': args[0].toUpperCase() });
-            if (!warIDs1 || !warIDs2)
-                return message.reply(`Clan abb **${args[0].toUpperCase()}** doesn't exists!`);
-            const schedules = [];
-            if (warIDs1 && warIDs1.length > 0) {
-                for (var i = 0; i < warIDs1.length; i++) {
-                    if (warIDs1[i]) {
-                        const clan = await checkClan(warIDs1[i].clan.abb);
-                        const opponent = await checkClan(warIDs1[i].opponent.abb);
-                        schedules.push(
-                            {
-                                color: color[warIDs1[i].div],
-                                warID: warIDs1[i].warID,
-                                thumbnail: logo[warIDs1[i].div],
-                                week: warIDs1[i].week,
-                                div: warIDs1[i].div,
-                                clan: `${clan[0]} | ${clan[1]} | ${clan[2]}`,
-                                opponent: `${opponent[0]} | ${opponent[1]} | ${opponent[2]}`,
-                                dow: `${warIDs1[i].dow}`,
-                                tow: warIDs1[i].tow,
-                                duration: warIDs1[i].duration,
-                                scheduledBy: warIDs1[i].scheduledBy[0],
-                                approvedBy: warIDs1[i].approvedBy[0],
-                                clanStats: warIDs1[i].clan,
-                                opponentStats: warIDs1[i].opponent,
-                                status: warIDs1[i].status,
-                            }
-                        );
+            try {
+                var warIDs1 = await scheduleSchema.find({ 'clan.abb': args[0].toUpperCase() });
+                var warIDs2 = await scheduleSchema.find({ 'opponent.abb': args[0].toUpperCase() });
+                if (!warIDs1 || !warIDs2)
+                    return message.reply(`Clan abb **${args[0].toUpperCase()}** doesn't exists!`);
+                const schedules = [];
+                if (warIDs1 && warIDs1.length > 0) {
+                    for (var i = 0; i < warIDs1.length; i++) {
+                        if (warIDs1[i]) {
+                            const clan = await checkClan(warIDs1[i].clan.abb);
+                            const opponent = await checkClan(warIDs1[i].opponent.abb);
+                            schedules.push(
+                                {
+                                    color: color[warIDs1[i].div],
+                                    warID: warIDs1[i].warID,
+                                    thumbnail: logo[warIDs1[i].div],
+                                    week: warIDs1[i].week,
+                                    div: warIDs1[i].div,
+                                    clan: `${clan[0]} | ${clan[1]} | ${clan[2]}`,
+                                    opponent: `${opponent[0]} | ${opponent[1]} | ${opponent[2]}`,
+                                    dow: `${warIDs1[i].dow}`,
+                                    tow: warIDs1[i].tow,
+                                    duration: warIDs1[i].duration,
+                                    scheduledBy: warIDs1[i].scheduledBy[0],
+                                    approvedBy: warIDs1[i].approvedBy[0],
+                                    clanStats: warIDs1[i].clan,
+                                    opponentStats: warIDs1[i].opponent,
+                                    status: warIDs1[i].status,
+                                }
+                            );
+                        }
                     }
                 }
-            }
-            if (warIDs2 && warIDs2.length > 0) {
-                for (var i = 0; i < warIDs2.length; i++) {
-                    if (warIDs2[i]) {
-                        const clan = await checkClan(warIDs2[i].clan.abb);
-                        const opponent = await checkClan(warIDs2[i].opponent.abb);
-                        schedules.push(
-                            {
-                                color: color[warIDs2[i].div],
-                                warID: warIDs2[i].warID,
-                                thumbnail: logo[warIDs2[i].div],
-                                week: warIDs2[i].week,
-                                div: warIDs2[i].div,
-                                clan: `${clan[0]} | ${clan[1]} | ${clan[2]}`,
-                                opponent: `${opponent[0]} | ${opponent[1]} | ${opponent[2]}`,
-                                dow: `${warIDs2[i].dow}`,
-                                tow: warIDs2[i].tow,
-                                duration: warIDs2[i].duration,
-                                scheduledBy: warIDs2[i].scheduledBy[0],
-                                approvedBy: warIDs2[i].approvedBy[0],
-                                clanStats: warIDs2[i].clan,
-                                opponentStats: warIDs2[i].opponent,
-                                status: warIDs2[i].status,
-                            }
-                        );
+                if (warIDs2 && warIDs2.length > 0) {
+                    for (var i = 0; i < warIDs2.length; i++) {
+                        if (warIDs2[i]) {
+                            const clan = await checkClan(warIDs2[i].clan.abb);
+                            const opponent = await checkClan(warIDs2[i].opponent.abb);
+                            schedules.push(
+                                {
+                                    color: color[warIDs2[i].div],
+                                    warID: warIDs2[i].warID,
+                                    thumbnail: logo[warIDs2[i].div],
+                                    week: warIDs2[i].week,
+                                    div: warIDs2[i].div,
+                                    clan: `${clan[0]} | ${clan[1]} | ${clan[2]}`,
+                                    opponent: `${opponent[0]} | ${opponent[1]} | ${opponent[2]}`,
+                                    dow: `${warIDs2[i].dow}`,
+                                    tow: warIDs2[i].tow,
+                                    duration: warIDs2[i].duration,
+                                    scheduledBy: warIDs2[i].scheduledBy[0],
+                                    approvedBy: warIDs2[i].approvedBy[0],
+                                    clanStats: warIDs2[i].clan,
+                                    opponentStats: warIDs2[i].opponent,
+                                    status: warIDs2[i].status,
+                                }
+                            );
+                        }
                     }
                 }
-            }
-            if (schedules.length === 0)
-                return message.reply(`No wars scheduled for **${args[0].toUpperCase()}**!`)
+                if (schedules.length === 0)
+                    return message.reply(`No wars scheduled for **${args[0].toUpperCase()}**!`)
 
-            popUpEmbed(message, args,
-                {
-                    embedArr: schedules
-                },
-                'stats'
-            );
+                popUpEmbed(message, args,
+                    {
+                        embedArr: schedules
+                    },
+                    'stats'
+                );
+            } catch (err) {
+                console.log(err.message);
+                message.reply(err.message);
+            }
         } else {
             console.log(err.message);
             message.reply(err.message);
