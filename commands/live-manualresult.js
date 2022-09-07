@@ -59,6 +59,7 @@ module.exports = {
                             schedule.clan.star = parseInt(args[2].toUpperCase(), 10);
                             schedule.clan.dest = parseInt(args[3].toUpperCase(), 10);
                         }
+                        schedule.status = 'COMPLETED';
                         await schedule.save()
                             .then((data) => console.log(data));
                         await message.react('✅');
@@ -97,6 +98,7 @@ module.exports = {
                             schedule.opponent.star = parseInt(args[2].toUpperCase(), 10);
                             schedule.opponent.dest = parseInt(args[3].toUpperCase(), 10);
                         }
+                        schedule.status = 'COMPLETED';
                         await schedule.save()
                             .then((data) => console.log(data));
                         await message.react('✅');
