@@ -35,7 +35,7 @@
 
             //if opponent.starFor is null means it is a forfeited war, thus it won't get added to matchesPlayed 
             //since it won't be counted towards Average Star Differential
-            if(opponent.starFor !== null){
+            if(opponent.status !== "UNDECLARED"){
                 this.matchesPlayed++;
                 this.starsFor += opponent.starFor;
                 this.starsAgainst += opponent.starAgainst;
