@@ -2,7 +2,7 @@ const cron = require('node-cron');
 const scheduleSchema = require('./war&schedule&standings/scheduleSchema');
 const indWar = require('./war&schedule&standings/individualWarRecord');
 
-cron.schedule('*/20 * * * * *', async function () {
+cron.schedule('*/20 * * * *', async function () {
     try {
         const findCompletedWars = await scheduleSchema.find({ status: 'COMPLETED', 'clan.star': { $ne: 0 }, 'opponent.star': { $ne: 0 } });
         for (var i = 0; i < findCompletedWars.length; i++) {
