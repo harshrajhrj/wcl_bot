@@ -45,13 +45,17 @@ module.exports = {
 
         message.channel.send(`Processing....Please wait, this may take a while ${message.author.username}.`)
 
-        if (!notForUseChannels.includes(message.channel.id)) {
+        if (message.channel.id === '1011620257275838485') {
 
             // firstly check valid abb or not
             let abbArr = checkAbb(args[0].toUpperCase());
             if (abbArr.length === 0)
                 return message.reply(`Invalid clan abb **${args[0].toUpperCase()}**!`);
 
+            // checking for champ division
+            if (abbArr[0][3] === 'CHAMPIONS')
+                return message.reply(`Not allowed for Champions division!`);
+            
             // ban check of the tag
             let ban = await banCheck(args[1].toUpperCase());
             if (ban.length > 0)
