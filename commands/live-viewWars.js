@@ -5,17 +5,17 @@ const PaginationEmbed = require("discord-paginationembed");
 const Utility = require("../utility/utility");
 const { MessageEmbed } = require("discord.js");
 
-/*
+
 module.exports = {
-    name : "clanstats",
-    aliases : ['cs','clanstats'],
-    description: 'Lists the official standings of WCL for a particular division',
+    name : "viewwars",
+    aliases : ["vw", "viewwar", "viewwars"],
+    description: "View war stats of a clan.",
     args: true,
     length: 1,
     category: "all",
     usage: 'clanAbb',
     missing: ['`clanAbb`'],
-    explanation: 'Ex: wcl clanstats ES',
+    explanation: 'Ex: wcl viewwars ES',
     execute : async (message, args) => {
         const divAbbs = ResourcesUtils.DIVISION_ABBS;
         const divColor = ResourcesUtils.DIVISION_COLOR;
@@ -55,20 +55,23 @@ module.exports = {
             const weeks = Object.keys(clan.opponents); //["WK1","WK2", ...]
             for(let wk of weeks){
                 const opp = await clan.getOpponent(wk);
-
-                // if(opp.status === "UNDECLARED") continue;
+                
+                //skip iterations for undeclared wars.
+                if(opp.status === "UNDECLARED") continue;
                 
                 var oppTeamName = await (await Utility.getClanByAbb(opp.abb)).teamName;
-                var pageTitle = `${obj.teamName} VS ${oppTeamName}`;
+                var pageTitle = `${wk}\n${obj.teamName} \`vs\` ${oppTeamName}`;
                 const oppRecords = await indWarSchema.findOne({abb : opp.abb});
                 const oppClan = new ClanModel(oppRecords);
-                const oppPerDest = await oppClan.getOpponent(wk).perDest;
+                const oppPerDest = await (await oppClan.getOpponent(wk)).perDest;
+                var winnerString = (opp.status === "T") ? "Tie" : (opp.status === "W") ? `Winner: ${obj.teamName}` : `Winner: ${oppTeamName}`;
+
                 var emb = new MessageEmbed()
                     .setAuthor(author)
                     .setColor(color)
                     .setThumbnail(thumbnail)
                     .setTitle(pageTitle)
-                    .setDescription(`${obj.teamName} => ${opp.starsFor} <:c_star:1016290573994442824>  ${opp.perDest}\n${oppTeamName} => ${opp.starAgainst} <:c_star:1016290573994442824>  ${oppPerDest}`)
+                    .setDescription(`${obj.teamName} => ${opp.starFor} <:c_star:1016290573994442824>   ${opp.perDest}%\n\n${oppTeamName} => ${opp.starAgainst} <:c_star:1016290573994442824>   ${oppPerDest}%\n\n\n${winnerString}`)
                 
                 embeds.push(emb);
                 }
@@ -105,46 +108,3 @@ module.exports = {
         }
     }
 }
-*/
-
-// /**
-//      * @static
-//      * @async
-//      * @param {String} title 
-//      * @param {String} descValues 
-//      * @param {String} color 
-//      * @param {String} thumbnailURL
-//      * @return {Promise<MessageEmbed[]>} Array of Embeds.
-//      */
-//  static async createStandingsEmbeds(title, descValues, color, thumbnailURL){
-//     const { MessageEmbed } = require("discord.js");
-//     var Embeds = [];
-//     const author = "By WCL Technical";
-//     const infoDesc = "1) A.S.D - Average Star Differential\n2) A.D.P - Average Destruction Percentage\n3) Grp_No - Group Number\n4) Grp_Rec - Group Record\nMobile users are requested to see the preview in landscape mode :pager:";
-//     const descHeader = `Rank Team Name       W/T/L A.S.D A.D.P  Grp_No Grp_Rec\n\n`;
-
-//     // per row size = 56, description limit = 4096, description header size on this command = 56
-//     // 4096 - 56 = 4040 available for description value i.e rows. 
-//     //therefore  4040 is descValuePerPage size
-//     // 4040 - 56 = 3984
-//     var descValuePerPage = 3984;
-//     var valueStart = 0;
-//     var valueEnd = descValuePerPage;
-//     var valueLength = descValues.length;
-//     while(valueLength > 0){
-//         const emb = new MessageEmbed()
-//                 .setAuthor(author)
-//                 .setColor(color)
-//                 .setThumbnail(thumbnailURL)
-//                 .setTitle(title)
-//                 .setDescription("```" + descHeader + descValues.slice(valueStart, valueEnd) + "```")
-//                 .addFields({name:"Information", value : infoDesc})
-//                 .setTimestamp();
-//         Embeds.push(emb);
-        
-//         valueStart = valueEnd;
-//         valueEnd += descValuePerPage;
-//         valueLength -= descValuePerPage;
-//     }
-//     return Embeds;
-// }

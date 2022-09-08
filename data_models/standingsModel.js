@@ -34,18 +34,19 @@ class ClanModel {
             (opponent.status === "W") ? this.wins++ : null;
             (opponent.status === "L") ? this.loses++ : null;
             (opponent.status === "T") ? this.ties++ : null;
+            
 
-            //if opponent.starFor is null means it is a forfeited war, thus it won't get added to matchesPlayed 
-            //since it won't be counted towards Average Star Differential
-            if (opponent.status !== "UNDECLARED") {
+            //if opponent.status is UNDECLARED means war hasn't been played yet, thus it won't get added to matchesPlayed count
+            // opponent.starFor !== 0 to ensure that it is not a forfeit war. since it won't be counted towards Average Star Differential
+            if (opponent.status !== "UNDECLARED" && opponent.starFor !== 0) {
                 this.matchesPlayed++;
                 this.starsFor += opponent.starFor;
                 this.starsAgainst += opponent.starAgainst;
                 this.perDest += opponent.perDest;
             }
-            // console.log(opponent);
         }
-        if(this.matchesPlayed != 0){
+
+        if(this.matchesPlayed > 0){
             this.averageSD = (this.starsFor - this.starsAgainst)/this.matchesPlayed;
             this.averagePerDest = this.perDest/this.matchesPlayed;
         }
