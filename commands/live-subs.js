@@ -45,7 +45,7 @@ module.exports = {
 
         message.channel.send(`Processing....Please wait, this may take a while ${message.author.username}.`)
 
-        if (message.channel.id === '1011620257275838485') {
+        if (message.channel.id === '1011620257275838485' || message.member.hasPermission('MANAGE_ROLES')) {
 
             // firstly check valid abb or not
             let abbArr = checkAbb(args[0].toUpperCase());
