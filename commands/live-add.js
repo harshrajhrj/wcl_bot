@@ -334,7 +334,7 @@ module.exports = {
                     getData[0].additionStatus = additionStatus;
 
                     // to be blocked during pre-season roster changes
-                    // getData[0].additionStatusLimit = additionStatusLimit;
+                    getData[0].additionStatusLimit = additionStatusLimit;
 
                 }
                 if (getData[0].additionRecord[0][0] === 'N/A') {

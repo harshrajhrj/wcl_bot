@@ -1,13 +1,13 @@
 /**
  *  A class to represent a clan's records.
  */
- class ClanModel{
+class ClanModel {
 
     /**
      * 
      * @param {Object} clanRecordObject Object of per raw clan record/result data
      */
-    constructor(clanRecordObject){
+    constructor(clanRecordObject) {
         this.abb = clanRecordObject.abb;
         this.clanTag = clanRecordObject.clanTag;
         this.conference = clanRecordObject.conference;
@@ -19,6 +19,8 @@
         this.matchesPlayed = 0;
         this.starsFor = 0;
         this.starsAgainst = 0;
+        this.averageSD = 0;
+        this.averagePerDest = 0;
         this.setStats(this.opponents);
     }
 
@@ -27,15 +29,15 @@
      * @private
      * @param {Object} opponentObject Opponent Object
      */
-    setStats(opponentObject){
-        for(let opponent of Object.values(opponentObject)){
-            (opponent.status === "W")? this.wins++ : null;
-            (opponent.status === "L")? this.loses++ : null;
-            (opponent.status === "T")? this.ties++ : null;
+    setStats(opponentObject) {
+        for (let opponent of Object.values(opponentObject)) {
+            (opponent.status === "W") ? this.wins++ : null;
+            (opponent.status === "L") ? this.loses++ : null;
+            (opponent.status === "T") ? this.ties++ : null;
 
             //if opponent.starFor is null means it is a forfeited war, thus it won't get added to matchesPlayed 
             //since it won't be counted towards Average Star Differential
-            if(opponent.starFor !== null){
+            if (opponent.status !== "UNDECLARED") {
                 this.matchesPlayed++;
                 this.starsFor += opponent.starFor;
                 this.starsAgainst += opponent.starAgainst;
@@ -43,8 +45,10 @@
             }
             // console.log(opponent);
         }
-        this.averageSD = (this.starsFor - this.starsAgainst)/this.matchesPlayed;
-        this.averagePerDest = this.perDest/this.matchesPlayed;
+        if(this.matchesPlayed != 0){
+            this.averageSD = (this.starsFor - this.starsAgainst)/this.matchesPlayed;
+            this.averagePerDest = this.perDest/this.matchesPlayed;
+        }
     }
 
     /**
@@ -53,7 +57,7 @@
      * @param {String} week Ex: `WK1` 
      * @return {returnType}
      */
-    async getOpponent(week){
+    async getOpponent(week) {
         var returnType = {
             abb: "",
             clanTag: "",
@@ -72,7 +76,7 @@
 /**
  * A class to represent a Array of Clan
  */
-class StandingsModel{
+class StandingsModel {
 
     /**
      * **Sorts Array of Object based on the WCL Standings/Ranking criteria.**
@@ -98,9 +102,9 @@ class StandingsModel{
      *      ]
      * @return {Promise<ClanModel[]>} Sorted Array of Clan(based on the standings sort criteria)
      */
-    static async sort(rawClanRecords){
+    static async sort(rawClanRecords) {
         var clanObjectsArray = []
-        for(let clanRecord of rawClanRecords){
+        for (let clanRecord of rawClanRecords) {
             //converting raw clanRecord into Clan object and storing in a array. 
             clanObjectsArray.push(new ClanModel(clanRecord));
         }
@@ -115,8 +119,8 @@ class StandingsModel{
      * @param {ClanModel[]} clansArray Array of Clan.
      * @return {Promise<ClanModel[]>} Sorted Array of Clan.
      */
-    async standingsSort(clansArray){
-        return clansArray.sort((a,b) => {
+    async standingsSort(clansArray) {
+        return clansArray.sort((a, b) => {
             //sorts in the following order: wins > ties > loses > average star differential > average destruction percentage
             return (b.wins - a.wins || b.ties - a.ties || a.loses - b.loses || b.averageSD - a.averageSD || b.averagePerDest - a.averagePerDest);
         });

@@ -82,10 +82,10 @@ module.exports = {
             //abb checking ended
 
             var rosterData = await sendBack(division, args[0].toUpperCase(), []);
-            let available = await isAvailable(args[1].toUpperCase(), rosterData.players);
+            let available = await isAvailable(args[1].toUpperCase(), rosterData.players); // checking for existing rostered player
 
             //forceRemove
-            if (available === 'Found' && message.member.hasPermission('MANAGE_GUILD') && args.length > 2) {
+            if (available.length > 0 && message.member.hasPermission('MANAGE_GUILD') && args.length > 2) {
                 if (args[2].toUpperCase() === '-F') {
                     const p = await fetch('https://api.clashofstats.com/players/' + decodeURIComponent(args[1].toUpperCase().slice(1)).replace(/[^\x00-\x7F]/g, ""), options);
                     if (p.status === 404) {
@@ -121,7 +121,7 @@ module.exports = {
                 return;
             }
 
-            if (available === 'Found') {
+            if (available.length > 0) {
                 const data = await p.json();
                 let th = '';
                 if (p.status === 200) {
@@ -142,10 +142,10 @@ module.exports = {
             }
 
             async function isAvailable(tag, values) {
-                let found = '';
+                let found = [];
                 values.forEach(data => {
                     if (data[0] === tag.toUpperCase()) {
-                        found += 'Found';
+                        found.push('Found');
                     }
                 });
                 return found;
