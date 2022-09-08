@@ -71,7 +71,7 @@ module.exports = {
                     .setColor(color)
                     .setThumbnail(thumbnail)
                     .setTitle(pageTitle)
-                    .setDescription(`${obj.teamName} => ${opp.starFor} <:c_star:1016290573994442824>   ${opp.perDest}%\n\n${oppTeamName} => ${opp.starAgainst} <:c_star:1016290573994442824>   ${oppPerDest}%\n\n\n${winnerString}`)
+                    .setDescription(`${obj.teamName} => ${opp.starFor} <:star:1017468754692677822>   ${opp.perDest}%\n\n${oppTeamName} => ${opp.starAgainst} <:star:1017468754692677822>   ${oppPerDest}%\n\n\n${winnerString}`)
                 
                 embeds.push(emb);
                 }

@@ -361,6 +361,16 @@ module.exports = {
             }
         }
 
+        async function updateSubsRecord(division) {
+            const subRecord = require('./subTracking/substitutionSchema');
+            if (args[0].toUpperCase() === 'ABB') {
+                await subRecord.findOneAndUpdate(
+                    { abb: args[1].toUpperCase() },
+                    { abb: args[2].toUpperCase() }
+                ).then((data) => console.log(data));
+            }
+        }
+
         if (!notForUseChannels.includes(message.channel.id) && message.member.hasPermission('MANAGE_ROLES')) {
             if (args[0].toUpperCase() === 'ABB') { //abb change
                 let division = await abbCheck(args[1].toUpperCase());
@@ -394,6 +404,10 @@ module.exports = {
                 //Updating individual war record
                 await updateIndWarRecord(division);
                 //Updating individual war record collection ended
+
+                //Updating substitutions record
+                await updateSubsRecord(division);
+                //Updating substitutions record ended
 
                 await message.react('✅');
                 message.reply(`Updated abb change from **${args[1].toUpperCase()}** to **${args[2].toUpperCase()}**\nPlease use ` + '`wcl updatedb` to successfully load database!').then((msg) => msg.react('✅'));

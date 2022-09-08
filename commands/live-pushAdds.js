@@ -40,3 +40,22 @@
 // }
 
 // //sendBack();
+
+// const repsSchema = require('./repsSchema/repsSchema');
+// const substitutionSchema = require('./subTracking/substitutionSchema');
+
+// async function putSubAbbs() {
+//     const findObjects = await repsSchema.find();
+//     var i;
+//     for (i = 0; i < findObjects.length; i++) {
+//         var substitutionSchemaIS = new substitutionSchema({
+//             refer: findObjects[i]._id,
+//             abb: findObjects[i].abb
+//         })
+//         await substitutionSchemaIS.save()
+//             .then((data) => console.log(data));
+//     }
+//     console.log(i);
+// }
+
+// putSubAbbs();
