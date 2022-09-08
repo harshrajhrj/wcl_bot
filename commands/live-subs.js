@@ -132,13 +132,13 @@ module.exports = {
 
             async function checkForRoster(tag, divArr) {
                 var divs = {
-                    'HEAVY': 'heavy',
-                    'FLIGHT': 'flight',
-                    'ELITE': 'elite',
-                    'BLOCKAGE': 'blockage',
-                    'CHAMPIONS': 'champions',
-                    'CLASSIC': 'classic',
-                    'LIGHT': 'light'
+                    'HEAVY': 'Heavy',
+                    'FLIGHT': 'Flight',
+                    'ELITE': 'Elite',
+                    'BLOCKAGE': 'Blockage',
+                    'CHAMPIONS': 'Champions',
+                    'CLASSIC': 'Classic',
+                    'LIGHT': 'Light'
                 };
                 var rosterSchema = require(`./rosterSchemas/rosterSchema${divs[divArr[0][3]]}`);
                 const getRoster = await rosterSchema.findOne({ abb: divArr[0][2] });
