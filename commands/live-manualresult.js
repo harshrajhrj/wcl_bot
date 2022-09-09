@@ -56,8 +56,8 @@ module.exports = {
                             await indWarOpponent.save()
                                 .then((data) => console.log(data));
                         } else {
-                            schedule.clan.star = parseInt(args[2].toUpperCase(), 10);
-                            schedule.clan.dest = parseInt(args[3].toUpperCase(), 10);
+                            schedule.clan.star = parseFloat(args[2].toUpperCase(), 10);
+                            schedule.clan.dest = parseFloat(args[3].toUpperCase(), 10);
                         }
                         schedule.status = 'COMPLETED';
                         await schedule.save()
@@ -95,8 +95,8 @@ module.exports = {
                             await indWarOpponent.save()
                                 .then((data) => console.log(data));
                         } else {
-                            schedule.opponent.star = parseInt(args[2].toUpperCase(), 10);
-                            schedule.opponent.dest = parseInt(args[3].toUpperCase(), 10);
+                            schedule.opponent.star = parseFloat(args[2].toUpperCase(), 10);
+                            schedule.opponent.dest = parseFloat(args[3].toUpperCase(), 10);
                         }
                         schedule.status = 'COMPLETED';
                         await schedule.save()
