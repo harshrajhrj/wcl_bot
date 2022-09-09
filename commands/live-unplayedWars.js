@@ -39,9 +39,9 @@ module.exports = {
             'F': 'https://cdn.discordapp.com/attachments/995764484218028112/995764818525044746/WCL_Flight.png?width=530&height=612',
             'E': 'https://cdn.discordapp.com/attachments/995764484218028112/995765404565782609/WCL_ELITE.png?width=514&height=612',
             'B': 'https://cdn.discordapp.com/attachments/995764484218028112/995765525001011310/WCL_Blockage-.png?width=435&height=613',
-            'C': 'https://cdn.discordapp.com/attachments/995764484218028112/995764652418023444/WCL_Champions.png?width=548&height=612',
+            'CS': 'https://cdn.discordapp.com/attachments/995764484218028112/995764652418023444/WCL_Champions.png?width=548&height=612',
             'L': 'https://cdn.discordapp.com/attachments/995764484218028112/995764946975596564/WCl_Light_Division-.png?width=548&height=612',
-            'C': 'https://cdn.discordapp.com/attachments/995764484218028112/995765980972195850/WCL_Classic-.png?width=548&height=612'
+            'CL': 'https://cdn.discordapp.com/attachments/995764484218028112/995765980972195850/WCL_Classic-.png?width=548&height=612'
         };
 
         const divPrefix = {
@@ -59,8 +59,8 @@ module.exports = {
             'F': '#3f1f8b',
             'E': '#a40ae7',
             'B': '#fc3902',
-            'C': '#ffb014',
-            'C': '#276cc1',
+            'CS': '#ffb014',
+            'CL': '#276cc1',
             'L': '#52d600'
         }
 
@@ -85,7 +85,7 @@ module.exports = {
                 const pendingWars = await individualWarRecord.find({ div: divPrefix[args[0].toUpperCase()] });
                 pendingWars.forEach(war => {
                     for (const week in war.opponent) {
-                        if (week === args[1].toUpperCase() && !['W', 'L', 'T'].includes(war.opponent[week].status) && war.opponent[week].starFor === 0) {
+                        if (week === args[1].toUpperCase() && !['W', 'L', 'T'].includes(war.opponent[week].status) && war.opponent[week].starFor === 0 && war.opponent[week].abb != 'BYE') {
                             if (!embeds.find(function (val) { return val.clan === war.abb || val.clan === war.opponent[week].abb }))
                                 embeds.push({
                                     week: args[1].toUpperCase(),
