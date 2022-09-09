@@ -291,10 +291,27 @@ module.exports = {
         async function updateIndWarRecord(division) {
             const individualWarRecord = require('./war&schedule&standings/individualWarRecord');
             if (args[0].toUpperCase() === 'ABB') {
+                const getOpponents = [];
                 await individualWarRecord.findOneAndUpdate(
                     { abb: args[1].toUpperCase() },
                     { abb: args[2].toUpperCase() }
-                ).then((data) => console.log(data));
+                ).then((data) => {
+                    for (const week in data.opponent)
+                        getOpponents.push(data.opponent[week].abb);
+                });
+
+                // replacing abb in all opponent's war object to be added here
+                const findDivClans = await individualWarRecord.find({ abb: { $in: getOpponents } });
+                for (var i = 0; i < findDivClans.length; i++) {
+                    for (const week in findDivClans[i].opponent) {
+                        if (findDivClans[i].opponent[week].abb === args[1].toUpperCase()) {
+                            findDivClans[i].opponent[week].abb = args[2].toUpperCase();
+                        }
+                    }
+                    await findDivClans[i].markModified("opponent");
+                    await findDivClans[i].save()
+                        .then((record) => console.log(record));
+                }
             } else if (args[0].toUpperCase() === 'CT') {
 
                 const options = {
@@ -315,14 +332,18 @@ module.exports = {
                     return;
                 }
 
+                const getOpponents = [];
                 await individualWarRecord.findOneAndUpdate(
                     { abb: args[1].toUpperCase() },
                     {
                         clanTag: args[2].toUpperCase(),
                     }
-                ).then((data) => console.log(data));
+                ).then((data) => {
+                    for (const week in data.opponent)
+                        getOpponents.push(data.opponent[week].abb);
+                });
 
-                const findDivClans = await individualWarRecord.find({ div: division });
+                const findDivClans = await individualWarRecord.find({ abb: { $in: getOpponents } });
                 for (var i = 0; i < findDivClans.length; i++) {
                     for (const week in findDivClans[i].opponent) {
                         if (findDivClans[i].opponent[week].abb === args[1].toUpperCase()) {

@@ -138,7 +138,7 @@ module.exports = {
 
                                     await backUpRosterSchemaData.save()
                                         .then((data) => console.log(data));
-                                    
+
                                     rosterData.div = division[0];
                                     rosterData.clanTag = args[1].toUpperCase();
                                     rosterData.rosterSize = fresh.length;
@@ -166,6 +166,7 @@ module.exports = {
                                         return;
                                     } else {
                                         const repCollection = require('./repsSchema/repsSchema');
+                                        const substitutionSchema = require('./subTracking/substitutionSchema');
                                         var additionSpot;
                                         if (fresh.length < division[2]) {
                                             additionSpot = 'Yes';
@@ -195,7 +196,13 @@ module.exports = {
                                             clanTag: args[1].toUpperCase(),
                                             clanName: clanNameId.name
                                         })
-                                        await newReps.save();
+                                        await newReps.save().then(async (data) => {
+                                            var substitutionSchemaIS = new substitutionSchema({
+                                                refer: data._id,
+                                                abb: args[0].toUpperCase()
+                                            })
+                                            await substitutionSchemaIS.save();
+                                        });
                                         await newAbb.save();
                                         await rosterData.save().then((data) => console.log(data)).catch((err) => console.log(err.message));
                                         await message.reply(`Succesfully added roster!`).then((msg) => msg.react('✅'))

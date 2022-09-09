@@ -13,7 +13,9 @@ module.exports = {
         try {
             if (message.member.hasPermission('MANAGE_GUILD')) {
                 const abbCollection = require('./abbSchema/registeredAbbs');
+                const subsSchema = require('./subTracking/substitutionSchema');
                 const findAbb = await abbCollection.findOne({ abb: args[0].toUpperCase() });
+                // indwar schema also needs to be updated (group stage)
                 if (findAbb) {
                     const repCollection = require('./repsSchema/repsSchema');
 
@@ -37,6 +39,7 @@ module.exports = {
                     const clanData = await abbCollection.findOneAndDelete({ abb: args[0].toUpperCase() });
                     await repCollection.findOneAndDelete({ abb: args[0].toUpperCase() });
                     await rosterCollection.findOneAndDelete({ abb: args[0].toUpperCase() });
+                    await subsSchema.findOneAndDelete({ abb: args[0].toUpperCase() });
                     message.reply(`Successfully deleted team:\nDivision - ${clanData.div}\nClan Tag - ${clanData.clanTag}\nClan Name - ${clanData.clanName}`).then((msg) => msg.react('✅'));
                 } else {
                     message.reply(`No such abb registered till now!`);
