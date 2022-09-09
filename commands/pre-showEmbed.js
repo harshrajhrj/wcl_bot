@@ -278,6 +278,153 @@ module.exports = async function showEmbed(message, args, embedData, embedType) {
                 })
 
             await Embeds.build();
+        } else if (embedType === 'activewars') {
+            const embedArr = embedData
+            const embeds = [];
+            embedArr.forEach(embed => {
+                const Embed = new Discord.MessageEmbed()
+                    .setColor(embed.color)
+                    .setTitle(`Schedule/War ID : ${embed.warID}`)
+                    .setThumbnail(embed.thumbnail)
+                    .setAuthor('By WCL')
+                    .addField('Week', embed.week, false)
+                    .addField('Clan 1', embed.clan, true)
+                    .addField('Clan 2', embed.opponent, false)
+                    .addField('Status', embed.status, false)
+                    .setTimestamp()
+                embeds.push(Embed);
+            })
+            let m1 = 0;
+            embeds.map(function (r) { m1++; return r.setFooter(`Page ${m1}/${embeds.length}`) })
+            const Embeds = new paginationembed.Embeds()
+                .setArray(embeds)
+                .setTimeout(600000)
+                .setChannel(message.channel)
+                /* Sets the client's assets to utilise. Available options:
+                 *  - message: the client's Message object (edits the message instead of sending new one for this instance)
+                 *  - prompt: custom content for the message sent when prompted to jump to a page
+                 *      {{user}} is the placeholder for the user mention
+                 *.setClientAssets({ prompt: 'Enter the page number between 1-6, you want to jump on {{user}}' })
+                 */
+                .setDeleteOnTimeout(false)
+                .setDisabledNavigationEmojis(['back', 'forward', 'jump', 'delete'])
+                .setFunctionEmojis({
+                    '⏮️': (_, instance) => {
+                        instance.setPage(1);
+                    },
+                    '◀️': (_, instance) => {
+                        instance.setPage('back');
+                    },
+                    '▶️': (_, instance) => {
+                        instance.setPage('forward');
+                    },
+                    '⏭️': (_, instance) => {
+                        instance.setPage(m1);
+                    },
+                    '🔄': (_, instance) => {
+                        instance.resetEmojis();
+                    }
+                })
+
+            await Embeds.build();
+        } else if (embedType === 'forfeitwars') {
+            const embedArr = embedData
+            const embeds = [];
+            embedArr.forEach(embed => {
+                const Embed = new Discord.MessageEmbed()
+                    .setColor(embed.color)
+                    .setTitle(`Schedule/War ID : ${embed.warID}`)
+                    .setThumbnail(embed.thumbnail)
+                    .setAuthor('By WCL')
+                    .addField('Week', embed.week, false)
+                    .addField('Clan 1', embed.clan, true)
+                    .addField('Clan 2', embed.opponent, false)
+                    .addField('Status', embed.status, false)
+                    .setTimestamp()
+                embeds.push(Embed);
+            })
+            let m1 = 0;
+            embeds.map(function (r) { m1++; return r.setFooter(`Page ${m1}/${embeds.length}`) })
+            const Embeds = new paginationembed.Embeds()
+                .setArray(embeds)
+                .setTimeout(600000)
+                .setChannel(message.channel)
+                /* Sets the client's assets to utilise. Available options:
+                 *  - message: the client's Message object (edits the message instead of sending new one for this instance)
+                 *  - prompt: custom content for the message sent when prompted to jump to a page
+                 *      {{user}} is the placeholder for the user mention
+                 *.setClientAssets({ prompt: 'Enter the page number between 1-6, you want to jump on {{user}}' })
+                 */
+                .setDeleteOnTimeout(false)
+                .setDisabledNavigationEmojis(['back', 'forward', 'jump', 'delete'])
+                .setFunctionEmojis({
+                    '⏮️': (_, instance) => {
+                        instance.setPage(1);
+                    },
+                    '◀️': (_, instance) => {
+                        instance.setPage('back');
+                    },
+                    '▶️': (_, instance) => {
+                        instance.setPage('forward');
+                    },
+                    '⏭️': (_, instance) => {
+                        instance.setPage(m1);
+                    },
+                    '🔄': (_, instance) => {
+                        instance.resetEmojis();
+                    }
+                })
+
+            await Embeds.build();
+        } else if (embedType === 'pendingwars') {
+            const embedArr = embedData
+            const embeds = [];
+            embedArr.forEach(embed => {
+                const Embed = new Discord.MessageEmbed()
+                    .setColor(embed.color)
+                    .setTitle(`Schedule/War ID : ${embed.warID}`)
+                    .setThumbnail(embed.thumbnail)
+                    .setAuthor('By WCL')
+                    .addField('Week', embed.week, false)
+                    .addField('Clan 1', embed.clan, true)
+                    .addField('Clan 2', embed.opponent, false)
+                    .addField('Status', embed.status, false)
+                    .setTimestamp()
+                embeds.push(Embed);
+            })
+            let m1 = 0;
+            embeds.map(function (r) { m1++; return r.setFooter(`Page ${m1}/${embeds.length}`) })
+            const Embeds = new paginationembed.Embeds()
+                .setArray(embeds)
+                .setTimeout(600000)
+                .setChannel(message.channel)
+                /* Sets the client's assets to utilise. Available options:
+                 *  - message: the client's Message object (edits the message instead of sending new one for this instance)
+                 *  - prompt: custom content for the message sent when prompted to jump to a page
+                 *      {{user}} is the placeholder for the user mention
+                 *.setClientAssets({ prompt: 'Enter the page number between 1-6, you want to jump on {{user}}' })
+                 */
+                .setDeleteOnTimeout(false)
+                .setDisabledNavigationEmojis(['back', 'forward', 'jump', 'delete'])
+                .setFunctionEmojis({
+                    '⏮️': (_, instance) => {
+                        instance.setPage(1);
+                    },
+                    '◀️': (_, instance) => {
+                        instance.setPage('back');
+                    },
+                    '▶️': (_, instance) => {
+                        instance.setPage('forward');
+                    },
+                    '⏭️': (_, instance) => {
+                        instance.setPage(m1);
+                    },
+                    '🔄': (_, instance) => {
+                        instance.resetEmojis();
+                    }
+                })
+
+            await Embeds.build();
         }
     } catch (err) {
         console.log(err.message);

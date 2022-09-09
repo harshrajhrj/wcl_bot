@@ -15,6 +15,9 @@ More commands coming soon.........\n\n
 All Warriors of WCL 🙂
 wcl abbs - lists all the clan abbreviations for a division
 wcl attackframe - shows Champion(eSports) attack frame
+wcl activewars - List all the active wars in a particular division
+wcl forfeitwars - List all the forfeit wars in a particular division
+wcl pendingwars - List all the pending wars in a particular division in specific week
 wcl reps - lists the clan representative for a clan
 wcl roster - lists the clan's roster
 wcl search - searches a player for all available rosters
