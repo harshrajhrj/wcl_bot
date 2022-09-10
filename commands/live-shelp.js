@@ -11,6 +11,7 @@ wcl changeroster - To change a complete roster
 wcl creps - Interchange/update the clan representatives
 wcl changesize - To resize new teams roster addition spot(author only)
 wcl deletewars - Delete official wars which were used for tracking
+wcl forceres - Results a war with force W/L/T!
 wcl getwartags - List the clan tags of wars of WCL for a particular division, week.
 wcl insertwars - Inserts official wars for tracking
 wcl replace - Replaces old clan_abb with new clan_abb

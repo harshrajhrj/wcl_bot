@@ -128,6 +128,8 @@ module.exports = {
                         } else {
                             return message.reply(`Abb : **${args[1].toUpperCase()}** doesn't exists in warID : **${args[0].toUpperCase()}**!`);
                         }
+                    } else {
+                        return message.reply(`Abb : **${args[1].toUpperCase()}** doesn't exists!`);
                     }
                 } else if (week[args[0].toUpperCase()]) {
                     const individualWarRecordIS = await individualWarRecord.findOne({ abb: args[1].toUpperCase() });
