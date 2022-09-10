@@ -1,8 +1,8 @@
 const Discord = require('discord.js');
 
 module.exports = {
-    name: 'attackframe-lock',
-    aliases: ['afl', 'tfl'],
+    name: 'attackframe',
+    aliases: ['af', 'tf'],
     description: 'Lists the attack frames of eSports wars',
     args: false,
     execute: async (message) => {

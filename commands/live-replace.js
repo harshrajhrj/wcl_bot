@@ -382,6 +382,56 @@ module.exports = {
             }
         }
 
+        async function updateScheduleCollection(division) {
+            const scheduleSchema = require('./war&schedule&standings/scheduleSchema')
+            if (args[0].toUpperCase() === 'ABB') {
+                const scheduleSchemaIfClan = await scheduleSchema.find({ 'clan.abb': args[1].toUpperCase() });
+                const scheduleSchemaIfOpponent = await scheduleSchema.find({ 'opponent.abb': args[1].toUpperCase() });
+                if (scheduleSchemaIfClan.length > 0)
+                    for (var i = 0; i < scheduleSchemaIfClan.length; i++) {
+                        scheduleSchemaIfClan[i].clan.abb = args[2].toUpperCase();
+                        await scheduleSchemaIfClan[i].save();
+                    }
+                if (scheduleSchemaIfOpponent.length > 0)
+                    for (var i = 0; i < scheduleSchemaIfOpponent.length; i++) {
+                        scheduleSchemaIfOpponent[i].opponent.abb = args[2].toUpperCase();
+                        await scheduleSchemaIfOpponent[i].save();
+                    }
+            } else if (args[0].toUpperCase() === 'CT') {
+                const scheduleSchemaIfClan = await scheduleSchema.find({ 'clan.abb': args[1].toUpperCase(), status: 'ACTIVE' });
+                const scheduleSchemaIfOpponent = await scheduleSchema.find({ 'opponent.abb': args[1].toUpperCase(), status: 'ACTIVE' });
+                if (scheduleSchemaIfClan.length > 0)
+                    for (var i = 0; i < scheduleSchemaIfClan.length; i++) {
+                        scheduleSchemaIfClan[i].clan.tag = args[2].toUpperCase();
+                        await scheduleSchemaIfClan[i].save();
+                    }
+                if (scheduleSchemaIfOpponent.length > 0)
+                    for (var i = 0; i < scheduleSchemaIfOpponent.length; i++) {
+                        scheduleSchemaIfOpponent[i].opponent.tag = args[2].toUpperCase();
+                        await scheduleSchemaIfOpponent[i].save();
+                    }
+            } else if (args[0].toUpperCase() === 'SWAP') {
+
+                const abbSchema = require(`./abbSchema/registeredAbbs`);
+
+                const oldData = await abbSchema.findOne({ abb: args[1].toUpperCase() });
+                // var primaryClan = oldData.clanTag;
+                var secClan = oldData.clanTag;
+                const scheduleSchemaIfClan = await scheduleSchema.find({ 'clan.abb': args[1].toUpperCase(), status: 'ACTIVE' });
+                const scheduleSchemaIfOpponent = await scheduleSchema.find({ 'opponent.abb': args[1].toUpperCase(), status: 'ACTIVE' });
+                if (scheduleSchemaIfClan.length > 0)
+                    for (var i = 0; i < scheduleSchemaIfClan.length; i++) {
+                        scheduleSchemaIfClan[i].clan.tag = secClan;
+                        await scheduleSchemaIfClan[i].save();
+                    }
+                if (scheduleSchemaIfOpponent.length > 0)
+                    for (var i = 0; i < scheduleSchemaIfOpponent.length; i++) {
+                        scheduleSchemaIfOpponent[i].opponent.tag = secClan;
+                        await scheduleSchemaIfOpponent[i].save();
+                    }
+            }
+        }
+
         async function updateSubsRecord(division) {
             const subRecord = require('./subTracking/substitutionSchema');
             if (args[0].toUpperCase() === 'ABB') {
@@ -426,6 +476,10 @@ module.exports = {
                 await updateIndWarRecord(division);
                 //Updating individual war record collection ended
 
+                //Updating schedule record
+                await updateScheduleCollection(division);
+                //Updating schedule record ended
+
                 //Updating substitutions record
                 await updateSubsRecord(division);
                 //Updating substitutions record ended
@@ -456,6 +510,10 @@ module.exports = {
                 //Updating individual war record
                 await updateIndWarRecord(division);
                 //Updating individual war record collection ended
+
+                //Updating schedule record
+                await updateScheduleCollection(division);
+                //Updating schedule record ended
 
                 await message.react('✅');
                 message.reply(`Updated clanTag for **${args[1].toUpperCase()}** to **${args[2].toUpperCase()}**\nPlease use ` + '`wcl updatedb` to successfully load database!').then((msg) => msg.react('✅'));
@@ -518,6 +576,10 @@ module.exports = {
                 //Updating individual war record
                 await updateIndWarRecord(division);
                 //Updating individual war record collection ended
+
+                //Updating schedule record
+                await updateScheduleCollection(division);
+                //Updating schedule record ended
 
                 await message.react('✅');
                 message.reply(`Swaped primaryClanTag for **${args[1].toUpperCase()}** to **${args[2].toUpperCase()}**\nPlease use ` + '`wcl updatedb` to successfully load database!').then((msg) => msg.react('✅'));
