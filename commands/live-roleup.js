@@ -31,7 +31,18 @@ module.exports = {
             'L': '1011613102422368346',
             'ME': '1013141547270807677',
         }
-        if (message.member.hasPermission('MANAGE_GUILD') || message.member.hasPermission('MANAGE_ROLES')) {
+
+        const notForUseChannels = [
+            '1011618454735966268',
+            '1011618703814705262',
+            '1011620257275838485',
+            '1011622480600903690',
+            '1011622635781771294',
+            '1018472654233149460',
+            '1018472232403607604'
+        ]
+
+        if (!notForUseChannels.includes(message.channel.id) && (message.member.hasPermission('MANAGE_GUILD') || message.member.hasPermission('MANAGE_ROLES'))) {
             if (options[args[0].toUpperCase()]) {
                 let role = message.guild.roles.cache.find(r => r.id === roleID[args[0].toUpperCase()]);
                 if (role) {

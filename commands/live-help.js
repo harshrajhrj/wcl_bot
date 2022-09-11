@@ -4,6 +4,16 @@ module.exports = {
     description: 'Lists the commands for WCL',
     args: false,
     execute: async (message) => {
+        const notForUseChannels = [
+            '1011618454735966268',
+            '1011618703814705262',
+            '1011620257275838485',
+            '1011622480600903690',
+            '1011622635781771294',
+            '1018472654233149460',
+            '1018472232403607604'
+        ]
+
         const com = `Roster Rep Only
 wcl add - allows you to add a player to the roster
 wcl remove - allows you to remove a player from the roster\n\n
@@ -26,6 +36,9 @@ wcl stats - shows scheduled war detail with the war stats(if active)
 wcl vdual - shows all duals in a particular division
 wcl viewwars - shows all war scores of a particular clan
 More commands coming soon.........`
-        message.channel.send('```plaintext\n' + com + '\n```')
+        if (!notForUseChannels.includes(message.channel.id))
+            return message.channel.send('```plaintext\n' + com + '\n```')
+        else
+            return message.reply(`Please use this command anywhere else!`)
     }
 }

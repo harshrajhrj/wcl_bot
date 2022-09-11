@@ -16,7 +16,8 @@ module.exports = {
     execute: async (message, args) => {
         var channelPermissions = [
             '1011618454735966268',
-            '1011622480600903690'
+            '1011622480600903690',
+            '1018472654233149460'
         ]
 
         // updating indWarRecord when schedule deleted

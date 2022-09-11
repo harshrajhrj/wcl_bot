@@ -25,6 +25,17 @@ Rep Prefix\nr1 - Representative 1\nr2 - Representative 2\nall - Both representat
             'LIGHT': 'Light',
             'CLASSIC': 'Classic'
         };
+
+        const notForUseChannels = [
+            '1011618454735966268',
+            '1011618703814705262',
+            '1011620257275838485',
+            '1011622480600903690',
+            '1011622635781771294',
+            '1018472654233149460',
+            '1018472232403607604'
+        ]
+
         function checkAbb(abb) {
             try {
                 var abbDataObject = fs.readFileSync('./commands/abbs.json');
@@ -43,7 +54,7 @@ Rep Prefix\nr1 - Representative 1\nr2 - Representative 2\nall - Both representat
                 message.reply(err.message);
             }
         }
-        if (message.guild.id === '765523244332875776' || message.guild.id === '615297658860601403' || message.member.hasPermission('MANAGE_ROLES')) {
+        if (!notForUseChannels.includes(message.channel.id) && message.member.hasPermission('MANAGE_ROLES')) {
             var abbCheck = checkAbb(args[0].toUpperCase());
             if (abbCheck === '') {
                 message.reply(`Invalid clan abb ${args[0].toUpperCase()}`);

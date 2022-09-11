@@ -142,7 +142,8 @@ Note - The steps must be in above order in single line, no line break!`,
         
         var channelPermissions = [
             '1011618454735966268',
-            '1011622480600903690'
+            '1011622480600903690',
+            '1018472654233149460'
         ]
         if (channelPermissions.includes(message.channel.id) || message.member.hasPermission('MANAGE_GUILD')) {
             if (!week[args[0].toUpperCase()])

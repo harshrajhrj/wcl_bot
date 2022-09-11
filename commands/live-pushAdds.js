@@ -5,6 +5,7 @@
 //     .catch((err) => console.log(err.message))
 
 
+
 // var fs = require('fs');
 // async function sendBack(div, abb, dataArray) {
 //     var options = {
@@ -46,16 +47,38 @@
 
 // async function putSubAbbs() {
 //     const findObjects = await repsSchema.find();
-//     var i;
-//     for (i = 0; i < findObjects.length; i++) {
-//         var substitutionSchemaIS = new substitutionSchema({
-//             refer: findObjects[i]._id,
-//             abb: findObjects[i].abb
-//         })
-//         await substitutionSchemaIS.save()
-//             .then((data) => console.log(data));
-//     }
-//     console.log(i);
+//     // var i;
+//     // for (i = 0; i < findObjects.length; i++) {
+//     //     var substitutionSchemaIS = new substitutionSchema({
+//     //         refer: findObjects[i]._id,
+//     //         abb: findObjects[i].abb
+//     //     })
+//     //     await substitutionSchemaIS.save()
+//     //         .then((data) => console.log(data));
+//     // }
+//     // console.log(i);
+//     await repsSchema.aggregate([{ $project: { div: { $toUpper: "$div" } } }]).then(async (data) => {
+//         for (var i = 0; i < data.length; i++) {
+//             await repsSchema.findOneAndUpdate({ _id: data[i]._id },
+//                 {
+//                     div: data[i].div
+//                 }).then((dt) => console.log(dt));
+//         }
+//     });
 // }
 
 // putSubAbbs();
+
+// const rosterSchemaChampions = require("./rosterSchemas/rosterSchemaChampions");
+
+// async function pushAdds() {
+//     await rosterSchemaChampions.updateMany({ div: 'CHAMPIONS' }, [
+//         {
+//             $set: {
+//                 additionStatusLimit: 3
+//             }
+//         }
+//     ]).then((data) => console.log(data.modifiedCount));
+// }
+
+// pushAdds()
