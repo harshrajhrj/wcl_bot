@@ -66,7 +66,7 @@ module.exports = {
 
                 const Embeds = new PaginationEmbed.Embeds()
                     .setArray(embeds)
-                    .setTimeout(120000) //2 mins
+                    .setTimeout(240000) //4 mins
                     .setChannel(message.channel)
                     .setDeleteOnTimeout(false)
                     .setDisabledNavigationEmojis(["back", "forward", "jump", "delete"])
