@@ -187,6 +187,8 @@ module.exports = {
                     await message.react('✅');
                     message.reply(`Scheduled **${args[1].toUpperCase()}** from Week ${weeks[1]} to ${weeks[2]}\n` + "```plaintext\n" + messageString + "```");
                 }
+            } else {
+                return message.reply(`You can't use this command here!`);
             }
         } catch (err) {
             console.log(err);

@@ -23,19 +23,21 @@ module.exports = {
         // updating indWarRecord when schedule deleted
         async function updateIndWarRecord(abb, findSchedule) {
             const individualWarRecordData = await indvidualWarRecord.findOne({ abb: abb });
-            for (const week in individualWarRecordData.opponent) {
-                if (week === findSchedule.week) {
-                    individualWarRecordData.opponent[week].status = 'UNDECLARED';
-                    individualWarRecordData.opponent[week].starFor = 0;
-                    individualWarRecordData.opponent[week].starAgainst = 0;
-                    individualWarRecordData.opponent[week].perDest = 0;
-                    individualWarRecordData.opponent[week].warID = null;
-                    individualWarRecordData.opponent[week].deleteHistory = findSchedule;
+            if (individualWarRecordData) {
+                for (const week in individualWarRecordData.opponent) {
+                    if (week === findSchedule.week) {
+                        individualWarRecordData.opponent[week].status = 'UNDECLARED';
+                        individualWarRecordData.opponent[week].starFor = 0;
+                        individualWarRecordData.opponent[week].starAgainst = 0;
+                        individualWarRecordData.opponent[week].perDest = 0;
+                        individualWarRecordData.opponent[week].warID = null;
+                        individualWarRecordData.opponent[week].deleteHistory = findSchedule;
+                    }
                 }
+                await individualWarRecordData.markModified("opponent");
+                await individualWarRecordData.save()
+                    .then((record) => console.log(record));
             }
-            await individualWarRecordData.markModified("opponent");
-            await individualWarRecordData.save()
-                .then((record) => console.log(record));
         }
 
         // begins

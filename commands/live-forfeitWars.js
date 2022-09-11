@@ -114,6 +114,8 @@ module.exports = {
                     });
                 })
                 preShowEmbed(message, args, embeds, 'forfeitwars');
+            } else {
+                return message.reply(`You can't use this command here!`);
             }
         } catch (err) {
             console.log(err.message);

@@ -80,6 +80,8 @@ module.exports = {
             } else {
                 message.reply(`Invalid division prefix **${args[0].toUpperCase()}**!`)
             }
+        } else {
+            return message.reply(`You can't use this command here!`);
         }
     }
 }

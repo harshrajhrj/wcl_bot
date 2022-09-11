@@ -131,15 +131,17 @@ Note - The steps must be in above order in single line, no line break!`,
 
         async function updateIndWarRecordWarID(abb, warID) {
             const individualWarRecordData = await individualWarRecord.findOne({ abb: abb });
-            for (const wk in individualWarRecordData.opponent) {
-                if (wk === week[args[0].toUpperCase()])
-                    individualWarRecordData.opponent[wk].warID = warID
+            if (individualWarRecordData) {
+                for (const wk in individualWarRecordData.opponent) {
+                    if (wk === week[args[0].toUpperCase()])
+                        individualWarRecordData.opponent[wk].warID = warID
+                }
+                await individualWarRecordData.markModified("opponent");
+                await individualWarRecordData.save()
+                    .then((indWar) => console.log(indWar));
             }
-            await individualWarRecordData.markModified("opponent");
-            await individualWarRecordData.save()
-                .then((indWar) => console.log(indWar));
         }
-        
+
         var channelPermissions = [
             '1011618454735966268',
             '1011622480600903690',
@@ -257,6 +259,8 @@ Note - The steps must be in above order in single line, no line break!`,
                     message.reply(`Schedule rejected!` + "```" + `${week[args[0].toUpperCase()]} | ${clan[3]}\n\n${clan[2]} | ${clan[0]} | ${clan[1]}\nvs\n${opponent[2]} | ${opponent[0]} | ${opponent[1]}` + "```");
                 }
             })
+        } else {
+            return message.reply(`You can't use this command here!`);
         }
     }
 }

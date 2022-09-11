@@ -91,8 +91,10 @@ module.exports = {
                         }
                     })
                 } else {
-                    message.reply(`No record exists for ${args[0].toUpperCase()}!`)
+                    return message.reply(`No record exists for ${args[0].toUpperCase()}!`)
                 }
+            } else {
+                return message.reply(`You can't use this command here!`);
             }
         } catch (err) {
             console.log(err.message);

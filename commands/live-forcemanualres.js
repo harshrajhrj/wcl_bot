@@ -82,6 +82,8 @@ module.exports = {
                 console.log(err.message);
                 message.reply(err.message);
             }
+        } else {
+            return message.reply(`You can't use this command here!`);
         }
     }
 }
