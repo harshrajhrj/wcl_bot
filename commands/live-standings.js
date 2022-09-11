@@ -33,7 +33,9 @@ module.exports = {
         try {
             const indWarSchema = require("./war&schedule&standings/individualWarRecord")
             const records = await indWarSchema.find({ div: divAbbs[div] });
-            if(records.length === 0) return message.reply(`No wars were found for \`${div}\` division to form standings!`)
+
+            //if no wars found, return
+            if(records.length === 0) return message.reply(`No wars were found for \`${div}\` division to form standings!`);
             const sortedClanRecords = await StandingsModel.sort(records);
             var row = "";
             let rank = 1;
