@@ -17,8 +17,11 @@ module.exports = {
             '1011618703814705262',
             '1011620257275838485',
             '1011622480600903690',
-            '1011622635781771294'
+            '1011622635781771294',
+            '1018472654233149460',
+            '1018472232403607604'
         ]
+
         const foptions = {
             'json': true,
             'Accept': 'application/json',
@@ -106,7 +109,7 @@ module.exports = {
                         );
                     }
                 } else {
-                    message.reply(`You can't use this command here!`);
+                    return message.reply(`You can't use this command here!`);
                 }
             } catch (err) {
                 message.reply("An error occured!\n```js\n" + err.message + "```");

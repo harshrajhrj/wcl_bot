@@ -69,7 +69,9 @@ module.exports = {
             '1011618703814705262',
             '1011620257275838485',
             '1011622480600903690',
-            '1011622635781771294'
+            '1011622635781771294',
+            '1018472654233149460',
+            '1018472232403607604'
         ]
 
         try {
@@ -83,22 +85,26 @@ module.exports = {
                     return message.reply(`Invalid week prefix **${args[1].toUpperCase()}**!`);
 
                 const pendingWars = await individualWarRecord.find({ div: divPrefix[args[0].toUpperCase()] });
-                pendingWars.forEach(war => {
-                    for (const week in war.opponent) {
-                        if (week === args[1].toUpperCase() && !['W', 'L', 'T'].includes(war.opponent[week].status) && war.opponent[week].starFor === 0 && war.opponent[week].abb != 'BYE') {
-                            if (!embeds.find(function (val) { return val.clan === war.abb || val.clan === war.opponent[week].abb }))
-                                embeds.push({
-                                    week: args[1].toUpperCase(),
-                                    warID: war.opponent[week].warID,
-                                    clan: war.abb,
-                                    opponent: war.opponent[week].abb,
-                                    status: 'PENDING',
-                                    thumbnail: logo[args[0].toUpperCase()],
-                                    color: color[args[0].toUpperCase()]
-                                })
+                if (pendingWars.length > 0) {
+                    pendingWars.forEach(war => {
+                        for (const week in war.opponent) {
+                            if (week === args[1].toUpperCase() && !['W', 'L', 'T'].includes(war.opponent[week].status) && war.opponent[week].starFor === 0 && war.opponent[week].abb != 'BYE') {
+                                if (!embeds.find(function (val) { return val.clan === war.abb || val.clan === war.opponent[week].abb }))
+                                    embeds.push({
+                                        week: args[1].toUpperCase(),
+                                        warID: war.opponent[week].warID,
+                                        clan: war.abb,
+                                        opponent: war.opponent[week].abb,
+                                        status: 'PENDING',
+                                        thumbnail: logo[args[0].toUpperCase()],
+                                        color: color[args[0].toUpperCase()]
+                                    })
+                            }
                         }
-                    }
-                })
+                    })
+                } else {
+                    return message.reply(`No wars found for **${divPrefix[args[0].toUpperCase()]}** Division!\nMake sure you've inserted all the wars!\n` + "`wcl iwars` (cmd to insert wars)");
+                }
 
                 if (embeds.length === 0) { // if no week filter found
                     preShowEmbed(message, args, [{
@@ -113,6 +119,8 @@ module.exports = {
                     return;
                 }
                 preShowEmbed(message, args, embeds, 'pendingwars');
+            } else {
+                return message.reply(`You can't use this command here!`);
             }
         } catch (err) {
             console.log(err.message);

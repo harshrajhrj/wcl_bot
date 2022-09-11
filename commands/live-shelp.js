@@ -4,7 +4,16 @@ module.exports = {
     description: 'Lists the commands for staffs of WCL',
     args: false,
     execute: async (message) => {
-        if (message.member.hasPermission('MANAGE_GUILD') || message.member.hasPermission('MANAGE_ROLES') || !message.guild.id('389162246627917826')) {
+        const notForUseChannels = [
+            '1011618454735966268',
+            '1011618703814705262',
+            '1011620257275838485',
+            '1011622480600903690',
+            '1011622635781771294',
+            '1018472654233149460',
+            '1018472232403607604'
+        ]
+        if (!notForUseChannels.includes(message.channel.id) && (message.member.hasPermission('MANAGE_GUILD') || message.member.hasPermission('MANAGE_ROLES') || !message.guild.id('389162246627917826'))) {
             const com = `Developer Only\n\n
 League Admins Only
 wcl changeroster - To change a complete roster

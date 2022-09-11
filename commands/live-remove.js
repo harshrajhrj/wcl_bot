@@ -18,7 +18,8 @@ module.exports = {
     execute: async (message, args) => {
         const channelPermmissions = [
             '1011618703814705262',
-            '1011622635781771294'
+            '1011622635781771294',
+            '1018472232403607604'
         ];
         if (channelPermmissions.includes(message.channel.id) || message.member.hasPermission('MANAGE_GUILD')) {
             const options = {

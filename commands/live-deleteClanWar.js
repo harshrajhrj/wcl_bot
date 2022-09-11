@@ -20,7 +20,9 @@ module.exports = {
             '1011618703814705262',
             '1011620257275838485',
             '1011622480600903690',
-            '1011622635781771294'
+            '1011622635781771294',
+            '1018472654233149460',
+            '1018472232403607604'
         ]
 
         function divCheck(ABB) {
@@ -89,8 +91,10 @@ module.exports = {
                         }
                     })
                 } else {
-                    message.reply(`No record exists for ${args[0].toUpperCase()}!`)
+                    return message.reply(`No record exists for ${args[0].toUpperCase()}!`)
                 }
+            } else {
+                return message.reply(`You can't use this command here!`);
             }
         } catch (err) {
             console.log(err.message);

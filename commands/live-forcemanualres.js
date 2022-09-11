@@ -17,7 +17,9 @@ module.exports = {
             '1011618703814705262',
             '1011620257275838485',
             '1011622480600903690',
-            '1011622635781771294'
+            '1011622635781771294',
+            '1018472654233149460',
+            '1018472232403607604'
         ]
 
         const week = {
@@ -80,6 +82,8 @@ module.exports = {
                 console.log(err.message);
                 message.reply(err.message);
             }
+        } else {
+            return message.reply(`You can't use this command here!`);
         }
     }
 }

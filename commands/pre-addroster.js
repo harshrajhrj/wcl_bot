@@ -17,10 +17,21 @@ module.exports = {
             'method': 'get',
             'muteHttpExceptions': true
         };
+
+        const notForUseChannels = [
+            '1011618454735966268',
+            '1011618703814705262',
+            '1011620257275838485',
+            '1011622480600903690',
+            '1011622635781771294',
+            '1018472654233149460',
+            '1018472232403607604'
+        ]
+
         // console.log(message.member.permissions.bitfield === 2147483647);
         //message.guild.id === '765523244332875776' || message.guild.id === '615297658860601403'
         try {
-            if (message.member.hasPermission('MANAGE_GUILD')) {
+            if (!notForUseChannels.includes(message.channel.id) && message.member.hasPermission('MANAGE_GUILD')) {
                 await changeRoster();
                 return;
             } else {

@@ -10,8 +10,18 @@ module.exports = {
     explanation: 'Ex: wcl removeabb HR\nwhere HR - clanAbb',
     accessableby: ['League Admins', 'Moderator'],
     execute: async (message, args) => {
+        const notForUseChannels = [
+            '1011618454735966268',
+            '1011618703814705262',
+            '1011620257275838485',
+            '1011622480600903690',
+            '1011622635781771294',
+            '1018472654233149460',
+            '1018472232403607604'
+        ]
+
         try {
-            if (message.member.hasPermission('MANAGE_GUILD')) {
+            if (!notForUseChannels.includes(message.channel.id) && message.member.hasPermission('MANAGE_GUILD')) {
                 const abbCollection = require('./abbSchema/registeredAbbs');
                 const subsSchema = require('./subTracking/substitutionSchema');
                 const findAbb = await abbCollection.findOne({ abb: args[0].toUpperCase() });

@@ -18,7 +18,8 @@ module.exports = {
     execute: async (message, args) => {
         const channelPermmissions = [
             '1011618703814705262',
-            '1011622635781771294'
+            '1011622635781771294',
+            '1018472232403607604'
         ];
         if (channelPermmissions.includes(message.channel.id) || message.member.hasPermission('MANAGE_GUILD')) {
             const options = {
@@ -333,8 +334,9 @@ module.exports = {
                     getData[0].additionSpot = additionSpot;
                     getData[0].additionStatus = additionStatus;
 
-                    // to be blocked during pre-season roster changes
-                    getData[0].additionStatusLimit = additionStatusLimit;
+                    // to be blocked during pre-season roster changes for champions now
+                    if (div != 'CHAMPIONS')
+                        getData[0].additionStatusLimit = additionStatusLimit;
 
                 }
                 if (getData[0].additionRecord[0][0] === 'N/A') {

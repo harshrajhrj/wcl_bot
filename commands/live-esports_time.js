@@ -6,8 +6,17 @@ module.exports = {
     description: 'Lists the attack frames of eSports wars',
     args: false,
     execute: async (message) => {
-        // if(!(message.channel.id === '842739523384901663' || message.channel.id === '842738408648474695' || message.channel.id === '842738445259898880' || message.channel.id === '842738468743413780'))
-        if (message.author.id === '531548281793150987') {
+        const notForUseChannels = [
+            '1011618454735966268',
+            '1011618703814705262',
+            '1011620257275838485',
+            '1011622480600903690',
+            '1011622635781771294',
+            '1018472654233149460',
+            '1018472232403607604'
+        ]
+
+        if (!notForUseChannels.includes(message.channel.id)) {
             const description = `🗡️#    Attack       Time ⏱️\n
 🗡️1  Home team  ⏱️37 mins left
 🗡️2  Away team  ⏱️33 mins left
