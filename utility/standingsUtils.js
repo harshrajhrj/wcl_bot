@@ -21,9 +21,9 @@ class StandingsUtils{
 
         // per row size = 56, description limit = 4096, description header size on this command = 56
         // 4096 - 56 = 4040 available for description value i.e rows. 
-        //therefore  4040 is descValuePerPage size
-        // 4040 - 56 = 3984
-        var descValuePerPage = 3984;
+        // 56 * 72 = 4032 (per row size multiply by number of rows to be displayed)
+        // 4032 < 4040(char limit available)
+        var descValuePerPage = 4032;
         var valueStart = 0;
         var valueEnd = descValuePerPage;
         var valueLength = descValues.length;

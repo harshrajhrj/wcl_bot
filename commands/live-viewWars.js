@@ -1,7 +1,6 @@
 const { ClanModel } = require("../data_models/standingsModel");
 const ErrorHandler = require("../utility/errorUtils");
 const ResourcesUtils = require("../utility/resourcesUtils");
-const PaginationEmbed = require("discord-paginationembed");
 const Utility = require("../utility/utility");
 const { MessageEmbed } = require("discord.js");
 
@@ -37,72 +36,36 @@ module.exports = {
             const indWarSchema = require("./war&schedule&standings/individualWarRecord")
             const records = await indWarSchema.findOne({abb : obj.abb});
             const clan = new ClanModel(records);
-            const title = `Clan Stats for ${obj.teamName}`
+            const title = `Wars of ${obj.teamName}`
             const author = "By WCL Technical";
+            const descInfo = `\\*F - Stars For\n\\*A - Stars Against\n% - Percentage Destruction\nNote - The W/L/T, \\*For and % are of the "For" Team\nMobile users are requested to see the preview in landscape mode 📟`;
 
-            var embeds = [];
-            const embed1 = new MessageEmbed()
+            var emb = new MessageEmbed()
                 .setAuthor(author)
                 .setColor(color)
                 .setThumbnail(thumbnail)
                 .setTitle(title)
-                .addField("W/T/L",`${clan.wins}/${clan.ties}/${clan.loses}`,false)
-                .addField("Stars",`\`\`\`\nAverage Star Diff => ${clan.averageSD}\nTotal Stars For => ${clan.starsFor}\nTotal Stars Against => ${clan.starsAgainst}\n\`\`\``,false)
-                .addField("Percentage",`\`\`\`\nAverage Destruction % => ${clan.averagePerDest}%\n\`\`\``,false);
-                
-            embeds.push(embed1);
-            // message.channel.send(embed1);
+                .setTimestamp();
+
             const weeks = Object.keys(clan.opponents); //["WK1","WK2", ...]
+            let row = "";
             for(let wk of weeks){
                 const opp = await clan.getOpponent(wk);
-                
-                //skip iterations for undeclared wars.
-                if(opp.status === "UNDECLARED") continue;
-                
                 var oppTeamName = await (await Utility.getClanByAbb(opp.abb)).teamName;
-                var pageTitle = `${wk}\n${obj.teamName} \`vs\` ${oppTeamName}`;
-                const oppRecords = await indWarSchema.findOne({abb : opp.abb});
-                const oppClan = new ClanModel(oppRecords);
-                const oppPerDest = await (await oppClan.getOpponent(wk)).perDest;
-                var winnerString = (opp.status === "T") ? "Tie" : (opp.status === "W") ? `Winner: ${obj.teamName}` : `Winner: ${oppTeamName}`;
-
-                var emb = new MessageEmbed()
-                    .setAuthor(author)
-                    .setColor(color)
-                    .setThumbnail(thumbnail)
-                    .setTitle(pageTitle)
-                    .setDescription(`${obj.teamName} => ${opp.starFor} <:star:1017468754692677822>   ${opp.perDest}%\n\n${oppTeamName} => ${opp.starAgainst} <:star:1017468754692677822>   ${oppPerDest}%\n\n\n${winnerString}`)
+                let starsFor = opp.starFor;
+                let starsAgainst = opp.starAgainst;
+                let perDest = opp.perDest.toFixed(2).replace(/.00$/, ""); //if 60.00 then just 60 elseif 60.25 then 60.25
+                let status = opp.status;
                 
-                embeds.push(emb);
-                }
-
-                if(embeds.length === 1){
-                    message.channel.send(embeds[0].setFooter("Page 1/1"));
+                if(["W","L","T"].includes(status)){
+                    row += `${wk} ${obj.teamName.padEnd(15, " ").substring(0, 15)} ${oppTeamName.padEnd(15, " ").substring(0, 15)} ${status}   ${starsFor} ${starsAgainst} ${perDest}\n`;
                 }else{
-                    //if more than 1 embed is created then send it as a embed pagination.
-                    let pageCount = 0; 
-                    embeds.map((e) => { pageCount++; return e.setFooter(`Page ${pageCount}/${embeds.length}`)});
-    
-                    const Embeds = new PaginationEmbed.Embeds()
-                        .setArray(embeds)
-                        .setTimeout(120000) //2 mins
-                        .setChannel(message.channel)
-                        .setDeleteOnTimeout(false)
-                        .setDisabledNavigationEmojis(["back","forward","jump","delete"])
-                        .setFunctionEmojis({
-                            '◀️': (_, instance) => {
-                                instance.setPage('back');
-                            },
-                            '▶️': (_, instance) => {
-                                instance.setPage('forward');
-                            },
-                            '⛔': (_, instance) => {
-                                //stops awaiting on click.
-                                instance.setTimeout(5);
-                            }
-                        })
-                    await Embeds.build();
+                    row += `${wk} ${obj.teamName.padEnd(15, " ").substring(0, 15)} ${oppTeamName.padEnd(15, " ").substring(0, 15)} -   - - -\n`;
                 }
+            }
+
+            emb.setDescription(`\`\`\`WK# ${`FOR`.padEnd(15, " ").substring(0, 15)} ${`AGAINST`.padEnd(15, " ").substring(0, 15)} W/L/T *F *A %\`\`\`\n\n\`\`\`${row}\`\`\`\n${descInfo}`);
+            message.channel.send(Embeds=emb);
         } catch (error) {
             return await ErrorHandler.unexpectedErrorHandler(error,message);
         }
