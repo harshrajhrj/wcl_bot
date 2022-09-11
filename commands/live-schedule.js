@@ -80,14 +80,25 @@ Note - The steps must be in above order in single line, no line break!`,
         //     'CLASSIC': 'CLASSIC',
         //     'LIGHT': 'LIGHT'
         // }
-        function checkClan(abb) {
+        async function checkClan(abb) {
             const abbs = fs.readFileSync('./commands/abbs.json');
             var JSobject = JSON.parse(abbs);
+            JSobject = JSobject.values;
             var abbData = [];
-            JSobject.values.forEach(clan => {
-                if (clan[2] === abb)
-                    abbData = clan;
-            });
+            for (var i = 0; i < JSobject.length; i++) {
+                if (JSobject[i][2] === abb) {
+                    const findTeam = await repsSchema.findOne({ abb: abb });
+                    if (findTeam.teamName === "NONE") {
+                        abbData = JSobject[i];
+                    } else {
+                        abbData.push(JSobject[i][0], findTeam.teamName, JSobject[i][2], JSobject[i][3])
+                    }
+                }
+            }
+            // JSobject.values.forEach(clan => {
+            //     if (clan[2] === abb)
+            //         abbData = clan;
+            // });
             return abbData;
         }
         async function checkExisting(week, div, clan, opponent) {
@@ -151,8 +162,8 @@ Note - The steps must be in above order in single line, no line break!`,
             if (!week[args[0].toUpperCase()])
                 return message.reply(`Invalid week prefix **${args[0].toUpperCase()}**!`);
 
-            const clan = checkClan(args[1].toUpperCase())
-            const opponent = checkClan(args[2].toUpperCase());
+            const clan = await checkClan(args[1].toUpperCase())
+            const opponent = await checkClan(args[2].toUpperCase());
             if (clan.length === 0)
                 return message.reply(`Invalid clan abb **${args[1].toUpperCase()}**!`);
             if (opponent.length === 0)
