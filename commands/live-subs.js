@@ -237,7 +237,7 @@ module.exports = {
                 await substitute.markModified('playersCount');
                 await substitute.save()
                     .then((data) => console.log(data));
-                return message.reply(`Substitution : ${tag} : ${name} is approved by <@${oppID}>!❎`);
+                return message.reply(`Substitution : ${tag} : ${name} is approved by <@${oppID}>!✅`);
             }
         }
         else {
