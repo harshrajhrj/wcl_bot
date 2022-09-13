@@ -89,7 +89,7 @@ module.exports = {
                         // category1 creation
                         let firstCreation = await message.guild.channels.create(`${week[args[1].toUpperCase()]} ${divPrefix[args[0].toUpperCase()]} NEGO(1)`, {
                             type: 'category',
-                            position: 1,
+                            position: 5,
                             permissionOverwrites: [
                                 // {
                                 //     id: '797059086511767573',
@@ -165,7 +165,7 @@ module.exports = {
                             // category2 creation
                             let secondCreation = await message.guild.channels.create(`${week[args[1].toUpperCase()]} ${divPrefix[args[0].toUpperCase()]} NEGO(2)`, {
                                 type: 'category',
-                                position: 1,
+                                position: 5,
                                 permissionOverwrites: [
                                     // {
                                     //     id: '797059086511767573',
