@@ -82,3 +82,21 @@
 // }
 
 // pushAdds()
+
+
+// const individualWarRecord = require('./war&schedule&standings/individualWarRecord');
+// const abbSchema = require('./abbSchema/registeredAbbs');
+
+// async function checkleft() {
+//     const left = [];
+//     const findAbbs = await abbSchema.find({ div: 'CHAMPIONS' });
+//     for (var i = 0; i < findAbbs.length; i++) {
+//         const midcheck = await individualWarRecord.findOne({ abb: findAbbs[i].abb });
+//         if (!midcheck) {
+//             left.push([findAbbs[i].abb, findAbbs[i].clanName]);
+//         }
+//     }
+//     console.log(left);
+// }
+
+// checkleft();
