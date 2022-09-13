@@ -78,8 +78,8 @@ module.exports = {
                         // let id2 = '602935588018061453';
 
                         // category permissions
-                        // let repesports = '1017903330128834631'; // perm to be denied in category channel
-                        // let wclstaff = '999581636331057212'; // perm to be allow in category channel [read, send, attach, embed]
+                        let repesports = '1017903330128834631'; // perm to be denied in category channel
+                        let wclstaff = '999581636331057212'; // perm to be allow in category channel [read, send, attach, embed]
 
                         var categoryID1;
                         var categoryID1Channels = [];
@@ -91,18 +91,18 @@ module.exports = {
                             type: 'category',
                             position: 1,
                             permissionOverwrites: [
+                                // {
+                                //     id: '797059086511767573',
+                                //     allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'ATTACH_FILES', 'EMBED_LINKS'],
+                                // },
                                 {
-                                    id: '797059086511767573',
+                                    id: wclstaff,
                                     allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'ATTACH_FILES', 'EMBED_LINKS'],
                                 },
-                                // {
-                                //     id: wclstaff,
-                                //     deny: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'ATTACH_FILES', 'EMBED_LINKS'],
-                                // },
-                                // {
-                                //     id: repesports,
-                                //     deny: ['VIEW_CHANNEL'],
-                                // },
+                                {
+                                    id: repesports,
+                                    deny: ['VIEW_CHANNEL'],
+                                },
                                 {
                                     id: message.guild.id,
                                     deny: ['VIEW_CHANNEL'],
@@ -136,10 +136,19 @@ module.exports = {
                                     id: reps2.rep2_dc,
                                     allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'ATTACH_FILES', 'EMBED_LINKS'],
                                 })
-                            permissionOverwrites.push({
-                                id: message.guild.id,
-                                deny: ['VIEW_CHANNEL']
-                            })
+                            permissionOverwrites.push(
+                                {
+                                    id: wclstaff,
+                                    allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'ATTACH_FILES', 'EMBED_LINKS'],
+                                },
+                                {
+                                    id: repesports,
+                                    deny: ['VIEW_CHANNEL'],
+                                },
+                                {
+                                    id: message.guild.id,
+                                    deny: ['VIEW_CHANNEL'],
+                                })
                             let newChannel = await message.guild.channels.create(`${week[args[1].toUpperCase()]}_${collectMatches[i].clan}_vs_${collectMatches[i].opponent}`, {
                                 type: 'text',
                                 parent: firstCreation.id,
@@ -158,18 +167,18 @@ module.exports = {
                                 type: 'category',
                                 position: 1,
                                 permissionOverwrites: [
+                                    // {
+                                    //     id: '797059086511767573',
+                                    //     allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'ATTACH_FILES', 'EMBED_LINKS'],
+                                    // },
                                     {
-                                        id: '797059086511767573',
+                                        id: wclstaff,
                                         allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'ATTACH_FILES', 'EMBED_LINKS'],
                                     },
-                                    // {
-                                    //     id: wclstaff,
-                                    //     deny: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'ATTACH_FILES', 'EMBED_LINKS'],
-                                    // },
-                                    // {
-                                    //     id: repesports,
-                                    //     deny: ['VIEW_CHANNEL'],
-                                    // },
+                                    {
+                                        id: repesports,
+                                        deny: ['VIEW_CHANNEL'],
+                                    },
                                     {
                                         id: message.guild.id,
                                         deny: ['VIEW_CHANNEL'],
@@ -201,10 +210,19 @@ module.exports = {
                                         id: reps2.rep2_dc,
                                         allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'ATTACH_FILES', 'EMBED_LINKS'],
                                     })
-                                permissionOverwrites.push({
-                                    id: message.guild.id,
-                                    deny: ['VIEW_CHANNEL']
-                                })
+                                permissionOverwrites.push(
+                                    {
+                                        id: wclstaff,
+                                        allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'ATTACH_FILES', 'EMBED_LINKS'],
+                                    },
+                                    {
+                                        id: repesports,
+                                        deny: ['VIEW_CHANNEL'],
+                                    },
+                                    {
+                                        id: message.guild.id,
+                                        deny: ['VIEW_CHANNEL'],
+                                    })
                                 let newChannel = await message.guild.channels.create(`${week[args[1].toUpperCase()]}_${collectMatches[i].clan}_vs_${collectMatches[i].opponent}`, {
                                     type: 'text',
                                     parent: secondCreation.id,
