@@ -80,7 +80,7 @@ module.exports = {
                         return message.reply(`Deleted **${i + 1 + j}** negotiation rooms for ${args[1].toUpperCase()} | ${divPrefix[args[0].toUpperCase()]}!`);
                     }
                 } else {
-                    return message.reply(`Invalid week/division prefix!\nPlease check again and try.`);
+                    return message.reply(`Invalid week/division prefix or maybe other division than Champions!\nPlease check again and try.`);
                 }
             } catch (err) {
                 console.log(err.message);

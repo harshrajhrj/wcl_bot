@@ -58,7 +58,7 @@ module.exports = {
 
         if (!notForUseChannels.includes(message.channel.id) && message.member.hasPermission('MANAGE_GUILD') && (message.guild.id === '998948665383190659' || message.guild.id === '765523244332875776')) {
             try {
-                if (week[args[1].toUpperCase()] && divPrefix[args[0].toUpperCase()]) {
+                if (week[args[1].toUpperCase()] && divPrefix[args[0].toUpperCase()] && week[args[1].toUpperCase()] === 'CHAMPIONS') {
                     const checkExistingCategory = await channelSchema.findOne({ div: divPrefix[args[0].toUpperCase()], week: week[args[1].toUpperCase()] })
                     if (checkExistingCategory)
                         return message.reply(`Negotiation channels are already created for ${divPrefix[args[0].toUpperCase()]} | ${week[args[1].toUpperCase()]}!`);
@@ -266,7 +266,7 @@ module.exports = {
                         return message.reply(`Created **${collectMatches.length}** negotiation rooms for ${args[1].toUpperCase()} | ${divPrefix[args[0].toUpperCase()]}!`);
                     }
                 } else {
-                    return message.reply(`Invalid week/division prefix!\nPlease check again and try.`);
+                    return message.reply(`Invalid week/division prefix or maybe other division than Champions!\nPlease check again and try.`);
                 }
             } catch (err) {
                 console.log(err.message);
