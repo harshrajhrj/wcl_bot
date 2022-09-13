@@ -35,6 +35,7 @@ module.exports = {
         try {
             const indWarSchema = require("./war&schedule&standings/individualWarRecord")
             const records = await indWarSchema.findOne({abb : obj.abb});
+            if(!records) return message.reply(`No wars found for \`${extractedAbbValue}\`!`);
             const clan = new ClanModel(records);
             const title = `Wars of ${obj.teamName}`
             const author = "By WCL Technical";
