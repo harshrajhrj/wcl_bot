@@ -298,8 +298,9 @@ module.exports = {
                     { abb: args[1].toUpperCase() },
                     { abb: args[2].toUpperCase() }
                 ).then((data) => {
-                    for (const week in data.opponent)
-                        getOpponents.push(data.opponent[week].abb);
+                    if (data)
+                        for (const week in data.opponent)
+                            getOpponents.push(data.opponent[week].abb);
                 });
 
                 // replacing abb in all opponent's war object to be added here
@@ -341,8 +342,9 @@ module.exports = {
                         clanTag: args[2].toUpperCase(),
                     }
                 ).then((data) => {
-                    for (const week in data.opponent)
-                        getOpponents.push(data.opponent[week].abb);
+                    if (data)
+                        for (const week in data.opponent)
+                            getOpponents.push(data.opponent[week].abb);
                 });
 
                 const findDivClans = await individualWarRecord.find({ abb: { $in: getOpponents } });
