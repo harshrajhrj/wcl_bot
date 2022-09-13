@@ -19,6 +19,8 @@ League Admins Only
 wcl changeroster - To change a complete roster
 wcl creps - Interchange/update the clan representatives
 wcl changesize - To resize new teams roster addition spot(author only)
+wcl createnego - Create all negotiation rooms for a particular week inside a week category(applicable for Champions Esports division only)
+wcl deletenego - Delete all negotiation rooms for a particular week inside a week category
 wcl deletewars - Delete official wars which were used for tracking
 wcl forceres - Results a war with force W/L/T!
 wcl getwartags - List the clan tags of wars of WCL for a particular division, week.
