@@ -25,25 +25,22 @@ class Utility{
      static async getClanByAbb(abb){
         var obj = {
             clanTag : "",
+            clanName : "",
             teamName : "",
             abb : "",
             division : ""
         };
 
-        const fs = require("fs");
-        const abbs = fs.readFileSync("./commands/abbs.json");
-        const j = JSON.parse(abbs).values; // array of array with index 0 = clanTag, 1 = teamName, 2 = abb, 3 = div
-
-        for(let element of j){
-            if (element[2] == abb) {
-                obj.clanTag = element[0];
-                obj.teamName = element[1];
-                obj.abb = element[2];
-                obj.division = element[3];
-                return obj;
-            }
-        }
-        return null;
+        const abbsSchema = require("../commands/abbSchema/registeredAbbs");
+        const record = await abbsSchema.findOne({ abb : abb });
+        if(!record) return null;
+        
+        obj.clanTag = record.clanTag;
+        obj.clanName = record.clanName;
+        obj.teamName = (record.teamName === "NONE") ? obj.clanName : record.teamName;
+        obj.division = record.div;
+        obj.abb = record.abb;
+        return obj;
     }
 }
 

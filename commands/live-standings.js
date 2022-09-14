@@ -42,7 +42,7 @@ module.exports = {
 
             //creating desciption value i.e formatting clan records into a string.
             for (let clan of sortedClanRecords) {
-                clan.name = await StandingsUitls.getTeamName(clan.abb);
+                clan.name =  await (await Utility.getClanByAbb(clan.abb)).teamName
                 let record = `${clan.wins}/${clan.ties}/${clan.loses}`
                 row += `${`#${rank}`.padEnd(4, " ")} ${clan.name.padEnd(15, " ").substring(0, 15)} ${record.padEnd(5, " ")} ${(clan.averageSD).toFixed(2).toString().padEnd(5, " ")} ${(clan.averagePerDest).toFixed(2).toString().padEnd(6, " ")} ${"0".padEnd(6, " ")} ${"0".padEnd(7, " ")}\n\n`;
                 rank++;
