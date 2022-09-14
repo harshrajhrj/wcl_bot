@@ -25,7 +25,6 @@ module.exports = {
 
         //search for clan with the user entered clanAbb, if not found value will be null.
         const obj = await Utility.getClanByAbb(extractedAbbValue);
-
         if(!obj) return message.reply(`Invalid clanAbb: \`${extractedAbbValue}\`!\nRun \`wcl abbs\` to list the valid clanAbbs.`);
 
         const divCode = Utility.getKeyByValue(divAbbs, obj.division);

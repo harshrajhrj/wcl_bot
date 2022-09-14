@@ -47,6 +47,7 @@ class StandingsUtils{
 
 
     /**
+     * **Deprecated, use `Utility.getClanByAbb()` method instead.**
      * @static
      * @async
      * @param {String} abb of the clan.
