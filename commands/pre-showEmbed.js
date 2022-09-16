@@ -425,6 +425,90 @@ module.exports = async function showEmbed(message, args, embedData, embedType) {
                 })
 
             await Embeds.build();
+        } else if (embedType === 'listwars') {
+            const { color, thumbnail, wars } = embedData;
+            const embeds = [];
+            var i = 0;
+            const embed = new Discord.MessageEmbed()
+                .setColor(color)
+                .setTitle(`All Scheduled Wars!`)
+                .setThumbnail(thumbnail)
+                .setAuthor('By WCL')
+                .setTimestamp()
+            for (i; i < ((wars.length > 24) ? 24 : wars.length); i++) {
+                embed.addField(`**${wars[i].clan.name}** vs **${wars[i].opponent.name}**`, `${wars[i].dow}   ${wars[i].tow}  **${wars[i].status}**\n||wcl claim ${wars[i].warID}||`)
+            }
+            embeds.push(embed);
+            if (wars.length > 24) {
+                const embed = new Discord.MessageEmbed()
+                    .setColor(color)
+                    .setTitle(`All Scheduled Wars!`)
+                    .setThumbnail(thumbnail)
+                    .setAuthor('By WCL')
+                    .setTimestamp()
+                for (i; i < ((wars.length > 48) ? 48 : wars.length); i++) {
+                    embed.addField(`**${wars[i].clan.name}** vs **${wars[i].opponent.name}**`, `${wars[i].dow}   ${wars[i].tow}  **${wars[i].status}**\n||wcl claim ${wars[i].warID}||`)
+                }
+                embeds.push(embed);
+            }
+            if (wars.length > 48) {
+                const embed = new Discord.MessageEmbed()
+                    .setColor(color)
+                    .setTitle(`All Scheduled Wars!`)
+                    .setThumbnail(thumbnail)
+                    .setAuthor('By WCL')
+                    .setTimestamp()
+                for (i; i < ((wars.length > 72) ? 72 : wars.length); i++) {
+                    embed.addField(`**${wars[i].clan.name}** vs **${wars[i].opponent.name}**`, `${wars[i].dow}   ${wars[i].tow}  **${wars[i].status}**\n||wcl claim ${wars[i].warID}||`)
+                }
+                embeds.push(embed);
+            }
+            if (wars.length > 72) {
+                const embed = new Discord.MessageEmbed()
+                    .setColor(color)
+                    .setTitle(`All Scheduled Wars!`)
+                    .setThumbnail(thumbnail)
+                    .setAuthor('By WCL')
+                    .setTimestamp()
+                for (i; i < ((wars.length > 96) ? 96 : wars.length); i++) {
+                    embed.addField(`**${wars[i].clan.name}** vs **${wars[i].opponent.name}**`, `${wars[i].dow}   ${wars[i].tow}  **${wars[i].status}**\n||wcl claim ${wars[i].warID}||`)
+                }
+                embeds.push(embed);
+            }
+
+            let m1 = 0;
+            embeds.map(function (r) { m1++; return r.setFooter(`Page ${m1}/${embeds.length} | TIMES ARE IN EST TZ |TOTAL WARS : ${wars.length}`) })
+            const Embeds = new paginationembed.Embeds()
+                .setArray(embeds)
+                .setTimeout(600000)
+                .setChannel(message.channel)
+                /* Sets the client's assets to utilise. Available options:
+                 *  - message: the client's Message object (edits the message instead of sending new one for this instance)
+                 *  - prompt: custom content for the message sent when prompted to jump to a page
+                 *      {{user}} is the placeholder for the user mention
+                 *.setClientAssets({ prompt: 'Enter the page number between 1-6, you want to jump on {{user}}' })
+                 */
+                .setDeleteOnTimeout(false)
+                .setDisabledNavigationEmojis(['back', 'forward', 'jump', 'delete'])
+                .setFunctionEmojis({
+                    '⏮️': (_, instance) => {
+                        instance.setPage(1);
+                    },
+                    '◀️': (_, instance) => {
+                        instance.setPage('back');
+                    },
+                    '▶️': (_, instance) => {
+                        instance.setPage('forward');
+                    },
+                    '⏭️': (_, instance) => {
+                        instance.setPage(m1);
+                    },
+                    '🔄': (_, instance) => {
+                        instance.resetEmojis();
+                    }
+                })
+
+            await Embeds.build();
         }
     } catch (err) {
         console.log(err.message);
