@@ -436,7 +436,7 @@ module.exports = async function showEmbed(message, args, embedData, embedType) {
                 .setAuthor('By WCL')
                 .setTimestamp()
             for (i; i < ((wars.length > 24) ? 24 : wars.length); i++) {
-                embed.addField(`**${wars[i].clan.name}** vs **${wars[i].opponent.name}**`, `${wars[i].dow}   ${wars[i].tow}  **${wars[i].status}**\n||wcl claim ${wars[i].warID}||`)
+                embed.addField(`**${wars[i].clan.name}** vs **${wars[i].opponent.name}**`, `${wars[i].dow}   ${wars[i].tow}  **${wars[i].status}**\n||wcl claim ${wars[i].warID}||${wars[i].streams === null ? '' : "\n**Streamed by**\n" + wars[i].streams}`);
             }
             embeds.push(embed);
             if (wars.length > 24) {
@@ -447,7 +447,7 @@ module.exports = async function showEmbed(message, args, embedData, embedType) {
                     .setAuthor('By WCL')
                     .setTimestamp()
                 for (i; i < ((wars.length > 48) ? 48 : wars.length); i++) {
-                    embed.addField(`**${wars[i].clan.name}** vs **${wars[i].opponent.name}**`, `${wars[i].dow}   ${wars[i].tow}  **${wars[i].status}**\n||wcl claim ${wars[i].warID}||`)
+                    embed.addField(`**${wars[i].clan.name}** vs **${wars[i].opponent.name}**`, `${wars[i].dow}   ${wars[i].tow}  **${wars[i].status}**\n||wcl claim ${wars[i].warID}||${wars[i].streams === null ? '' : "\n**Streamed by**\n" + wars[i].streams}`)
                 }
                 embeds.push(embed);
             }
@@ -459,7 +459,7 @@ module.exports = async function showEmbed(message, args, embedData, embedType) {
                     .setAuthor('By WCL')
                     .setTimestamp()
                 for (i; i < ((wars.length > 72) ? 72 : wars.length); i++) {
-                    embed.addField(`**${wars[i].clan.name}** vs **${wars[i].opponent.name}**`, `${wars[i].dow}   ${wars[i].tow}  **${wars[i].status}**\n||wcl claim ${wars[i].warID}||`)
+                    embed.addField(`**${wars[i].clan.name}** vs **${wars[i].opponent.name}**`, `${wars[i].dow}   ${wars[i].tow}  **${wars[i].status}**\n||wcl claim ${wars[i].warID}||${wars[i].streams === null ? '' : "\n**Streamed by**\n" + wars[i].streams}`)
                 }
                 embeds.push(embed);
             }
@@ -471,7 +471,7 @@ module.exports = async function showEmbed(message, args, embedData, embedType) {
                     .setAuthor('By WCL')
                     .setTimestamp()
                 for (i; i < ((wars.length > 96) ? 96 : wars.length); i++) {
-                    embed.addField(`**${wars[i].clan.name}** vs **${wars[i].opponent.name}**`, `${wars[i].dow}   ${wars[i].tow}  **${wars[i].status}**\n||wcl claim ${wars[i].warID}||`)
+                    embed.addField(`**${wars[i].clan.name}** vs **${wars[i].opponent.name}**`, `${wars[i].dow}   ${wars[i].tow}  **${wars[i].status}**\n||wcl claim ${wars[i].warID}||${wars[i].streams === null ? '' : "\n**Streamed by**\n" + wars[i].streams}`)
                 }
                 embeds.push(embed);
             }

@@ -25,6 +25,7 @@ wcl deletewars - Delete official wars which were used for tracking
 wcl forceres - Results a war with force W/L/T!
 wcl getwartags - List the clan tags of wars of WCL for a particular division, week.
 wcl insertwars - Inserts official wars for tracking
+wcl opennego - Create a negotiation room with details provided as clanAbb and opponentAbb
 wcl replace - Replaces old clan_abb with new clan_abb
 wcl res - Manual resulting of a war using warID and clanAbb
 wcl roleup - Helps to assign roles prior to a division

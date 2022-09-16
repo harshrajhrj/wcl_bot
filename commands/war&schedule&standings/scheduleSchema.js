@@ -92,6 +92,10 @@ const scheduleSchema = new mongoose.Schema({
     forfeit: {
         type: Boolean,
         default: false
+    },
+    streamer: {
+        type: [Object],
+        default: null
     }
 }, { collection: 'schedules', timestamps: true, versionKey: false })
 

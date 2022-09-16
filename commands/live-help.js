@@ -22,6 +22,9 @@ wcl sch - go for a war scheduling
 wcl delsch - delete a scheduled war
 wcl subs - Allows you to take a subtitute!
 More commands coming soon.........\n\n
+Streamer Only
+wcl claim - To claim a war for streaming(for streamer purpose only)
+More commands coming soon.........\n\n
 All Warriors of WCL 🙂
 wcl abbs - lists all the clan abbreviations for a division
 wcl attackframe - shows Champion(eSports) attack frame

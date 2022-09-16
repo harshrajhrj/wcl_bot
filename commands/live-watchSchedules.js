@@ -9,7 +9,7 @@ module.exports = {
     args: true,
     length: 2,
     category: 'representative',
-    usage: 'divPrefix weekPrefix',
+    usage: 'divPrefix weekPrefix streamLink',
     missing: ['`divPrefix`, ', '`weekPrefix`'],
     explanation: 'wcl listwars CS WK1\n\nwhere CS - Champions division\nWK1 - Week 1',
     execute: async (message, args) => {
@@ -108,6 +108,15 @@ module.exports = {
                         newSch['dow'] = `${sch.dow.toISOString().split('T')[0]}`;
                         newSch['tow'] = sch.tow;
                         newSch['status'] = sch.status;
+                        if (sch.streamer != null) {
+                            let stringLiteral = '';
+                            sch.streamer.forEach(stmr => {
+                                stringLiteral += `<:Twitch:796955949276987412><:YouTube:796955826089885726>${stmr.link === null ? stmr.username : `[${stmr.username}](${stmr.link})`} -> <@${stmr.id}>\n`
+                            })
+                            newSch['streams'] = stringLiteral;
+                        } else {
+                            newSch['streams'] = null;
+                        }
                         return newSch;
                     })
 
