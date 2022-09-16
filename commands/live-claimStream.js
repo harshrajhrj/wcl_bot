@@ -8,7 +8,7 @@ module.exports = {
     args: true,
     length: 1,
     category: 'representative',
-    missing: ['`warID`', '`streamLink[optional]`'],
+    missing: ['`warID`, ', '`streamLink[optional]`'],
     usage: 'warID',
     explanation: `Ex : wcl claim 1001 https://twitch.tv/..\n\nwhere 1001 is your warID!\nOptional - Stream link`,
     accessableby: ['League Admins', 'Moderator'],
