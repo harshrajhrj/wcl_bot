@@ -108,10 +108,11 @@ module.exports = {
                         newSch['dow'] = `${sch.dow.toISOString().split('T')[0]}`;
                         newSch['tow'] = sch.tow;
                         newSch['status'] = sch.status;
-                        if (sch.streamer != null) {
+                        if (sch.streamer != null && sch.streamer.length > 0) {
                             let stringLiteral = '';
                             sch.streamer.forEach(stmr => {
-                                stringLiteral += `<:Twitch:796955949276987412><:YouTube:796955826089885726>${stmr.link === null ? stmr.username : `[${stmr.username}](${stmr.link.includes('https') ? stmr.link : 'https://'+stmr.link})`} -> <@${stmr.id}>\n`
+                                console.log(stmr);
+                                stringLiteral += `<:Twitch:796955949276987412><:YouTube:796955826089885726>${stmr.link === null || stmr.link === undefined ? stmr.username : `[${stmr.username}](${stmr.link.includes('https') ? stmr.link : 'https://' + stmr.link})`} -> <@${stmr.id}>\n`
                             })
                             newSch['streams'] = stringLiteral;
                         } else {

@@ -95,6 +95,7 @@ const scheduleSchema = new mongoose.Schema({
     },
     streamer: {
         type: [Object],
+        required: true,
         default: null
     }
 }, { collection: 'schedules', timestamps: true, versionKey: false })
