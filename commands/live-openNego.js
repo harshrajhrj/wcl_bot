@@ -56,6 +56,10 @@ module.exports = {
                             allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'ATTACH_FILES', 'EMBED_LINKS'],
                         },
                         {
+                            id: '714381967822553150',
+                            allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'ATTACH_FILES', 'EMBED_LINKS'],
+                        },
+                        {
                             id: message.guild.id,
                             deny: ['VIEW_CHANNEL'],
                         })
@@ -65,6 +69,7 @@ module.exports = {
                         topic: `Mediation room`,
                         permissionOverwrites: permissionOverwrites
                     })
+                    message.guild.channels.cache.get(createdChannel.id).send(`**Welcome to negotiation room!**\n${reps1.abb} vs ${reps2.abb}\n\n*Reps for this war*\n<@${reps1.rep1_dc}>\n<@${reps1.rep2_dc}>\n<@${reps2.rep1_dc}>\n<@${reps2.rep2_dc}>\n\nPlease tag an admin/mediation team if you need any help!\nYou can proceed further <@${message.author.id}>`)
                     await message.react('✅');
                     return message.reply(`Created <#${createdChannel.id}>!`);
                 } else {

@@ -111,7 +111,7 @@ module.exports = {
                         if (sch.streamer != null) {
                             let stringLiteral = '';
                             sch.streamer.forEach(stmr => {
-                                stringLiteral += `<:Twitch:796955949276987412><:YouTube:796955826089885726>${stmr.link === null ? stmr.username : `[${stmr.username}](${stmr.link})`} -> <@${stmr.id}>\n`
+                                stringLiteral += `<:Twitch:796955949276987412><:YouTube:796955826089885726>${stmr.link === null ? stmr.username : `[${stmr.username}](${stmr.link.includes('https') ? stmr.link : 'https://'+stmr.link})`} -> <@${stmr.id}>\n`
                             })
                             newSch['streams'] = stringLiteral;
                         } else {
