@@ -26,7 +26,7 @@ module.exports = {
             try {
                 const schedule = await scheduleSchema.findOne({ warID: parseInt(args[0].toUpperCase(), 10) });
                 if (schedule) {
-                    if (schedule.streamer != null) {
+                    if (schedule.streamer != 'NONE') {
                         const getArr = schedule.streamer;
                         if (getArr.find(function (streams) {
                             return streams.id === message.author.id;

@@ -108,15 +108,14 @@ module.exports = {
                         newSch['dow'] = `${sch.dow.toISOString().split('T')[0]}`;
                         newSch['tow'] = sch.tow;
                         newSch['status'] = sch.status;
-                        if (sch.streamer != null && sch.streamer.length > 0) {
+                        if (sch.streamer != 'NONE' && sch.streamer.length > 0) {
                             let stringLiteral = '';
                             sch.streamer.forEach(stmr => {
-                                console.log(stmr);
-                                stringLiteral += `<:Twitch:796955949276987412><:YouTube:796955826089885726>${stmr.link === null || stmr.link === undefined ? stmr.username : `[${stmr.username}](${stmr.link.includes('https') ? stmr.link : 'https://' + stmr.link})`} -> <@${stmr.id}>\n`
+                                stringLiteral += `<:Twitch:796955949276987412><:YouTube:796955826089885726>${((stmr.link === null || stmr.link === undefined) ? stmr.username : `[${stmr.username}](${stmr.link.includes('https') ? stmr.link : 'https://' + stmr.link})`)} -> <@${stmr.id}>\n`
                             })
                             newSch['streams'] = stringLiteral;
                         } else {
-                            newSch['streams'] = null;
+                            newSch['streams'] = 'NONE';
                         }
                         return newSch;
                     })
@@ -136,18 +135,18 @@ module.exports = {
                             thumbnail: logo[divPrefix[args[0].toUpperCase()]],
                             wars: [
                                 {
-                                    warID: null,
+                                    warID: 'NONE',
                                     clan: {
-                                        abb: null,
+                                        abb: 'NONE',
                                         name: 'NO WARS',
                                     },
                                     opponent: {
-                                        abb: null,
+                                        abb: 'NONE',
                                         name: 'NO WARS',
                                     },
-                                    dow: null,
-                                    tow: null,
-                                    status: null,
+                                    dow: 'NONE',
+                                    tow: 'NONE',
+                                    status: 'NONE',
                                 }
                             ]
                         },

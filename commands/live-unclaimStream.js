@@ -26,7 +26,7 @@ module.exports = {
             try {
                 const schedule = await scheduleSchema.findOne({ warID: parseInt(args[0].toUpperCase(), 10) });
                 if (schedule) {
-                    if (schedule.streamer != null) {
+                    if (schedule.streamer != 'NONE') {
                         var getArr = schedule.streamer;
                         if (getArr.find(function (streams) {
                             return streams.id === message.author.id;
@@ -37,7 +37,7 @@ module.exports = {
                         } else
                             return message.reply(`You've not claimed this war!`);
                         if (getArr.length === 0)
-                            schedule.streamer = null;
+                            schedule.streamer = 'NONE';
                         else
                             schedule.streamer = getArr;
                     } else {
