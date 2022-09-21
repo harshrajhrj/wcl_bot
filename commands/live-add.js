@@ -183,7 +183,7 @@ module.exports = {
                         th += data.townHallLevel;
                         if (found === '') {
                             if (perm.includes(message.author.id) || message.member.hasPermission('MANAGE_GUILD')) {
-                                if (rosterData.additionStatus === 'Yes') {
+                                if (rosterData.additionStatus === 'Yes' || (args.includes('-F') || args.includes('-f'))) {
                                     if (rosterData.additionSpot === 'Yes') {
                                         update(dateNtime, args[1].toUpperCase(), final, message.author.id, th, dcid);
                                     }

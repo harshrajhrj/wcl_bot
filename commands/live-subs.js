@@ -11,7 +11,7 @@ module.exports = {
     category: "representative",
     usage: 'clan_abb player_tag warID mention/tag/ping-opponent_rep',
     missing: ['`clan_abb`, ', '`player_tag`, ', '`warID`, ', '`mention/tag/ping-opponent_rep`'],
-    explanation: 'Ex : wcl subs INQ 1001 #PCV8JQR0V @RAJ\n\nwhere\nINQ - Clan Abb\n1001 - warID of the war in which the clan will be clashing\n@RAJ - Opponent Rep Mention',
+    explanation: 'Ex : wcl subs INQ #PCV8JQR0V 1001 @RAJ\n\nwhere\nINQ - Clan Abb\n1001 - warID of the war in which the clan will be clashing\n@RAJ - Opponent Rep Mention',
     accessableby: ['League Admins', 'Moderator'],
     execute: async (message, args) => {
 
