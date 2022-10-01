@@ -60,22 +60,22 @@ module.exports = {
                     const checkExistingCategory = await channelSchema.findOne({ div: divPrefix[args[0].toUpperCase()], week: week[args[1].toUpperCase()] })
                     if (checkExistingCategory) {
                         var i = 0, j = 0;
-                        if (message.guild.channels.cache.get(checkExistingCategory.categoryID1.id))
-                            message.guild.channels.cache.get(checkExistingCategory.categoryID1.id).delete();
                         for (i = 0; i < checkExistingCategory.categoryID1.channels.length; i++) {
                             if (message.guild.channels.cache.get(checkExistingCategory.categoryID1.channels[i].id))
-                                message.guild.channels.cache.get(checkExistingCategory.categoryID1.channels[i].id).delete();
+                                await message.guild.channels.cache.get(checkExistingCategory.categoryID1.channels[i].id).delete();
                         }
+                        if (message.guild.channels.cache.get(checkExistingCategory.categoryID1.id))
+                            await message.guild.channels.cache.get(checkExistingCategory.categoryID1.id).delete();
                         if (checkExistingCategory.categoryID2) {
-                            if (message.guild.channels.cache.get(checkExistingCategory.categoryID2.id))
-                                message.guild.channels.cache.get(checkExistingCategory.categoryID2.id).delete();
-                            for (j = 0; i < checkExistingCategory.categoryID2.channels.length; i++) {
-                                if (message.guild.channels.cache.get(checkExistingCategory.categoryID2.channels[i].id))
-                                    message.guild.channels.cache.get(checkExistingCategory.categoryID2.channels[i].id).delete();
+                            for (j = 0; j < checkExistingCategory.categoryID2.channels.length; j++) {
+                                if (message.guild.channels.cache.get(checkExistingCategory.categoryID2.channels[j].id))
+                                    await message.guild.channels.cache.get(checkExistingCategory.categoryID2.channels[j].id).delete();
                             }
                             j++;
+                            if (message.guild.channels.cache.get(checkExistingCategory.categoryID2.id))
+                                await message.guild.channels.cache.get(checkExistingCategory.categoryID2.id).delete();
                         }
-                        await channelSchema.findOneAndDelete({ div: divPrefix[args[0].toUpperCase()], week: week[args[1].toUpperCase()] });
+                        // await channelSchema.findOneAndDelete({ div: divPrefix[args[0].toUpperCase()], week: week[args[1].toUpperCase()] });
                         await message.react('✅');
                         return message.reply(`Deleted **${i + 1 + j}** negotiation rooms for ${args[1].toUpperCase()} | ${divPrefix[args[0].toUpperCase()]}!`);
                     }
