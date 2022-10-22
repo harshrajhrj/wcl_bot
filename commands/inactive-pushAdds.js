@@ -100,3 +100,42 @@
 // }
 
 // checkleft();
+
+
+const rosterSchema = require('./rosterSchemas/rosterSchemaChampions');
+const fs = require('fs');
+
+// async function checkLeft() {
+//     var rawABBS = fs.readFileSync('./commands/abbs.json')
+//     var check_array = JSON.parse(rawABBS);
+//     var left = [];
+//     console.log("....Running")
+//     var filteredChamps = check_array.values.filter(function (val) { return val[3] === "CHAMPIONS" });
+//     const retrieve = await rosterSchema.find();
+//     for (var i = 0; i < retrieve.length; i++) {
+//         if (!filteredChamps.find(function (val) { return val[2] === retrieve[i].abb })) {
+//             left.push(retrieve[i].abb);
+//             // const retrieve = await rosterSchema.findOne({ abb: check_array.values[i][2] });
+//             // if (retrieve)
+//             //     left += check_array.values[i][0] + " | " + check_array.values[i][1] + " | " + check_array.values[i][2] + " | " + check_array.values[i][3] + "\n";
+//         }
+//     }
+//     console.log(left);
+// }
+
+// async function checkLeft() {
+//     var rawABBS = fs.readFileSync('./commands/abbs.json')
+//     var check_array = JSON.parse(rawABBS);
+//     var left = [];
+//     console.log("....Running")
+//     for (var i = 0; i < check_array.values.length; i++) {
+//         if (check_array.values[i][3] === "CHAMPIONS") {
+//             const retrieve = await rosterSchema.findOne({ abb: check_array.values[i][2] });
+//             if (!retrieve)
+//                 left.push(check_array.values[i]);
+//         }
+//     }
+//     console.log(left);
+// }
+
+// checkLeft();

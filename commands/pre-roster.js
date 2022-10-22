@@ -68,6 +68,7 @@ module.exports = {
 
                 var playerDetail = [];
                 var townHalls = {
+                    'th15': 0,
                     'th14': 0,
                     'th13': 0,
                     'th12': 0,
@@ -90,7 +91,9 @@ module.exports = {
                     rosterData[0].players.forEach(async data => {
                         let fetechedData = await getPlayerDetail(data[0]);
                         playerDetail.push([fetechedData.tag, fetechedData.townHallLevel, fetechedData.name]);
-                        if (fetechedData.townHallLevel === 14)
+                        if (fetechedData.townHallLevel === 15)
+                            townHalls['th15']++;
+                        else if (fetechedData.townHallLevel === 14)
                             townHalls['th14']++;
                         else if (fetechedData.townHallLevel === 13)
                             townHalls['th13']++;
