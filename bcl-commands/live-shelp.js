@@ -20,6 +20,7 @@ bcl insertwars - Inserts official wars for tracking
 bcl opennego - Create a negotiation room with details provided as clanAbb and opponentAbb (NOT AVAILABLE)
 bcl replace - Replaces old clan_abb with new clan_abb
 bcl res - Manual resulting of a war using warID and clanAbb
+bcl removeabb - Removes a team from BCL
 bcl roleup - Helps to assign roles prior to a division (NOT AVAILABLE)
 bcl rts - Removes all trailing white spaces and special characters from all tags
 bcl updatedb - Populates new details of clan abbreviations
