@@ -15,9 +15,12 @@ module.exports = {
         const notForUseChannels = require('./live-notForUseChannels');
         const resources = require('../bclutility/resourcesUtils');
         const divPrefix = resources.DIVISION_ABBS;
-        const week = resources.WEEK_ABBS;
         const logo = resources.DIVISION_LOGO_URL;
         const color = resources.DIVISION_COLOR;
+
+        const stringDiv = {
+            'CHAMPIONS': 'CHAMPIONS',
+        }
         
         if (!notForUseChannels.includes(message.channel.id)) {
             if (!divPrefix[args[0].toUpperCase()])
