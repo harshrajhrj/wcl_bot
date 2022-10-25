@@ -5,7 +5,7 @@ module.exports = {
     args: false,
     execute: async (message) => {
         const notForUseChannels = require('./live-notForUseChannels');
-        if (!notForUseChannels.includes(message.channel.id) && (message.member.hasPermission('MANAGE_GUILD') || message.member.hasPermission('MANAGE_ROLES') || !message.guild.id('389162246627917826'))) {
+        if (!notForUseChannels.includes(message.channel.id) && (message.member.hasPermission('MANAGE_GUILD') || message.member.hasPermission('MANAGE_ROLES'))) {
             const com = `Developer Only\n\n
 League Admins Only
 bcl addroster - To add/update a team's roster
