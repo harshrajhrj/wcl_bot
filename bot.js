@@ -2,7 +2,7 @@ const fs = require('fs');
 const Discord = require('discord.js');
 const { prefix, token, utilityToken } = require('./auth.json');
 const mongoose = require('mongoose');
-const bot = new Discord.Client({intents : Discord.Intents.ALL});
+const bot = new Discord.Client({ intents: Discord.Intents.ALL });
 const moment = require('moment');
 require('moment-duration-format');
 require('dotenv/config');
@@ -11,11 +11,19 @@ mongoose.connect(process.env.CONNECT, { useNewUrlParser: true, useUnifiedTopolog
 	.catch((err) => console.log(err.message))
 
 bot.commands = new Discord.Collection();
+bot.bclcommands = new Discord.Collection();
+
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const bclCommandFiles = fs.readdirSync('./bcl-commands').filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	bot.commands.set(command.name, command);
+}
+
+for (const file of bclCommandFiles) {
+	const command = require(`./bcl-commands/${file}`);
+	bot.bclcommands.set(command.name, command);
 }
 
 const cooldowns = new Discord.Collection();
@@ -25,13 +33,19 @@ bot.once('ready', () => {
 });
 
 bot.on('message', async message => {
-	if (!message.content.toLowerCase().startsWith(prefix) || message.author.bot) return;
+	if (!prefix.find(function (pre) { return message.content.toLowerCase().startsWith(pre) }) || message.author.bot) return;
 
-	const args = message.content.slice(prefix.length).trim().split(/ +/);
+	const args = message.content.slice(prefix.find(function (pre) { return message.content.toLowerCase().startsWith(pre) }).length).trim().split(/ +/);
 	const commandName = args.shift().toLowerCase();
 
-	const command = bot.commands.get(commandName)
-		|| bot.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+	// brings the requested command into execution
+	var command;
+	if (prefix.find(function (pre) { return message.content.toLowerCase().startsWith(pre) }) === prefix[0]) // for wcl
+		command = bot.commands.get(commandName)
+			|| bot.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName))
+	else if (prefix.find(function (pre) { return message.content.toLowerCase().startsWith(pre) }) === prefix[1]) // for bcl
+		command = bot.bclcommands.get(commandName)
+			|| bot.bclcommands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName))
 
 	if (commandName.toLowerCase() === 'ins' || commandName.toLowerCase() === 'inspect') {
 		//Uptime
@@ -61,7 +75,7 @@ bot.on('message', async message => {
 		message.channel.send(embed);
 	}
 
-	if (!command) return /*message.channel.send(`There is no command with name or alias \`${commandName}\`, ${message.author}!`)*/;
+	if (!command) return message.channel.send(`There is no command with name or alias \`${commandName}\`, ${message.author}!`);
 
 	if (command.guildOnly && message.channel.type === 'dm') {
 		return message.reply('I can\'t execute that command inside DMs!');

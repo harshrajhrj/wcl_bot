@@ -16,9 +16,9 @@ module.exports = {
         if (!notForUseChannels.includes(message.channel.id) && (message.member.hasPermission('MANAGE_GUILD') || message.member.hasPermission('MANAGE_ROLES') || !message.guild.id('389162246627917826'))) {
             const com = `Developer Only\n\n
 League Admins Only
-wcl changeroster - To change a complete roster
+wcl addroster - To add/update a team's roster
 wcl creps - Interchange/update the clan representatives
-wcl changesize - To resize new teams roster addition spot(author only)
+wcl changesize - To resize new team's roster addition spot
 wcl createnego - Create all negotiation rooms for a particular week inside a week category(applicable for Champions Esports division only)
 wcl deletenego - Delete all negotiation rooms for a particular week inside a week category
 wcl deletewars - Delete official wars which were used for tracking
