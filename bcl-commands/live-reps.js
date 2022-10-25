@@ -16,6 +16,9 @@ module.exports = {
         const resources = require('../bclutility/resourcesUtils');
         const logo = resources.DIVISION_LOGO_URL;
         const color = resources.DIVISION_COLOR;
+        const match = {
+            'CHAMPIONS' : 'CS'
+        }
 
         if (!notForUseChannels.includes(message.channel.id)) {
             var repSchema = require('./repsSchema/repsSchema');
@@ -39,8 +42,8 @@ module.exports = {
             if (args.length === 1) {
                 if (findRepList) {
                     const embed = new Discord.MessageEmbed()
-                        .setColor(color[division])
-                        .setThumbnail(logo[division])
+                        .setColor(color[match[division]])
+                        .setThumbnail(logo[match[division]])
                         .setAuthor('BCL TECHNICAL', 'https://media.discordapp.net/attachments/766306691994091520/1034435209984233562/BCL_S2.png?width=500&height=612')
                         .setTitle(`*Clan Info of ${findRepList.teamName === 'NONE' ? findRepList.clanName : findRepList.teamName}*`)
                         .addField(`Team name:male_sign:`, findRepList.teamName === 'NONE' ? findRepList.clanName : findRepList.teamName)
@@ -71,7 +74,7 @@ module.exports = {
             }
             else if (args[1].toLowerCase() === 'tagreps' || args[1].toLowerCase() === 'tr') {
                 const embed = new Discord.MessageEmbed()
-                    .setColor(color[division])
+                    .setColor(color[match[division]])
                     .setTitle(findRepList.abb)
                     .setDescription(`Rep1 - ${findRepList.rep1}\nRep2 - ${findRepList.rep2}`)
                 message.channel.send(embed).then((msg) => {
