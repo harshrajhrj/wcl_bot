@@ -75,7 +75,7 @@ bot.on('message', async message => {
 		message.channel.send(embed);
 	}
 
-	if (!command) return message.channel.send(`There is no command with name or alias \`${commandName}\`, ${message.author}!`);
+	if (!command && args.length > 0) return message.channel.send(`There is no command with name or alias \`${commandName}\`, ${message.author}!`);
 
 	if (command.guildOnly && message.channel.type === 'dm') {
 		return message.reply('I can\'t execute that command inside DMs!');
