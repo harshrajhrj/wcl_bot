@@ -9,7 +9,7 @@ module.exports = {
     category: "all",
     usage: 'divisionPrefix',
     missing: ['`divisionPrefix`'],
-    explanation: 'Ex: bcl abbs H\nwhere CS - Champions(Esports)',
+    explanation: 'Ex: bcl abbs CS\nwhere CS - Champions(Esports)',
     accessableby: ['League Admins', 'Moderator'],
     execute: async (message, args) => {
         const notForUseChannels = require('./live-notForUseChannels');

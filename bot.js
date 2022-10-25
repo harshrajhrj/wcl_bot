@@ -96,7 +96,7 @@ bot.on('message', async message => {
 				.setAuthor('By WCL')
 				.setDescription(command.description)
 				.addField('Missing Details/Data', c)
-				.addField('**Usage**', `**${prefix} ${command.aliases}** ` + "`" + command.usage + "`" + `\n` + "```" + command.explanation + "```", true)
+				.addField('**Usage**', `**${prefix.find(function (pre) { return message.content.toLowerCase().startsWith(pre) })} ${command.aliases}** ` + "`" + command.usage + "`" + `\n` + "```" + command.explanation + "```", true)
 				.setFooter(`Not enough parameters`)
 				.setTimestamp()
 			return message.channel.send(embed);
