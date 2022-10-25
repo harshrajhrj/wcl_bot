@@ -7,7 +7,7 @@ module.exports = {
     category: 'admins',
     missing: ['`divPrefix`, ', '`n_Adds`, ', '`type`'],
     usage: 'divIdentifier n_Adds type',
-    explanation: `Ex: bcl csz B 5 all\n\nwhere 'all' means the addition limit is increased by 5 for all teams\n
+    explanation: `Ex: bcl csz CS 5 all\n\nwhere 'all' means the addition limit is increased by 5 for all teams\n
 OR\n
 bcl csz B 5 abb1 abb2 abb3\n\nwhere the addition limit is increased by 5 for given clan abbs`,
     execute: async (message, args) => {
