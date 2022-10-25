@@ -13,7 +13,7 @@ module.exports = {
             '1018472654233149460',
             '1018472232403607604'
         ]
-        if (!notForUseChannels.includes(message.channel.id) && (message.member.hasPermission('MANAGE_GUILD') || message.member.hasPermission('MANAGE_ROLES') || !message.guild.id('389162246627917826'))) {
+        if (!notForUseChannels.includes(message.channel.id) && (message.member.hasPermission('MANAGE_GUILD') || message.member.hasPermission('MANAGE_ROLES'))) {
             const com = `Developer Only\n\n
 League Admins Only
 wcl addroster - To add/update a team's roster
