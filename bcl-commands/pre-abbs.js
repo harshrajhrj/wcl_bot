@@ -84,7 +84,7 @@ module.exports = {
                     )
                 }
             } catch (err) {
-                console.log(err.message);
+                console.log(err);
                 message.reply(err.message);
             }
         }
