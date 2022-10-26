@@ -136,6 +136,7 @@ module.exports = {
                         return;
                     } else {
                         var tempOpponent = checkIndAbb.opponent;
+                        var messageString = '';
                         for (var i = parseInt(weeks[1], 10), j = 0; i <= parseInt(weeks[2], 10), j <= parseInt(weeks[2], 10) - parseInt(weeks[1], 10); i++, j++) {
                             var opponentObjectData = new Object;
                             opponentObjectData['abb'] = opponentClans[j][2];
@@ -148,6 +149,7 @@ module.exports = {
                             opponentObjectData['deleteHistory'] = null;
                             tempOpponent[week[i]] = opponentObjectData;
                             indWarSchema.no_of_matches++;
+                            messageString += `${week[i]} | ${args[1].toUpperCase()}    vs     ${opponentClans[j][2]}\n`;
 
                         }
                         await indWarSchema.findOneAndUpdate({ abb: args[1].toUpperCase() },
@@ -155,6 +157,9 @@ module.exports = {
                                 opponent: tempOpponent
                             }
                         ).then((insWar) => console.log(insWar))
+
+                        await message.react('✅');
+                        message.reply(`Scheduled **${args[1].toUpperCase()}** from Week ${week[parseInt(weeks[1], 10)]} to ${week[parseInt(weeks[2], 10)]}\n` + "```plaintext\n" + messageString + "```");
                     }
 
                 } else {

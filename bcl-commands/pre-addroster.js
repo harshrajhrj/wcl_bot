@@ -52,43 +52,47 @@ module.exports = {
                     let fresh = [];
                     var division;
                     if (new_data.length === 1) {
-                        data = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${new_data[0]}/values/ROSTER!B6:C?majorDimension=ROWS&key=AIzaSyDUq4w3z35sS28BKWLdXSh32hlwUDDaD1Y`, options);
-                        var div = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${new_data[0]}/values/ROSTER!C2:E2?majorDimension=ROWS&key=AIzaSyDUq4w3z35sS28BKWLdXSh32hlwUDDaD1Y`, options);
-                        if (div.status === 200) {
-                            div = await div.json();
-                            div = div.values[0];
-                            div = div.find(function (eachVal) { return eachVal != "" ? eachVal : null });
-                            div = div.replace(/[\t\n\r]/gm, '');
-                            var DivisionChecking = Object.keys(roster);
-                            DivisionChecking.forEach(key => {
-                                if (key.indexOf(div.toUpperCase()) != -1) {
-                                    division = roster[key];
-                                    return;
-                                }
-                            })
-                            rosterSchema = require(`./rosterSchemas/rosterSchema${division[0]}`);
-                        }
+                        data = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${new_data[0]}/values/ROSTER!C7:C?majorDimension=ROWS&key=AIzaSyDUq4w3z35sS28BKWLdXSh32hlwUDDaD1Y`, options);
+                        // var div = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${new_data[0]}/values/ROSTER!C2:E2?majorDimension=ROWS&key=AIzaSyDUq4w3z35sS28BKWLdXSh32hlwUDDaD1Y`, options);
+                        // if (div.status === 200) {
+                        //     div = await div.json();
+                        //     div = div.values[0];
+                        //     div = div.find(function (eachVal) { return eachVal != "" ? eachVal : null });
+                        //     div = div.replace(/[\t\n\r]/gm, '');
+                        var div = "CHAMPIONS";
+                        var DivisionChecking = Object.keys(roster);
+                        DivisionChecking.forEach(key => {
+                            if (key.indexOf(div.toUpperCase()) != -1) {
+                                division = roster[key];
+                                return;
+                            }
+                        })
+                        if (!division)
+                            return message.reply(`Incorrect division ${division} found in roster!`);
+                        rosterSchema = require(`./rosterSchemas/rosterSchema${division[0]}`);
+                        // }
                     }
                     else if (new_data.length > 1) {
-                        data = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${new_data[5]}/values/ROSTER!B6:C?majorDimension=ROWS&key=AIzaSyDUq4w3z35sS28BKWLdXSh32hlwUDDaD1Y`, options);
-                        var div = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${new_data[5]}/values/ROSTER!C2:E2?majorDimension=ROWS&key=AIzaSyDUq4w3z35sS28BKWLdXSh32hlwUDDaD1Y`, options);
-                        if (div.status === 200) {
-                            div = await div.json();
-                            console.log(div);
-                            div = div.values[0];
-                            div = div.find(function (eachVal) { return eachVal != "" ? eachVal : null });
-                            div = div.replace(/[\t\n\r]/gm, '');
-                            var DivisionChecking = Object.keys(roster);
-                            DivisionChecking.forEach(key => {
-                                if (key.indexOf(div.toUpperCase()) != -1) {
-                                    division = roster[key];
-                                    return;
-                                }
-                            })
-                            if (!division)
-                                return message.reply(`Incorrect division ${division} found in roster!`);
-                            rosterSchema = require(`./rosterSchemas/rosterSchema${division[0]}`);
-                        }
+                        data = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${new_data[5]}/values/ROSTER!C7:C?majorDimension=ROWS&key=AIzaSyDUq4w3z35sS28BKWLdXSh32hlwUDDaD1Y`, options);
+                        // var div = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${new_data[5]}/values/ROSTER!C2:E2?majorDimension=ROWS&key=AIzaSyDUq4w3z35sS28BKWLdXSh32hlwUDDaD1Y`, options);
+                        // if (div.status === 200) {
+                        //     div = await div.json();
+                        //     console.log(div);
+                        //     div = div.values[0];
+                        //     div = div.find(function (eachVal) { return eachVal != "" ? eachVal : null });
+                        //     div = div.replace(/[\t\n\r]/gm, '');
+                        var div = "CHAMPIONS";
+                        var DivisionChecking = Object.keys(roster);
+                        DivisionChecking.forEach(key => {
+                            if (key.indexOf(div.toUpperCase()) != -1) {
+                                division = roster[key];
+                                return;
+                            }
+                        })
+                        if (!division)
+                            return message.reply(`Incorrect division ${division} found in roster!`);
+                        rosterSchema = require(`./rosterSchemas/rosterSchema${division[0]}`);
+                        // }
                     }
                     else {
                         message.reply(`Improper format of sheet link!`);
@@ -106,13 +110,13 @@ module.exports = {
                         const convert = await data.json();
                         if (!Object.keys(convert).includes('values'))
                             return message.reply('No roster data!');
-                        if (convert.values.find(function (row) { return row.length > 1; })) {
+                        if (convert.values.find(function (row) { return row.length === 1; })) {
                             convert.values.forEach(data => {
-                                if (!(data[1] === undefined || data[1] === ' '))/*condition to eliminate blank values*/ {
-                                    const u1 = data[1].replace(/[\t\n\r]/gm, '')
+                                if (!(data[0] === undefined || data[0] === ' '))/*condition to eliminate blank values*/ {
+                                    const u1 = data[0].replace(/[\t\n\r]/gm, '')
                                     const u2 = u1.replace(/\s/g, '');
                                     const u3 = decodeURIComponent(u2).replace(/[^\x00-\x7F]/g, "")
-                                    fresh.push([u3.toUpperCase(), data[0]]);
+                                    fresh.push([u3.toUpperCase(), '']);
                                 }
                             });
                             if (fresh.length <= division[2]) {

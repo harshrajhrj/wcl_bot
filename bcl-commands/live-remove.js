@@ -16,7 +16,7 @@ module.exports = {
     usage: 'clan_abb player_tag discord_id(optional)',
     explanation: 'Ex: bcl add INQ #XYZ DISCORD_ID\n\nwhere\nINQ is clan abb\n#XYZ is ClashOfClans PlayerTag\nDISCORD_ID is long number ID of the player\n-F(forceRemove optional for league admins only)',
     execute: async (message, args) => {
-        const channelPermmissions = require('./live-ForUseChannels');
+        const channelPermmissions = require('./live-ForUseChannels').rosterChannel;
         if (channelPermmissions.includes(message.channel.id) || message.member.hasPermission('MANAGE_GUILD')) {
             const options = {
                 'json': true,
@@ -64,7 +64,7 @@ module.exports = {
             message.channel.send(`Processing....Please wait, this may take a while ${message.author.username}.`)
 
             //abb checking
-            var rawABBS = fs.readFileSync('./commands/abbs.json')
+            var rawABBS = fs.readFileSync('./bcl-commands/abbs.json')
             var check_array = JSON.parse(rawABBS);
             let division = '';
             check_array.values.forEach(data => {

@@ -237,7 +237,7 @@ module.exports = {
 
                     // to be blocked during pre-season roster changes
                     // if (div != 'CHAMPIONS')
-                    getData[0].additionStatusLimit = additionStatusLimit;
+                    // getData[0].additionStatusLimit = additionStatusLimit;
 
                 }
                 if (getData[0].additionRecord[0][0] === 'N/A') {
