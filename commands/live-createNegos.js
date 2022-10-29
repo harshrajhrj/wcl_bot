@@ -68,7 +68,7 @@ module.exports = {
 
                         for (const each of allmatches) {
                             var checkForAlreadyMatch = collectMatches.find(match => (match.clan === each.abb && match.opponent === each.opponent[args[1].toUpperCase()].abb) || (match.clan === each.opponent[args[1].toUpperCase()].abb && match.opponent === each.abb))
-                            if (!checkForAlreadyMatch) {
+                            if (!checkForAlreadyMatch && !each.opponent[args[1].toUpperCase()]) {
                                 collectMatches.push({ clan: each.abb, opponent: each.opponent[args[1].toUpperCase()].abb })
                             }
                         }
@@ -269,7 +269,7 @@ module.exports = {
                     return message.reply(`Invalid week/division prefix or maybe other division than Champions!\nPlease check again and try.`);
                 }
             } catch (err) {
-                console.log(err.message);
+                console.log(err);
                 message.reply(err.message);
             }
         } else {

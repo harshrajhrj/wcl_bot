@@ -135,7 +135,7 @@ module.exports = {
                             thumbnail: logo[divPrefix[args[0].toUpperCase()]],
                             wars: [
                                 {
-                                    warID: 'NONE',
+                                    warID: 'N/A',
                                     clan: {
                                         abb: 'NONE',
                                         name: 'NO WARS',
@@ -146,7 +146,7 @@ module.exports = {
                                     },
                                     dow: 'NONE',
                                     tow: 'NONE',
-                                    status: 'NONE',
+                                    status: 'N/A',
                                 }
                             ]
                         },
