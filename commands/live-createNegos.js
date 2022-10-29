@@ -67,9 +67,11 @@ module.exports = {
                         const allmatches = await individualWarRecord.find({ div: divPrefix[args[0].toUpperCase()] });
 
                         for (const each of allmatches) {
-                            var checkForAlreadyMatch = collectMatches.find(match => (match.clan === each.abb && match.opponent === each.opponent[args[1].toUpperCase()].abb) || (match.clan === each.opponent[args[1].toUpperCase()].abb && match.opponent === each.abb))
-                            if (!checkForAlreadyMatch && !each.opponent[args[1].toUpperCase()]) {
-                                collectMatches.push({ clan: each.abb, opponent: each.opponent[args[1].toUpperCase()].abb })
+                            if (Object.keys(each.opponent).includes(args[1].toUpperCase())) {
+                                var checkForAlreadyMatch = collectMatches.find(match => (match.clan === each.abb && match.opponent === each.opponent[args[1].toUpperCase()].abb) || (match.clan === each.opponent[args[1].toUpperCase()].abb && match.opponent === each.abb))
+                                if (!checkForAlreadyMatch) {
+                                    collectMatches.push({ clan: each.abb, opponent: each.opponent[args[1].toUpperCase()].abb })
+                                }
                             }
                         }
 
