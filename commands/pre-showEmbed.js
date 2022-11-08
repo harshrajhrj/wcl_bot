@@ -435,42 +435,54 @@ module.exports = async function showEmbed(message, args, embedData, embedType) {
                 .setThumbnail(thumbnail)
                 .setAuthor('By WCL')
                 .setTimestamp()
-            for (i; i < ((wars.length > 24) ? 24 : wars.length); i++) {
+            for (i; i < ((wars.length > 20) ? 20 : wars.length); i++) {
                 embed.addField(`**${wars[i].clan.name}** vs **${wars[i].opponent.name}**`, `${wars[i].dow}   ${wars[i].tow}  **${wars[i].status}**\n||wcl claim ${wars[i].warID} <your stream link>|| (for streamers only)${wars[i].streams === null ? '' : "\n**Streamed by**\n" + wars[i].streams}`);
             }
             embeds.push(embed);
-            if (wars.length > 24) {
+            if (wars.length > 20) {
                 const embed = new Discord.MessageEmbed()
                     .setColor(color)
                     .setTitle(`All Scheduled Wars!`)
                     .setThumbnail(thumbnail)
                     .setAuthor('By WCL')
                     .setTimestamp()
-                for (i; i < ((wars.length > 48) ? 48 : wars.length); i++) {
+                for (i; i < ((wars.length > 40) ? 40 : wars.length); i++) {
                     embed.addField(`**${wars[i].clan.name}** vs **${wars[i].opponent.name}**`, `${wars[i].dow}   ${wars[i].tow}  **${wars[i].status}**\n||wcl claim ${wars[i].warID} <your stream link>|| (for streamers only)${wars[i].streams === null ? '' : "\n**Streamed by**\n" + wars[i].streams}`)
                 }
                 embeds.push(embed);
             }
-            if (wars.length > 48) {
+            if (wars.length > 40) {
                 const embed = new Discord.MessageEmbed()
                     .setColor(color)
                     .setTitle(`All Scheduled Wars!`)
                     .setThumbnail(thumbnail)
                     .setAuthor('By WCL')
                     .setTimestamp()
-                for (i; i < ((wars.length > 72) ? 72 : wars.length); i++) {
+                for (i; i < ((wars.length > 60) ? 60 : wars.length); i++) {
                     embed.addField(`**${wars[i].clan.name}** vs **${wars[i].opponent.name}**`, `${wars[i].dow}   ${wars[i].tow}  **${wars[i].status}**\n||wcl claim ${wars[i].warID} <your stream link>|| (for streamers only)${wars[i].streams === null ? '' : "\n**Streamed by**\n" + wars[i].streams}`)
                 }
                 embeds.push(embed);
             }
-            if (wars.length > 72) {
+            if (wars.length > 60) {
                 const embed = new Discord.MessageEmbed()
                     .setColor(color)
                     .setTitle(`All Scheduled Wars!`)
                     .setThumbnail(thumbnail)
                     .setAuthor('By WCL')
                     .setTimestamp()
-                for (i; i < ((wars.length > 96) ? 96 : wars.length); i++) {
+                for (i; i < ((wars.length > 80) ? 80 : wars.length); i++) {
+                    embed.addField(`**${wars[i].clan.name}** vs **${wars[i].opponent.name}**`, `${wars[i].dow}   ${wars[i].tow}  **${wars[i].status}**\n||wcl claim ${wars[i].warID} <your stream link>|| (for streamers only)${wars[i].streams === null ? '' : "\n**Streamed by**\n" + wars[i].streams}`)
+                }
+                embeds.push(embed);
+            }
+            if (wars.length > 80) {
+                const embed = new Discord.MessageEmbed()
+                    .setColor(color)
+                    .setTitle(`All Scheduled Wars!`)
+                    .setThumbnail(thumbnail)
+                    .setAuthor('By WCL')
+                    .setTimestamp()
+                for (i; i < ((wars.length > 100) ? 100 : wars.length); i++) {
                     embed.addField(`**${wars[i].clan.name}** vs **${wars[i].opponent.name}**`, `${wars[i].dow}   ${wars[i].tow}  **${wars[i].status}**\n||wcl claim ${wars[i].warID} <your stream link>|| (for streamers only)${wars[i].streams === null ? '' : "\n**Streamed by**\n" + wars[i].streams}`)
                 }
                 embeds.push(embed);
@@ -511,7 +523,7 @@ module.exports = async function showEmbed(message, args, embedData, embedType) {
             await Embeds.build();
         }
     } catch (err) {
-        console.log(err.message);
+        console.log(err);
         message.reply(err.message);
     }
 }
