@@ -22,6 +22,7 @@ wcl changesize - To resize new team's roster addition spot
 wcl createnego - Create all negotiation rooms for a particular week inside a week category(applicable for Champions Esports division only)
 wcl deletenego - Delete all negotiation rooms for a particular week inside a week category
 wcl deletewars - Delete official wars which were used for tracking
+wcl deleteweek - Deletes individual week for a whole division or for a individial team
 wcl forceres - Results a war with force W/L/T!
 wcl getwartags - List the clan tags of wars of WCL for a particular division, week.
 wcl insertwars - Inserts official wars for tracking
