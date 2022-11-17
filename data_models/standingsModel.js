@@ -34,7 +34,7 @@ class ClanModel {
             (opponent.status === "W") ? this.wins++ : null;
             (opponent.status === "L") ? this.loses++ : null;
             (opponent.status === "T") ? this.ties++ : null;
-            
+
 
             //if opponent.status is UNDECLARED means war hasn't been played yet, thus it won't get added to matchesPlayed count
             // opponent.starFor !== 0 to ensure that it is not a forfeit war. since it won't be counted towards Average Star Differential
@@ -46,9 +46,9 @@ class ClanModel {
             }
         }
 
-        if(this.matchesPlayed > 0){
-            this.averageSD = (this.starsFor - this.starsAgainst)/this.matchesPlayed;
-            this.averagePerDest = this.perDest/this.matchesPlayed;
+        if (this.matchesPlayed > 0) {
+            this.averageSD = (this.starsFor - this.starsAgainst) / this.matchesPlayed;
+            this.averagePerDest = this.perDest / this.matchesPlayed;
         }
     }
 
@@ -123,7 +123,7 @@ class StandingsModel {
     async standingsSort(clansArray) {
         return clansArray.sort((a, b) => {
             //sorts in the following order: wins > ties > loses > average star differential > average destruction percentage
-            return (b.wins - a.wins || b.ties - a.ties || a.loses - b.loses || b.averageSD - a.averageSD || b.averagePerDest - a.averagePerDest);
+            return ((b.wins + b.ties / 2) - (a.wins + a.ties / 2) || b.averageSD - a.averageSD || b.averagePerDest - a.averagePerDest);
         });
     }
 }
