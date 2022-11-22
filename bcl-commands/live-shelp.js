@@ -14,6 +14,7 @@ bcl changesize - To resize new team's roster addition spot
 bcl createnego - Create all negotiation rooms for a particular week inside a week category(applicable for Champions Esports division only) (NOT AVAILABLE)
 bcl deletenego - Delete all negotiation rooms for a particular week inside a week category (NOT AVAILABLE)
 bcl deletewars - Delete official wars which were used for tracking
+bcl deleteweek - Deletes individual week for a whole division or for a individial team
 bcl forceres - Results a war with force W/L/T!
 bcl getwartags - List the clan tags of wars of BCL for a particular division, week.
 bcl insertwars - Inserts official wars for tracking
