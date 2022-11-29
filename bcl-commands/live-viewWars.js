@@ -1,7 +1,7 @@
 const { ClanModel } = require("../data_models/standingsModel");
-const ErrorHandler = require("../utility/errorUtils");
-const ResourcesUtils = require("../utility/resourcesUtils");
-const Utility = require("../utility/utility");
+const ErrorHandler = require("../bclutility/errorUtils");
+const ResourcesUtils = require("../bclutility/resourcesUtils");
+const Utility = require("../bclutility/utility");
 const { MessageEmbed } = require("discord.js");
 
 
