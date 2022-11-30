@@ -26,9 +26,10 @@ module.exports = {
     13: 'R64',
     14: 'R32',
     15: 'WC',
-    16: 'QF',
-    17: 'SF',
-    18: 'F'\n\nNote: Once the command is used, then the opponents are locked!`,
+    16: 'WC2',
+    17: 'QF',
+    18: 'SF',
+    19: 'F'\n\nNote: Once the command is used, then the opponents are locked!`,
     accessableby: ['League Admins', 'Moderator'],
     execute: async (message, args) => {
         const notForUseChannels = require('./live-notForUseChannels');
@@ -50,9 +51,10 @@ module.exports = {
             13: 'R64',
             14: 'R32',
             15: 'WC',
-            16: 'QF',
-            17: 'SF',
-            18: 'F',
+            16 : 'WC2',
+            17: 'QF',
+            18: 'SF',
+            19: 'F',
         };
 
         function divCheck(ABB) {

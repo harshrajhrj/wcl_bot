@@ -3,8 +3,8 @@ const individualWarRecord = require("./war&schedule&standings/individualWarRecor
 const channelSchema = require("./negotiationSchema/channelSchema");
 
 module.exports = {
-    name: 'createnego-lock',
-    aliases: ['cnl'],
+    name: 'createnego',
+    aliases: ['cn'],
     description: 'Create all negotiation rooms for a particular week inside a week category',
     args: true,
     length: 2,
@@ -30,9 +30,11 @@ module.exports = {
                         const allmatches = await individualWarRecord.find({ div: divPrefix[args[0].toUpperCase()] });
 
                         for (const each of allmatches) {
-                            var checkForAlreadyMatch = collectMatches.find(match => (match.clan === each.abb && match.opponent === each.opponent[args[1].toUpperCase()].abb) || (match.clan === each.opponent[args[1].toUpperCase()].abb && match.opponent === each.abb))
-                            if (!checkForAlreadyMatch) {
-                                collectMatches.push({ clan: each.abb, opponent: each.opponent[args[1].toUpperCase()].abb })
+                            if (Object.keys(each.opponent).includes(args[1].toUpperCase())) {
+                                var checkForAlreadyMatch = collectMatches.find(match => (match.clan === each.abb && match.opponent === each.opponent[args[1].toUpperCase()].abb) || (match.clan === each.opponent[args[1].toUpperCase()].abb && match.opponent === each.abb))
+                                if (!checkForAlreadyMatch) {
+                                    collectMatches.push({ clan: each.abb, opponent: each.opponent[args[1].toUpperCase()].abb })
+                                }
                             }
                         }
 
@@ -41,8 +43,8 @@ module.exports = {
                         // let id2 = '602935588018061453';
 
                         // category permissions
-                        let repesports = '1017903330128834631'; // perm to be denied in category channel
-                        let bclstaff = '999581636331057212'; // perm to be allow in category channel [read, send, attach, embed]
+                        let repesports = '1030933180800319519'; // perm to be denied in category channel
+                        let bclstaff = '988275259901886484'; // perm to be allow in category channel [read, send, attach, embed]
 
                         var categoryID1;
                         var categoryID1Channels = [];

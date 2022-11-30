@@ -1,8 +1,8 @@
 const channelSchema = require("./negotiationSchema/channelSchema");
 
 module.exports = {
-    name: 'deletenego-lock',
-    aliases: ['dnl'],
+    name: 'deletenego',
+    aliases: ['dn'],
     description: 'Delete all negotiation rooms for a particular week inside a week category',
     args: true,
     length: 2,
@@ -38,6 +38,7 @@ module.exports = {
             'R64': 'R64',
             'R32': 'R32',
             'WC': 'WC',
+            'WC2' : 'WC2',
             'QF': 'QF',
             'SF': 'SF',
             'F': 'F',

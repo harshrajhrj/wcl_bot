@@ -49,6 +49,7 @@ class ResourcesUtils{
         'R64': 'R64',
         'R32': 'R32',
         'WC': 'WC',
+        'WC2': 'WC2',
         'QF': 'QF',
         'SF': 'SF',
         'F': 'F',
