@@ -19,7 +19,7 @@ module.exports = {
         const divPrefix = resources.DIVISION_ABBS;
         const week = resources.WEEK_ABBS;
 
-        if (!notForUseChannels.includes(message.channel.id) && message.member.hasPermission('MANAGE_GUILD') && (message.guild.id === '998948665383190659' || message.guild.id === '765523244332875776')) {
+        if (!notForUseChannels.includes(message.channel.id) && message.member.hasPermission('MANAGE_GUILD') && (message.guild.id === '987923973050363984' || message.guild.id === '765523244332875776')) {
             try {
                 if (week[args[1].toUpperCase()] && divPrefix[args[0].toUpperCase()] && divPrefix[args[0].toUpperCase()] === 'CHAMPIONS') {
                     const checkExistingCategory = await channelSchema.findOne({ div: divPrefix[args[0].toUpperCase()], week: week[args[1].toUpperCase()] })

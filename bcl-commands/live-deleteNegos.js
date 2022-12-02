@@ -9,51 +9,13 @@ module.exports = {
     category: "admins",
     usage: 'divPrefix weekPrefix',
     missing: ['`divPrefix`, ', '`weekPrefix`'],
-    explanation: `Ex: wcl deletenego CS WK1\n\nwhere\nCS - Champions division and\nWK1 - Week 1`,
+    explanation: `Ex: bcl deletenego CS WK1\n\nwhere\nCS - Champions division and\nWK1 - Week 1`,
     accessableby: ['League Admins', 'Moderator'],
     execute: async (message, args) => {
-        const notForUseChannels = [
-            '1011618454735966268',
-            '1011618703814705262',
-            '1011620257275838485',
-            '1011622480600903690',
-            '1011622635781771294',
-            '1018472654233149460',
-            '1018472232403607604'
-        ]
-
-        const week = {
-            'WK1': 'WK1',
-            'WK2': 'WK2',
-            'WK3': 'WK3',
-            'WK4': 'WK4',
-            'WK5': 'WK5',
-            'WK6': 'WK6',
-            'WK7': 'WK7',
-            'WK8': 'WK8',
-            'WK9': 'WK9',
-            'WK10': 'WK10',
-            'WK11': 'WK11',
-            'R128': 'R128',
-            'R64': 'R64',
-            'R32': 'R32',
-            'WC': 'WC',
-            'WC2' : 'WC2',
-            'QF': 'QF',
-            'SF': 'SF',
-            'F': 'F',
-        };
-
-        const divPrefix = {
-            'H': 'HEAVY',
-            'F': 'FLIGHT',
-            'E': 'ELITE',
-            'B': 'BLOCKAGE',
-            'CS': 'CHAMPIONS',
-            'CL': 'CLASSIC',
-            'L': 'LIGHT',
-            'ME': 'RAJ',
-        }
+        const notForUseChannels = require('./live-notForUseChannels');
+        const resources = require('../bclutility/resourcesUtils');
+        const divPrefix = resources.DIVISION_ABBS;
+        const week = resources.WEEK_ABBS;
 
         if (!notForUseChannels.includes(message.channel.id) && message.member.hasPermission('MANAGE_GUILD')) {
             try {
