@@ -67,7 +67,7 @@ module.exports = {
             message.channel.send(`Processing....Please wait, this may take a while ${message.author.username}.`)
 
             //cos history checking
-            const dt = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/1qckELKFEYecbyGeDqRqItjSKm02ADpKfhkK1FiRbQ-c/values/Banned Clans!C6:C?majorDimension=ROWS&key=AIzaSyDUq4w3z35sS28BKWLdXSh32hlwUDDaD1Y`, options);
+            const dt = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/1qckELKFEYecbyGeDqRqItjSKm02ADpKfhkK1FiRbQ-c/values/Banned Clans!C6:C?majorDimension=ROWS&key=API_KEY`, options);
             const dt_array = await dt.json();
             const data = await fetch(`https://api.clashofstats.com/players/${decodeURIComponent(args[1].toUpperCase().slice(1)).replace(/[^\x00-\x7F]/g, "")}/history/clans/`, options);
             if (data.status === 403) {
@@ -220,7 +220,7 @@ module.exports = {
             }
 
             async function ban_check(tag) {
-                const ban = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/1qckELKFEYecbyGeDqRqItjSKm02ADpKfhkK1FiRbQ-c/values/Banned Players!C6:C?majorDimension=ROWS&key=AIzaSyDUq4w3z35sS28BKWLdXSh32hlwUDDaD1Y`, options)
+                const ban = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/1qckELKFEYecbyGeDqRqItjSKm02ADpKfhkK1FiRbQ-c/values/Banned Players!C6:C?majorDimension=ROWS&key=API_KEY`, options)
                 let data = await ban.json();
                 let data_array = data.values;
                 let found = '';

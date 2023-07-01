@@ -20,7 +20,7 @@ module.exports = {
                 'muteHttpExceptions': true
             };
 
-            const abb_check = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/1B269adx2hZNKzsFFZY8FUYdM5DJ3dLYlgqO3BMua6l0/values/CLANS!D4:F?majorDimension=ROWS&key=AIzaSyDUq4w3z35sS28BKWLdXSh32hlwUDDaD1Y`, options);
+            const abb_check = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/1B269adx2hZNKzsFFZY8FUYdM5DJ3dLYlgqO3BMua6l0/values/CLANS!D4:F?majorDimension=ROWS&key=API_KEY`, options);
             let tag = `${args[0].toUpperCase()}`;
             let stop = 0;
             if (abb_check.status === 200) {
@@ -149,7 +149,7 @@ module.exports = {
                     return sorted_array;
                 }
                 async function roster_check(abb, sort_clan) {
-                    const roster_check = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/1B269adx2hZNKzsFFZY8FUYdM5DJ3dLYlgqO3BMua6l0/values/${abb}!E10:E79?majorDimension=ROWS&key=AIzaSyDUq4w3z35sS28BKWLdXSh32hlwUDDaD1Y`, options);
+                    const roster_check = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/1B269adx2hZNKzsFFZY8FUYdM5DJ3dLYlgqO3BMua6l0/values/${abb}!E10:E79?majorDimension=ROWS&key=API_KEY`, options);
                     const roster_values = await roster_check.json();
                     let unrostered = '';
                     let count = 0;

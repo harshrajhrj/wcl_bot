@@ -57,10 +57,10 @@ module.exports = {
                 let data;
                 let fresh = [];
                 if (new_data.length === 1) {
-                    data = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${new_data[0]}/values/ROSTER!B6:C?majorDimension=ROWS&key=AIzaSyDUq4w3z35sS28BKWLdXSh32hlwUDDaD1Y`, options);
+                    data = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${new_data[0]}/values/ROSTER!B6:C?majorDimension=ROWS&key=API_KEY`, options);
                 }
                 else if (new_data.length > 1) {
-                    data = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${new_data[5]}/values/ROSTER!B6:C?majorDimension=ROWS&key=AIzaSyDUq4w3z35sS28BKWLdXSh32hlwUDDaD1Y`, options);
+                    data = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${new_data[5]}/values/ROSTER!B6:C?majorDimension=ROWS&key=API_KEY`, options);
                 }
                 else {
                     message.reply(`Improper format of sheet link!`);

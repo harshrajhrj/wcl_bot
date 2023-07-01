@@ -123,7 +123,7 @@ module.exports = {
             }
 
             async function banCheck(tag) {
-                var banRecords = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/1qckELKFEYecbyGeDqRqItjSKm02ADpKfhkK1FiRbQ-c/values/Banned Players!C6:C?majorDimension=ROWS&key=AIzaSyDUq4w3z35sS28BKWLdXSh32hlwUDDaD1Y`, options);
+                var banRecords = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/1qckELKFEYecbyGeDqRqItjSKm02ADpKfhkK1FiRbQ-c/values/Banned Players!C6:C?majorDimension=ROWS&key=API_KEY`, options);
                 let found = [];
                 if (banRecords.status === 200) {
                     let data_array = await banRecords.json();

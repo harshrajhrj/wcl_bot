@@ -66,8 +66,8 @@ module.exports = {
                     let fresh = [];
                     var division;
                     if (new_data.length === 1) {
-                        data = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${new_data[0]}/values/ROSTER!B6:C?majorDimension=ROWS&key=AIzaSyDUq4w3z35sS28BKWLdXSh32hlwUDDaD1Y`, options);
-                        var div = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${new_data[0]}/values/ROSTER!C2:E2?majorDimension=ROWS&key=AIzaSyDUq4w3z35sS28BKWLdXSh32hlwUDDaD1Y`, options);
+                        data = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${new_data[0]}/values/ROSTER!B6:C?majorDimension=ROWS&key=API_KEY`, options);
+                        var div = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${new_data[0]}/values/ROSTER!C2:E2?majorDimension=ROWS&key=API_KEY`, options);
                         if (div.status === 200) {
                             div = await div.json();
                             div = div.values[0];
@@ -84,8 +84,8 @@ module.exports = {
                         }
                     }
                     else if (new_data.length > 1) {
-                        data = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${new_data[5]}/values/ROSTER!B6:C?majorDimension=ROWS&key=AIzaSyDUq4w3z35sS28BKWLdXSh32hlwUDDaD1Y`, options);
-                        var div = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${new_data[5]}/values/ROSTER!C2:E2?majorDimension=ROWS&key=AIzaSyDUq4w3z35sS28BKWLdXSh32hlwUDDaD1Y`, options);
+                        data = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${new_data[5]}/values/ROSTER!B6:C?majorDimension=ROWS&key=API_KEY`, options);
+                        var div = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${new_data[5]}/values/ROSTER!C2:E2?majorDimension=ROWS&key=API_KEY`, options);
                         if (div.status === 200) {
                             div = await div.json();
                             div = div.values[0];
