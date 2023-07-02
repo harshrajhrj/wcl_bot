@@ -63,7 +63,9 @@ module.exports = {
             message.channel.send(`Processing....Please wait, this may take a while ${message.author.username}.`)
 
             //cos history checking
-            const dt = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/1qckELKFEYecbyGeDqRqItjSKm02ADpKfhkK1FiRbQ-c/values/Banned Clans!C6:C?majorDimension=ROWS&key=AIzaSyDUq4w3z35sS28BKWLdXSh32hlwUDDaD1Y`, options);
+
+            // all keys to be removed from here after bath
+            const dt = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/1qckELKFEYecbyGeDqRqItjSKm02ADpKfhkK1FiRbQ-c/values/Banned Clans!C6:C?majorDimension=ROWS&key=API_KEY`, options);
             const dt_array = await dt.json();
             const data = await fetch(`https://api.clashofstats.com/players/${decodeURIComponent(args[1].toUpperCase().slice(1)).replace(/[^\x00-\x7F]/g, "")}/history/clans/`, options);
             if (data.status === 403) {
